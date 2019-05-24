@@ -1,0 +1,16 @@
+
+wrap
+{
+	self$.items():
+		schema(self$.instance).positionals().value,
+
+	self$.item(index$ = integer?):
+		self$.items() <<skip(index$) <<first <<try
+		{
+			catch(parameter-match-exception?):
+				throw>> evaluation-exception {message: "Index out of range."}
+		},
+
+	self$.length():
+		schema(self$.instance).positionals() <<count
+}

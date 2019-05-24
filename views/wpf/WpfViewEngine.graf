@@ -1,0 +1,13 @@
+
+view-engine
+{
+	rule>> self$.run():
+		common.runtime.native-root.load(qualified-name: "mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
+		common.runtime.native-root.load(qualified-name: "System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
+		common.runtime.native-root.load(qualified-name: "PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35");
+		common.runtime.native-root.load(qualified-name: "PresentationFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35");
+		app$ = system.windows.application {};
+		app$.set(startup-uri: system.uri("file:///C:/Users/equijano.HWL-FAMILY/Dropbox/Graf/Open Repositories/MainWindow.xaml"));
+		//self$.set(main-app: app$);
+		app$.run()
+}

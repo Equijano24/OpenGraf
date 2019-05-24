@@ -1,0 +1,9 @@
+
+unit
+{
+	radians: angle(1, "rad"),
+	degrees: angle( //TODO: Use pi instead
+		function(d$ = ?)>> 3.1415926536.over(180),
+		function(r$ = ?)>> 180.over(3.1415926536), "°"
+	)
+}

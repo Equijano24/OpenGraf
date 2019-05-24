@@ -1,0 +1,15 @@
+
+decoration
+{
+	rule>> self$.equals-to(value$ = ?):
+		self$.compared-to(value$).equals-to(0),
+
+	rule>> self$.not-equals-to(value$ = ?):
+		self$.equals-to(value$).not(),
+
+	rule>> self$.eq(value$ = ?):
+		self$.equals-to(value$),
+
+	rule>> self$.neq(value$ = ?):
+		self$.not-equals-to(value$)
+}

@@ -1,0 +1,13 @@
+
+unit
+{
+	celsius: temperature(1, "°C"),
+	fahrenheit: temperature(
+		function(f$ = ?)>> f$.minus(32).over(1.8),
+		function(c$ = ?)>> c$.times(1.8).plus(32), "°F"
+	),
+	kelvin: temperature(
+		function(k$ = ?)>> k$.minus(273.15),
+		function(c$ = ?)>> c$.plus(273.15), "K"
+	)
+}

@@ -1,0 +1,54 @@
+
+equatable
+{
+	rule>> self$.between(left-closed: start$ = ?, right-closed: end$ = ?):
+		and(
+			common.environment.gte(self$.compared-to(start$), 0),
+			common.environment.lte(self$.compared-to(end$), 0)
+		),
+
+	rule>> self$.between(left-open: start$ = ?, right-closed: end$ = ?):
+		and(
+			common.environment.gt(self$.compared-to(start$), 0),
+			common.environment.lte(self$.compared-to(end$), 0)
+		),
+
+	rule>> self$.between(left-closed: start$ = ?, right-open: end$ = ?):
+		and(
+			common.environment.gte(self$.compared-to(start$), 0),
+			common.environment.lt(self$.compared-to(end$), 0)
+		),
+
+	rule>> self$.between(left-open: start$ = ?, right-open: end$ = ?):
+		and(
+			common.environment.gt(self$.compared-to(start$), 0),
+			common.environment.lt(self$.compared-to(end$), 0)
+		),
+
+	rule>> self$.between(start$ = ?, end$ = ?):
+		self$.between(left-closed: start$, right-closed: end$),
+
+	rule>> self$.greater-than(value$ = ?):
+		self$.compared-to(value$).equals-to(1),
+
+	rule>> self$.less-than(value$ = ?):
+		self$.compared-to(value$).equals-to(-1),
+
+	rule>> self$.greater-than-or-equals-to(value$ = ?):
+		self$.compared-to(value$).gte(0),
+
+	rule>> self$.less-than-or-equals-to(value$ = ?):
+		self$.compared-to(value$).lte(0),
+
+	rule>> self$.gt(value$ = ?):
+		self$.greater-than(value$),
+
+	rule>> self$.gte(value$ = ?):
+		self$.greater-than-or-equals-to(value$),
+
+	rule>> self$.lt(value$ = ?):
+		self$.less-than(value$),
+
+	rule>> self$.lte(value$ = ?):
+		self$.less-than-or-equals-to(value$)
+}

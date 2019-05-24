@@ -1,0 +1,55 @@
+#first
+
+composite
+{
+	reference-value: real?,
+	//conversion-from(): real?,
+	//conversion-to(): real?,
+	sufix: text?,
+
+	self$(conversion-rate$ = real?, sufix$ = text?):
+		self$(
+			function(v$ = ?)>> v$.times(!conversion-rate$),
+			function(v$ = ?)>> v$.over(!conversion-rate$), sufix$
+		),
+
+	// Example: self$ is 'weight' and 'this$' is grams
+	self$(from$(?) = real?, to$(?) = real?, sufix$ = text?): self$
+	{
+		conversion-from: from$,
+		conversion-to: to$,
+		sufix: sufix$,
+		
+		this$.internal-constructor(t$ = self$?, reference-value$ = real?): t$
+		{
+			reference-value: reference-value$,
+			
+			me$.compared-to(target$ = !self$?):
+				me$.reference-value.compared-to(target$.reference-value),
+			
+			me$.plus(value$ = !self$?):
+				internal-constructor(!t$, me$.reference-value.plus(value$.reference-value)),
+				
+			me$.minus(value$ = !self$?):
+				internal-constructor(!t$, me$.reference-value.minus(value$.reference-value)),
+				
+			me$.times(value$ = real?):
+				internal-constructor(!t$, me$.reference-value.times(value$)),
+				
+			me$.over(value$ = real?):
+				internal-constructor(!t$, me$.reference-value.over(value$))
+		},
+
+		override>> this$(value$ = real?):
+			this$.internal-constructor(this$, this$.conversion-from(value$)),
+
+		this$(value$ = self$?):
+			this$.internal-constructor(this$, value$.reference-value),		
+
+		this$.value():
+			this$.conversion-to(this$.reference-value),
+
+		this$.to(text):
+			text(this$.value()).conc(this$.sufix)
+	}
+}

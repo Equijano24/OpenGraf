@@ -1,0 +1,13 @@
+
+unit
+{
+	kilometers: distance(1000, "km"),
+	meters: distance(1, "m"),
+	centimeters: distance(0.01, "cm"),
+	milimeters: distance(0.001, "mm"),
+	miles: distance(1609.344, "mi"),
+	yards: distance(0.9144, "yd"),
+	feet: distance(0.3048, "ft"),
+	inches: distance(0.0254, "in"),
+	micrometers: distance(1E-6, "µm")
+}

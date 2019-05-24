@@ -1,0 +1,17 @@
+
+unit
+{
+	bits: information-unit(1.over(8), "b"),
+	bytes: information-unit(1, "B"),
+	kilobytes: information-unit(1024, "KB"),
+	megabytes: information-unit(power(1024, 2, 0), "MG"),
+	gigabytes: information-unit(power(1024, 3, 0), "GB"),
+	terabytes: information-unit(power(1024, 4, 0), "TB"),
+	petabytes: information-unit(power(1024, 5, 0), "PB"),
+	exabytes: information-unit(power(1024, 6, 0), "EB"),
+	zettabytes: information-unit(power(1024, 7, 0), "ZB"),
+	yottabytes: information-unit(power(1024, 8, 0), "YB"),
+	brontobytes: information-unit(power(1024, 9, 0), "BB"),
+	geopbytes: information-unit(power(1024, 10, 0), "OB"),
+	saganbytes: information-unit(power(1024, 11, 0), "SB")
+}
