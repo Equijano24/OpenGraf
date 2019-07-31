@@ -1,0 +1,16 @@
+
+box
+{
+	self$(tag-name$ = text?):
+		self$ {tag-name: tag-name$},
+
+	self$.to(text):
+		schema$ = common.evaluation.pattern-matching.schema(self$);
+		content$ = {"".join>> text(schema$.positionals().value)};
+		attributes$ = {" ".join>> self$.attributes(schema$)};
+		"<{self$.tag-name} {attributes$}>{content$}</{self$.tag-name}>"(),
+		
+	self$.attributes(sch$ = ?):
+		lb$ = sch$.all-labels() <<where>> match(lb$.value, composite?).and(equals(lb$.symbol, "tag-name").not());
+		"{lb$.symbol}=\"{lb$.value}\""()
+}

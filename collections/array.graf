@@ -1,8 +1,14 @@
+with
+{
+	common.evaluation.pattern-matching
+}
+
+>>
 
 wrap
 {
 	self$.items():
-		schema(self$.instance).positionals().value,
+		!schema(self$.instance).positionals().value,
 
 	self$.item(index$ = integer?):
 		self$.items() <<skip(index$) <<first <<try
@@ -12,5 +18,5 @@ wrap
 		},
 
 	self$.length():
-		schema(self$.instance).positionals() <<count
+		!schema(self$.instance).positionals() <<count
 }
