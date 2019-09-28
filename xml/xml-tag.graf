@@ -1,15 +1,20 @@
 
-box
+composite
 {
 	self$(tag-name$ = text?):
 		self$ {tag-name: tag-name$},
 
 	self$.to(text):
+		self$.to.cache(10000);
 		schema$ = common.evaluation.pattern-matching.schema(self$);
 		content$ = {"".join>> text(schema$.positionals().value)};
-		attributes$ = {" ".join>> self$.attributes(schema$)};
-		"<{self$.tag-name} {attributes$}>{content$}</{self$.tag-name}>"(),
-		
+		attributes$ = if'(
+			count'(schema$.all-labels()).gt(5),
+			" ".concat(" ".join>> self$.attributes(schema$)),
+			""
+		);
+		"<{self$.tag-name}{attributes$}>{content$}</{self$.tag-name}>"(),
+
 	self$.attributes(sch$ = ?):
 		lb$ = sch$.all-labels() <<where>> match(lb$.value, composite?).and(equals(lb$.symbol, "tag-name").not());
 		"{lb$.symbol}=\"{lb$.value}\""()

@@ -50,6 +50,6 @@ composite
 			this$.conversion-to(this$.reference-value),
 
 		this$.to(text):
-			text(this$.value()).conc(this$.sufix)
+			text(this$.value()).concat(this$.sufix)
 	}
 }

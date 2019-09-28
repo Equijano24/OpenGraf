@@ -1,0 +1,13 @@
+
+with
+{
+	common.net
+}
+
+>>
+
+namespace
+{
+	text-html: mime-content {content-type: "text/html"},
+	text-xml: mime-content {content-type: "text/xml"}
+}

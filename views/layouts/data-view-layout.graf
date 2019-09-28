@@ -1,0 +1,13 @@
+
+with
+{
+	common.evaluation.pattern-matching
+}
+
+>>
+
+layout
+{
+	self$.all-fields():
+		!schema(self$.fields).positionals().value
+}
