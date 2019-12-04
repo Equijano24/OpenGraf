@@ -1,0 +1,29 @@
+with
+{
+	open
+}
+
+>>
+
+test-fixture
+{
+	override>> category: "equatable",
+
+	test("equals-to"):
+	{		
+		assert.is-true(equatable(200).equals-to(200));
+		assert.is-false(equatable(200).equals-to(300));
+		assert.is-true(equatable("Word").equals-to("Word"));
+		assert.is-false(equatable("Word").equals-to("Different"));
+		assert.is-true(equatable(200).eq(200))
+	},
+
+	test("not-equals-to"):
+	{		
+		assert.is-false(equatable(200).not-equals-to(200));
+		assert.is-true(equatable(200).not-equals-to(300));
+		assert.is-false(equatable("Word").not-equals-to("Word"));
+		assert.is-true(equatable("Word").not-equals-to("Different"));
+		assert.is-false(equatable(200).neq(200))
+	}
+}

@@ -1,0 +1,20 @@
+
+repositories$ = common.composite
+{
+	gunit: common.persistence.source-repository
+	{
+		domain-unique-name: "GUnit",
+		target: common.io.directory("..\\open.gunit\\src")
+	},
+
+	tests: common.persistence.source-repository
+	{
+		domain-unique-name: "Open Unit Tests",
+		target: common.io.directory("tests")
+	}
+};
+
+repositories$.gunit.load();
+repositories$.tests.load() << with {repositories$.gunit};
+
+repositories$.gunit.test-suite.run-command-line(repositories$.tests)

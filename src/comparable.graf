@@ -1,7 +1,7 @@
 
 equatable
 {
-	rule>> self$.between(left-closed: start$ = ?, right-closed: end$ = ?):
+	rule>> self$.between(left-closed: start$ = ?, right-closed: end$ = ?):		
 		and(
 			common.environment.gte(self$.compared-to(start$), 0),
 			common.environment.lte(self$.compared-to(end$), 0)

@@ -1,0 +1,25 @@
+
+repositories$ = common.composite
+{
+	open: common.persistence.source-repository
+	{
+		domain-unique-name: "Open Graf",
+		target: common.io.directory("src")
+	}
+};
+
+common-imports$ = common.evaluation.deferrevals.with
+{
+	common.runtime.native-root,
+	common,
+	common.evaluation.deferrevals,
+	common.evaluation.error-handling,
+	common.evaluation.pattern-matching
+};
+
+repositories$.open.load() <<common-imports$;
+
+{
+	[common-imports$.imports()],
+	repositories$
+}

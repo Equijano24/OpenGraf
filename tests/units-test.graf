@@ -1,0 +1,38 @@
+with
+{
+	open,
+	open.units,
+	open.units.distance,
+	open.units.temperature
+}
+
+>>
+
+test-fixture
+{
+	override>> category: "units",
+
+	test("Distance Conversions"):
+	{
+		assert.are-equal(1000, meters(kilometers(1)).value());
+		assert.are-equal(1, kilometers(meters(1000)).value())
+	},
+
+	test("Distance Arithmetic"):
+	{
+		assert.are-equal(3, kilometers(1).plus(meters(2000)).value());
+		assert.are-equal(3, kilometers(5).minus(meters(2000)).value());
+		assert.are-equal(6, kilometers(3).times(2).value());
+		assert.are-equal(4, kilometers(8).over(2).value())
+	},
+
+	test("Temperature Conversions"):
+	{
+		assert.are-equal(0, celsius(fahrenheit(32)).value())
+	},
+
+	test("Comparable"):
+	{
+		assert.is-true(comparable(meters(2000)).between(kilometers(1), kilometers(3)))
+	}
+}

@@ -1,0 +1,51 @@
+with
+{
+	open
+}
+
+>>
+
+test-fixture
+{
+	override>> category: "comparable",
+
+	test("between"):
+	{
+		assert.is-true(comparable(200).between(100, 300), "200 between 100 and 300 failed");
+		assert.is-false(comparable(50).between(100, 300), "50 between 100 and 300 failed");
+		assert.is-true(comparable(200).between(left-closed: 200, right-closed: 300));
+		assert.is-false(comparable(200).between(left-open: 200, right-closed: 300))
+	},
+
+	test("greater-than"):
+	{
+		assert.is-true(comparable(200).greater-than(100));
+		assert.is-false(comparable(200).greater-than(200));
+		assert.is-true(comparable("Hello").greater-than("Ciao"));
+		assert.is-true(comparable(200).gt(100))
+	},
+
+	test("greater-than-or-equals-to"):
+	{
+		assert.is-true(comparable(200).greater-than-or-equals-to(100));
+		assert.is-true(comparable(200).greater-than-or-equals-to(200));
+		assert.is-true(comparable("Hello").greater-than-or-equals-to("Hello"));
+		assert.is-true(comparable(200).gte(200))
+	},
+
+	test("less-than"):
+	{
+		assert.is-true(comparable(100).less-than(200));
+		assert.is-false(comparable(200).less-than(200));
+		assert.is-true(comparable("Ciao").less-than("Hello"));
+		assert.is-true(comparable(100).lt(200))
+	},
+
+	test("less-than-or-equals-to"):
+	{
+		assert.is-true(comparable(100).less-than-or-equals-to(200));
+		assert.is-true(comparable(200).less-than-or-equals-to(200));
+		assert.is-true(comparable("Hello").less-than-or-equals-to("Hello"));
+		assert.is-true(comparable(200).lte(200))
+	}
+}
