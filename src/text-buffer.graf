@@ -1,0 +1,51 @@
+
+box
+{
+	internal: data?,
+
+	self$():
+		self$("\t"),
+
+	self$(indentation$ = text?): text-buffer
+	{
+		internal: data
+		{
+			buffer: "",
+			indentation: indentation$,
+			indentation-level: 0,
+			line-start: yes
+		}
+	},
+
+	self$.write(text$ = text?):
+	{
+		if (self$.internal.line-start)>>
+			self$.write-indentation();
+
+		self$.write-buffer(text$);
+		self$.internal.set(line-start: no)
+	},
+
+	self$.write-line(text$ = text?):
+	{
+		self$.write(text$);
+		self$.write("\r\n");
+		self$.internal.set(line-start: yes)
+	},
+
+	self$.increase-indentation():
+		self$.internal.set(indentation-level: self$.internal.indentation-level.plus(1)),
+
+	self$.decrease-indentation():
+		self$.internal.set(indentation-level: self$.internal.indentation-level.minus(1)),
+
+	self$.to(text):
+		self$.internal.buffer,
+
+	self$.write-buffer(text$ = text?):
+		self$.internal.set(buffer: self$.internal.buffer.concat(text$)),
+
+	self$.write-indentation():
+		repeat(self$.internal.indentation-level)>>
+			self$.write-buffer(self$.internal.indentation)
+}

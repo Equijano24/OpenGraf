@@ -1,0 +1,31 @@
+with
+{
+	open
+}
+
+>>
+
+test-fixture
+{
+	override>> category: "text-buffer",
+
+	test("XML Sample"):
+	{
+		buffer$ = text-buffer();
+		buffer$.write-line("<first>");
+		buffer$.increase-indentation();
+		buffer$.write-line("<second>");
+		buffer$.increase-indentation();
+		buffer$.write-line("<element1 />");
+		buffer$.write-line("<element2 />");
+		buffer$.write-line("<element3 />");
+		buffer$.decrease-indentation();
+		buffer$.write-line("</second>");
+		buffer$.decrease-indentation();
+		buffer$.write-line("</first>");
+
+		expected$ = "<first>\r\n\t<second>\r\n\t\t<element1 />\r\n\t\t<element2 />\r\n\t\t<element3 />\r\n\t</second>\r\n</first>\r\n";
+
+		assert.are-equal(expected$, text(buffer$))
+	}
+}

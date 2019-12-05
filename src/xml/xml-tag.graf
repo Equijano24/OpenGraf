@@ -9,7 +9,7 @@ composite
 		schema$ = common.evaluation.pattern-matching.schema(self$);
 		content$ = {"".join>> text(schema$.positionals().value)};
 		attributes$ = if'(
-			count'(schema$.all-labels()).gt(5),
+			count'(schema$.all-labels()).gt(6),
 			" ".concat(" ".join>> self$.attributes(schema$)),
 			""
 		);
@@ -17,5 +17,30 @@ composite
 
 	self$.attributes(sch$ = ?):
 		lb$ = sch$.all-labels() <<where>> match(lb$.value, composite?).and(equals(lb$.symbol, "tag-name").not());
-		"{lb$.symbol}=\"{lb$.value}\""()
+		"{lb$.symbol}=\"{lb$.value}\""(),
+
+	self$.write-to(buffer$ = text-buffer?):
+	{
+		schema$ = common.evaluation.pattern-matching.schema(self$);
+		attributes$ = if'(
+			count'(schema$.all-labels()).gt(6),
+			" ".concat(" ".join>> self$.attributes(schema$)),
+			""
+		);
+
+		buffer$.write-line("<{self$.tag-name}{attributes$}>"());
+		buffer$.increase-indentation();
+
+		foreach'(content$ = schema$.positionals().value)>>
+		{
+			content$.write-to(buffer$) <<try
+			{
+				catch (exception?)::
+					buffer$.write-line(text(content$))
+			}
+		};
+
+		buffer$.decrease-indentation();
+		buffer$.write-line("</{self$.tag-name}>"())
+	}
 }
