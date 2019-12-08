@@ -1,0 +1,28 @@
+
+box
+{
+	self$.response(content$ = ?):
+		with
+		{
+			open.io,
+			open.web.html
+		}
+		>>
+		common.runtime.web.html-response
+		{
+			self$():
+				tw$ = text-writing("\t", self$);
+				tw$.write-line("<!doctype html>");
+				self$.write-content-to(!content$, tw$),
+
+			self$.write(text$ = text?):
+				self$.write-content(text$),
+
+			self$.write-content-to(content$ = ?, tw$ = text-writing?):
+				content$.write-to(tw$) <<try
+				{
+					catch(?)::
+						tw$.write(text(content$))
+				}
+		}
+}

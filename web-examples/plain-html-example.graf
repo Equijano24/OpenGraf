@@ -1,0 +1,48 @@
+// General Imports
+common.evaluation.context.scope.push(common.runtime.native-root);
+common.evaluation.context.scope.push(common);
+common.evaluation.context.scope.push(common.evaluation.deferrevals);
+common.evaluation.context.scope.push(common.evaluation.error-handling);
+common.evaluation.context.scope.push(common.evaluation.pattern-matching);
+
+repositories$ = composite
+{
+	open: common.persistence.source-repository
+	{
+		domain-unique-name: "Open Graf",
+		target: common.io.directory("..\\src")
+	}
+};
+
+repositories$.open.load();
+
+// Import Open
+common.evaluation.context.scope.push(repositories$);
+
+with
+{
+	open.web.html,
+	open.web.applications
+}
+
+>>
+
+plain-html
+{
+	rule>> self$(?):
+		self$.response(self$.sample-page()),
+
+	sample-page():
+		html
+		{
+			head
+			{
+				title {"This is the title"}
+			},
+
+			body
+			{
+				"This is the body"
+			}
+		}
+}

@@ -4,13 +4,16 @@ box
 	internal: data?,
 
 	self$():
-		self$("\t"),
+		self$("\t", text-stream()),
 
-	self$(indentation$ = text?): text-buffer
+	self$(indentation$ = text?):
+		self$(indentation$, text-stream()),
+
+	self$(indentation$ = text?, text-stream$ = box {write: ?}?): text-writing
 	{
-		internal: data
+		internal: !data
 		{
-			buffer: "",
+			stream: text-stream$,
 			indentation: indentation$,
 			indentation-level: 0,
 			line-start: yes
@@ -40,10 +43,10 @@ box
 		self$.internal.set(indentation-level: self$.internal.indentation-level.minus(1)),
 
 	self$.to(text):
-		self$.internal.buffer,
+		text(self$.internal.stream),
 
 	self$.write-buffer(text$ = text?):
-		self$.internal.set(buffer: self$.internal.buffer.concat(text$)),
+		self$.internal.stream.write(text$),
 
 	self$.write-indentation():
 		repeat(self$.internal.indentation-level)>>

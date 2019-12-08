@@ -1,17 +1,18 @@
 with
 {
-	open
+	open,
+	open.io
 }
 
 >>
 
 test-fixture
 {
-	override>> category: "text-buffer",
+	override>> category: "text-writing",
 
 	test("XML Sample"):
 	{
-		buffer$ = text-buffer();
+		buffer$ = text-writing();
 		buffer$.write-line("<first>");
 		buffer$.increase-indentation();
 		buffer$.write-line("<second>");

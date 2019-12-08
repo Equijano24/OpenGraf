@@ -1,6 +1,7 @@
 with
 {
 	open,
+	open.io,
 	open.web.html
 }
 
@@ -24,7 +25,7 @@ test-fixture
 			}
 		};
 
-		buffer$ = text-buffer();
+		buffer$ = text-writing();
 		quick-page$.write-to(buffer$);
 
 		expected$ = "<html>\r\n\t<head>\r\n\t\t<title>\r\n\t\t\tThis is the title\r\n\t\t</title>\r\n\t</head>\r\n\t<body>\r\n\t\tThis is the body\r\n\t</body>\r\n</html>\r\n";
@@ -49,7 +50,7 @@ test-fixture
 			}
 		};
 
-		buffer$ = text-buffer();
+		buffer$ = text-writing();
 		quick-page$.write-to(buffer$);
 
 		expected$ = "<html>\r\n\t<head>\r\n\t\t<title>\r\n\t\t\tThis is the title\r\n\t\t</title>\r\n\t</head>\r\n\t<body class=\"some-css\" onload=\"func()\">\r\n\t\tThis is the body\r\n\t</body>\r\n</html>\r\n";

@@ -19,7 +19,7 @@ composite
 		lb$ = sch$.all-labels() <<where>> match(lb$.value, composite?).and(equals(lb$.symbol, "tag-name").not());
 		"{lb$.symbol}=\"{lb$.value}\""(),
 
-	self$.write-to(buffer$ = text-buffer?):
+	self$.write-to(buffer$ = io.text-writing?):
 	{
 		schema$ = common.evaluation.pattern-matching.schema(self$);
 		attributes$ = if'(

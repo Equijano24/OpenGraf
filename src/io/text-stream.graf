@@ -1,0 +1,17 @@
+
+box
+{
+	internal: data?,
+
+	self$():
+		text-stream
+		{
+			internal: data {buffer: ""}
+		},
+
+	self$.write(text$ = text?):
+		self$.internal.set(buffer: self$.internal.buffer.concat(text$)),
+
+	self$.to(text):
+		self$.internal.buffer
+}
