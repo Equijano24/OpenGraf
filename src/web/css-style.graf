@@ -1,0 +1,11 @@
+
+composite
+{
+	self$.to(text):
+		self$.to.cache(10000);
+		schema$ = common.evaluation.pattern-matching.schema(self$);
+		" ".join>> self$.label-with-value(schema$.labels()),		
+
+	self$.label-with-value(common.evaluation.pattern-matching.label {symbol: symbol$ = text?, value: value$ = ?}?):
+		"{symbol$}: {text(value$)};"()
+}

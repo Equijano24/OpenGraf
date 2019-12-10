@@ -1,0 +1,37 @@
+
+with
+{
+	web
+}
+
+>>
+
+composite
+{
+	self$.render():
+		html.div
+		{
+			style: css-style
+			{
+				border: "1px solid black",
+				padding: "5px",
+				text-align: "center",
+				vertical-align: "middle"
+			},
+
+			"Default Component"
+		},
+
+	self$.own-positionals():
+		schema(self$).positionals().value,
+
+	self$.to(text):
+		text(self$.render()),
+
+	self$.write-to(buffer$ = io.text-writing?):
+		self$.render().write-to(buffer$) <<try
+		{
+			catch(?):
+				!self$.to(text)
+		}
+}

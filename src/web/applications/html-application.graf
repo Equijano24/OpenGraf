@@ -1,0 +1,75 @@
+
+box
+{
+	routing: box {},
+
+	self$.response(content$ = ?):
+		with
+		{
+			open.io,
+			open.web.html
+		}
+		>>
+		common.runtime.web.html-response
+		{
+			self$():
+				tw$ = text-writing("\t", self$);
+				tw$.write-line("<!doctype html>");
+				self$.write-content-to(!content$, tw$),
+
+			self$.write(text$ = text?):
+				self$.write-content(text$),
+
+			self$.write-content-to(content$ = ?, tw$ = text-writing?):
+				content$.write-to(tw$) <<try
+				{
+					catch(?)::
+						tw$.write(text(content$))
+				}
+		},
+
+	self$.full-routing(route$ = text?):
+		self$.split-routing([text.subtext(route$).trim('/').split('/')]),
+
+	self$.split-routing([segment$ = text?]*):
+	{
+		current$ = self$.routing;		
+
+		searching$ = yes;
+		args$ = array {};
+		foreach'(segment$)>>
+		{
+			if (searching$)>>
+			{
+				then()::
+				{
+					label$ = text(current-label-case-symbol(any-case-symbol(segment$)))
+						<<with { common.evaluation.naming-conventions };
+
+					sch$ = schema(current$);
+					[found$] = {
+						sch$.labels() <<where(l$ = ?)>> equals(l$.symbol, label$)
+					};
+
+					if (is-none>> found$)>>
+					{
+						then()::							
+							args$ = args$.union(array {segment$});
+							searching$ = no,
+
+						else()::
+							current$ = first'(found$).value
+					}
+				},
+
+				else()::
+					args$ = args$.union(array {segment$})
+			}
+		};
+
+		current$([args$.items()])
+	},
+
+	self$(request$ = ?):
+		self$.full-routing(request$.route)
+}

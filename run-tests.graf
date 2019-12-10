@@ -17,4 +17,6 @@ repositories$ = common.composite
 repositories$.gunit.load();
 repositories$.tests.load() << with {repositories$.gunit};
 
+common.evaluation.context.scope.push(common.runtime.client);
+
 repositories$.gunit.test-suite.run-command-line(repositories$.tests)

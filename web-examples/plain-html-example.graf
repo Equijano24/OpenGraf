@@ -21,28 +21,51 @@ common.evaluation.context.scope.push(repositories$);
 
 with
 {
+	open.web,
 	open.web.html,
-	open.web.applications
+	open.web.components,
+	open.web.applications,
+	open.web.components.bootstrap
 }
 
 >>
 
-plain-html
+html-application
 {
-	rule>> self$(?):
-		self$.response(self$.sample-page()),
-
-	sample-page():
-		html
+	override>> routing: box
+	{
+		home: box
 		{
-			head
-			{
-				title {"This is the title"}
-			},
+			self$.index():				
+				response(self$.sample-page("This is the title", "This is the content")),
 
-			body
-			{
-				"This is the body"
-			}
+			self$.sample-page(title$ = text?, content$ = text?):
+				html
+				{
+					bootstrap-head
+					{
+						title: title$
+					},
+
+					body
+					{
+						h1
+						{
+							style: css-style
+							{
+								font-size: "16px",
+								color: "#004c99 !important",
+								font-family: "__Univia Pro_5"
+							},
+
+							title$
+						},
+
+						p {content$},
+
+						html-component {}
+					}
+				}
 		}
+	}
 }

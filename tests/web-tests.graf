@@ -2,7 +2,9 @@ with
 {
 	open,
 	open.io,
-	open.web.html
+	open.web,
+	open.web.html,
+	open.web.applications
 }
 
 >>
@@ -56,5 +58,50 @@ test-fixture
 		expected$ = "<html>\r\n\t<head>\r\n\t\t<title>\r\n\t\t\tThis is the title\r\n\t\t</title>\r\n\t</head>\r\n\t<body class=\"some-css\" onload=\"func()\">\r\n\t\tThis is the body\r\n\t</body>\r\n</html>\r\n";
 
 		assert.are-equal(expected$, text(buffer$))
+	},
+
+	test("Html Application - split-routing"):
+	{
+		ph$ = html-application
+		{
+			override>> routing: box
+			{
+				first: box
+				{
+					second: box
+					{
+						third(num$ = text?):							
+							integer(num$).times(100)
+					},
+
+					foo():
+						200,
+
+					max-of(a$ = text?, b$ = text?, c$ = text?):
+						max>> {integer(a$), integer(b$), integer(c$)}
+				}
+			}
+		};
+
+		assert.are-equal(1200, ph$.split-routing("first", "second", "third", "12"));
+		assert.are-equal(1200, ph$.full-routing("first/second/third/12"));
+		assert.are-equal(200, ph$.full-routing("first/foo"));
+		assert.are-equal(500, ph$.full-routing("first/max-of/200/400/500"));
+		assert.are-equal(1200, ph$.full-routing("first/second/third/12/"));
+		assert.are-equal(200, ph$.full-routing("/first/foo"));
+		assert.are-equal(500, ph$.full-routing("/first/max-of/200/400/500/"))
+	},
+
+	test("CSS Styles"):
+	{
+		style$ = css-style
+		{
+			width: 100,
+			height: 200,
+			display: "flex"
+		};
+
+		expected$ = "width: 100; height: 200; display: flex;";
+		assert.are-equal(expected$, text(style$))
 	}
 }
