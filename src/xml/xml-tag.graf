@@ -28,19 +28,27 @@ composite
 			""
 		);
 
-		buffer$.write-line("<{self$.tag-name}{attributes$}>"());
-		buffer$.increase-indentation();
-
-		foreach'(content$ = schema$.positionals().value)>>
+		children-count$ = count'(schema$.positionals());
+		if (children-count$.gt(0))>>
 		{
-			content$.write-to(buffer$) <<try
-			{
-				catch (exception?)::
-					buffer$.write-line(text(content$))
-			}
-		};
+			then()::
+				buffer$.write-line("<{self$.tag-name}{attributes$}>"());
+				buffer$.increase-indentation();
 
-		buffer$.decrease-indentation();
-		buffer$.write-line("</{self$.tag-name}>"())
+				foreach'(content$ = schema$.positionals().value)>>
+				{
+					content$.write-to(buffer$) <<try
+					{
+						catch (exception?)::
+							buffer$.write-line(text(content$))
+					}
+				};
+
+				buffer$.decrease-indentation();
+				buffer$.write-line("</{self$.tag-name}>"()),
+
+			else()::
+				buffer$.write-line("<{self$.tag-name}{attributes$} />"())
+		}
 	}
 }

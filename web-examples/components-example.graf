@@ -16,18 +16,16 @@ html-application
 		home: box
 		{
 			self$.index():				
-				response(self$.sample-page("This is the title", "This is the content")),
+				response(self$.sample-page("This page has a header component", "This is the content")),
 
 			self$.sample-page(title$ = text?, content$ = text?):
 				html
 				{
-					head
+					html-header
 					{
-						meta { charset: "utf-8" },
-						meta { viewport: "width=device-width, initial-scale=1, shrink-to-fit=no" },
-						meta { description: "Simple Graf HTML Page" },
-						meta { author: "Esteban Quijano" },
-						title { title$ }
+						description: "Simple Graf HTML Page",
+						author: "Esteban Quijano",
+						title: title$
 					},
 
 					body

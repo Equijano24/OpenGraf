@@ -1,0 +1,142 @@
+with
+{
+	views.layouts,
+	common.persistence
+}
+
+>>
+
+html-component
+{
+	specific-class: ? default(""),
+
+	self$.class-render():
+		if'(self$.has-class(), "{self$.specific-class} {self$.class}"(), self$.specific-class),
+
+	rule>> self$.render():
+		open.web.html.div
+		{
+			class: self$.class-render(),
+			[self$.items-render()]
+		},
+
+	rule>> self$.items-render():
+		self$.item-render(self$.items()),
+
+	rule>> self$.item-render(item$ = ?):
+		item$,
+
+	rule>> self$.item-render(grid$ = grid-layout?):
+	{
+		mut-array$ = array {[copies(grid$.size())>> "_VOID_"]}.shape(grid$.rows, grid$.columns).mutable();
+		none>> self$.fill-array(mut-array$, grid$.items());
+
+		final-columns$ = if'(grid$.columns.gt(12), 12, grid$.columns);
+
+		open.web.html.div
+		{
+			[self$.row-render(final-columns$, mut-array$.items())]
+		}
+	},
+
+	// Help Functions
+
+	rule>> self$.row-render(final-columns$ = integer?, row-array$ = array?):
+		if'(equals(row-array$.length(), 1),
+			open.web.components.bootstrap.bootstrap-component
+			{
+				specific-class: "form-group",
+
+				[self$.cell-render(no, final-columns$, row-array$.items())]
+			},
+			open.web.components.bootstrap.bootstrap-component
+			{
+				specific-class: "form-row",
+
+				[self$.cell-render(yes, final-columns$, row-array$.items())]
+			}
+		),
+
+	rule>> self$.cell-render(inside-column$ = boolean?, final-columns$ = integer?, cell$ = grid-layout.cell?):
+	{
+		if'(inside-column$,
+			width$ = self$.cell-width(final-columns$, cell$.column);
+			open.web.components.bootstrap.bootstrap-component
+			{
+				specific-class: "form-group col{width$}"(),
+
+				[self$.cell-content-render(cell$.items())]
+			},
+			self$.cell-content-render(cell$.items())
+		)
+	},
+
+	rule>> self$.cell-render(inside-column$ = boolean?, ?, "_VOID_"):
+	{
+		if (inside-column$)>>
+			open.web.components.bootstrap.column {}
+	},
+
+	rule>> self$.cell-render(?, ?, "_SPAN_"):
+	{
+		// Must be empty		
+	},
+
+	rule>> self$.fill-array(array$ = mutable-array?, cell$ = grid-layout.cell?):
+	{
+		span$ = "_SPAN_";
+		if (match(cell$.row, range {from: y$ = integer?, to: y2$ = integer?}?))>>
+		{
+			then()::
+			{
+				if (match(cell$.column, range {from: x$ = integer?, to: x2$ = integer?}?))>>
+				{
+					then()::
+						foreach'(yi$ = numbers(y$, y2$))>>
+						{
+							foreach'(xi$ = numbers(x$, x2$))>>
+								array$.set(yi$.minus(1), x2$.minus(1), span$)
+						},
+
+					else()::
+						x$ = cell$.column;
+						foreach'(yi$ = numbers(y$, y2$))>>
+							array$.set(yi$, x$, span$)
+				}
+			},
+
+			else()::
+				y$ = cell$.row;
+				if (match(cell$.column, range {from: x$ = integer?, to: x2$ = integer?}?))>>
+				{
+					then()::
+						foreach'(xi$ = numbers(x$, x2$))>>
+							array$.set(y$.minus(1), xi$.minus(1), span$),
+
+					else()::
+						x$ = cell$.column
+				}
+		};
+
+		array$.set(y$.minus(1), x$.minus(1), cell$)
+	},
+
+	rule>> self$.cell-width(?, ?):
+		"",
+
+	rule>> self$.cell-width(final-columns$ = integer?, range {from: a$ = integer?, to: b$ = integer?}?):
+		final-width$ = 12.over(final-columns$).times(b$.minus(a$).plus(1)).rounded(0);
+		if'(final-width$.gt(1), "-{final-width$}"(), ""),
+
+	rule>> self$.cell-content-render(whatever$ = ?):
+		whatever$,
+
+	rule>> self$.cell-content-render(field$ = entity.field?):
+		field$.label,
+
+	rule>> self$.cell-content-render(field$ = entity.field {type: text, placeholder: ph$ = text? default("")}?):
+	{
+		open.web.html.label { field$.label },
+		open.web.html.input { type: "text", class: "form-control", placeholder: ph$ }
+	}
+}

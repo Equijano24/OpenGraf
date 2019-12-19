@@ -1,0 +1,56 @@
+with
+{
+	open.web,
+	open.web.html,
+	open.web.components,
+	open.web.applications,
+	open.web.components.bootstrap
+}
+
+>>
+
+html-application
+{
+	routing: box
+	{
+		home: box
+		{
+			self$.index():
+				response(self$.index-page()),
+
+			self$.index-page():
+				html
+				{
+					bootstrap-header
+					{
+						description: "Simple Graf HTML Page",
+						author: "Esteban Quijano",
+						title: "Bootstrap Example"
+					},
+
+					body
+					{
+						form
+						{
+							container
+							{
+								row
+								{
+									column
+									{
+										card
+										{
+											header: "Address Information",
+											open.business.address.view
+										}
+									}
+								}
+							}
+						},
+						
+						[bootstrap.dependencies.scripts()]
+					}
+				}
+		}
+	}
+}

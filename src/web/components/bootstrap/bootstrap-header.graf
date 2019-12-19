@@ -1,0 +1,23 @@
+with
+{
+	web.html,
+	web.components
+}
+
+>>
+
+html-header
+{
+	rule>> self$.render():
+		head
+		{
+			open.web.html.title { self$.title },
+			meta { description: self$.description },
+			meta { author: self$.author },
+			meta { charset: self$.charset },
+			meta { viewport: self$.viewport },
+
+			[bootstrap.dependencies.styles()],
+			[self$.items()]
+		}
+}

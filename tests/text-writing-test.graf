@@ -8,7 +8,7 @@ with
 
 test-fixture
 {
-	override>> category: "text-writing",
+	category: "text-writing",
 
 	test("XML Sample"):
 	{

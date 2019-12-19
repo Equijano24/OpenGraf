@@ -11,7 +11,7 @@ with
 
 test-fixture
 {
-	override>> category: "Web",
+	category: "Web",
 
 	test("Html Tags Render"):
 	{
@@ -64,7 +64,7 @@ test-fixture
 	{
 		ph$ = html-application
 		{
-			override>> routing: box
+			routing: box
 			{
 				first: box
 				{
@@ -103,5 +103,18 @@ test-fixture
 
 		expected$ = "width: 100; height: 200; display: flex;";
 		assert.are-equal(expected$, text(style$))
+	},
+
+	test("Empty Html Tag"):
+	{
+		buffer$ = text-writing();
+		div {}.write-to(buffer$);
+
+		assert.are-equal("<div />\r\n", text(buffer$));
+
+		buffer$ = text-writing();
+		div {class: "some-class"}.write-to(buffer$);
+
+		assert.are-equal("<div class=\"some-class\" />\r\n", text(buffer$))
 	}
 }

@@ -1,0 +1,27 @@
+with
+{
+	web.html
+}
+
+>>
+
+html-component
+{
+	title: text? default(""),
+	description: text? default(""),
+	author: text? default(""),
+	charset: text? default("utf-8"),
+	viewport: text? default("width=device-width, initial-scale=1, shrink-to-fit=no"),
+
+	rule>> self$.render():
+		head
+		{
+			open.web.html.title { self$.title },
+			meta { description: self$.description },
+			meta { author: self$.author },
+			meta { charset: self$.charset },
+			meta { viewport: self$.viewport },
+
+			[self$.items()]
+		}
+}

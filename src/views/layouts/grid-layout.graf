@@ -1,5 +1,15 @@
 
 layout
 {
-	
+	rows: integer? default(1),
+	columns: integer? default(1),
+
+	cell: array
+	{
+		row: ? default(1),
+		column: ? default(1)
+	},
+
+	self$.size():
+		self$.rows.times(self$.columns)
 }

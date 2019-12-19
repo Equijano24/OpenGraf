@@ -1,0 +1,23 @@
+// Common setup file for most web applications
+
+common.evaluation.context.scope.push(common.runtime.native-root);
+common.evaluation.context.scope.push(common);
+common.evaluation.context.scope.push(common.evaluation.deferrevals);
+common.evaluation.context.scope.push(common.evaluation.error-handling);
+common.evaluation.context.scope.push(common.evaluation.pattern-matching);
+common.evaluation.context.scope.push(composite {
+	open: common.persistence.source-repository
+	{
+		domain-unique-name: "Open Graf",
+		target: common.io.directory("..\\src"),
+
+		business: common.persistence.source-repository
+		{
+			domain-unique-name: "Open Business",
+			target: common.io.directory("..\\..\\open.business\\src")
+		}
+	}
+});
+
+open.load();
+open.business.load()

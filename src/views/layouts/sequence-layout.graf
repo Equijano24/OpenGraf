@@ -1,6 +1,6 @@
 
 layout
 {
-	vertical: yes,
-	children: array?
+	vertical: boolean? default(yes),
+	children: array? default(array {})
 }

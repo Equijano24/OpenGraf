@@ -1,5 +1,5 @@
 
 layout
 {
-	fields: array?
+	fields: array? default(array {})
 }

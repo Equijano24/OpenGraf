@@ -1,0 +1,11 @@
+
+bootstrap-component
+{	
+	fluid: boolean? default(no),
+
+	self$.container-class():
+		if'(self$.fluid, "container-fluid", "container"),
+
+	rule>> self$.class-render():
+		if'(self$.has-class(), "{self$.container-class()} {self$.class}"(), self$.container-class())
+}

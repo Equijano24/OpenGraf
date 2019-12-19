@@ -7,7 +7,7 @@ with
 
 test-fixture
 {
-	override>> category: "equatable",
+	category: "equatable",
 
 	test("equals-to"):
 	{		

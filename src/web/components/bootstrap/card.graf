@@ -1,0 +1,36 @@
+with
+{
+	web.html,
+	web.components
+}
+
+>>
+
+bootstrap-component
+{
+	specific-class: "card",
+	header: text? default(""),
+	title: text? default(""),
+
+	rule>> self$.render():
+		open.web.html.div
+		{
+			class: self$.class-render(),
+
+			[if (text.check(self$.header).is-empty().not())>>
+				open.web.html.div { class: "card-header", self$.header }],
+
+			open.web.html.div
+			{
+				class: "card-body",
+
+				[if (text.check(self$.title).is-empty().not())>>
+					h5 { class: "card-title", self$.title }],
+
+				[self$.items-render()]
+			}
+		},
+
+	rule>> self$.item-render(t$ = text?):
+		p { class: "card-text", t$ }
+}

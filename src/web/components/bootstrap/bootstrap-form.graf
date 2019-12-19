@@ -1,0 +1,47 @@
+
+/*
+	Option 1:
+		row -> col -> input (label in placeholder) form-control
+
+	Option 2:
+		form-row -> col -> input (label in placeholder) form-control
+
+	Option 3:
+		form-row -> form-group col-md-6 -> label, input form-control
+
+	Option 4:
+		form-group -> label, input form-control
+
+	Option 5:
+		form-group row -> label col-sm-2 col-form-label, col-sm-10 -> input form-control
+
+	Option 6:
+		fieldset form-group -> row -> legend col-form-label col-sm-2, col-sm-10 -> controls
+*/
+
+bootstrap-component
+{
+	specific-class: "form",
+
+	rule>> self$.render():
+		open.web.html.form
+		{
+			class: self$.class-render(),
+			[self$.items()]
+		},
+
+	row: bootstrap-component
+	{
+		specific-class: "form-row",
+
+		column: bootstrap-component
+		{
+			specific-class: "form-group col"			
+		}
+	},
+
+	group: bootstrap-component
+	{
+		specific-class: "form-group"
+	}
+}

@@ -10,7 +10,7 @@ with
 
 test-fixture
 {
-	override>> category: "units",
+	category: "units",
 
 	test("Distance Conversions"):
 	{

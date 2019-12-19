@@ -6,8 +6,11 @@ with
 
 >>
 
-composite
+array
 {
+	class: ? default(""),
+	style: ? default(""),
+
 	self$.render():
 		html.div
 		{
@@ -22,9 +25,6 @@ composite
 			"Default Component"
 		},
 
-	self$.own-positionals():
-		schema(self$).positionals().value,
-
 	self$.to(text):
 		text(self$.render()),
 
@@ -33,5 +33,11 @@ composite
 		{
 			catch(?):
 				!self$.to(text)
-		}
+		},
+
+	self$.has-class():
+		equals(self$.class, "").not(),
+
+	self$.has-style():
+		equals(self$.style, "").not()		
 }
