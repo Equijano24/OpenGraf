@@ -28,6 +28,9 @@ box
 				}
 		},
 
+	//self$.json-response(content$ = ?):
+
+
 	self$.full-routing(route$ = text?):
 		self$.split-routing([text.subtext(route$).trim('/').split('/')]),
 
@@ -71,5 +74,10 @@ box
 	},
 
 	self$(request$ = ?):
-		self$.full-routing(request$.route)
+		self$.full-routing(request$.route),
+
+	html-routing: box
+	{
+
+	}
 }

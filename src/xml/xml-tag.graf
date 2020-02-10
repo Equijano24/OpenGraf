@@ -48,7 +48,11 @@ composite
 				buffer$.write-line("</{self$.tag-name}>"()),
 
 			else()::
-				buffer$.write-line("<{self$.tag-name}{attributes$} />"())
+				self$.write-self-closing-to(buffer$, attributes$)
+				//buffer$.write-line("<{self$.tag-name}{attributes$} />"())
 		}
-	}
+	},
+
+	self$.write-self-closing-to(buffer$ = io.text-writing?, attributes$ = text?):
+		buffer$.write-line("<{self$.tag-name}{attributes$} />"())
 }

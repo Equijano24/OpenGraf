@@ -11,7 +11,10 @@ with
 
 html-application
 {
-	routing: box
+	a1: data {},
+	a2: data {},
+
+	routing: html-routing
 	{
 		home: box
 		{
@@ -25,7 +28,13 @@ html-application
 					{
 						description: "Simple Graf HTML Page",
 						author: "Esteban Quijano",
-						title: "Bootstrap Example"
+						title: "Bootstrap Example",
+
+						link
+						{
+							rel: "stylesheet",
+							href: "https://unpkg.com/jquery.terminal@2.x.x/css/jquery.terminal.min.css"
+						}
 					},
 
 					body
@@ -40,17 +49,47 @@ html-application
 									{
 										card
 										{
-											header: "Address Information",
-											open.business.address.view
+											header: "First Address"
+											//open.business.address.view(a1)
 										}
+									},
+
+									column
+									{
+										card
+										{
+											header: "Second Address"
+											//open.business.address.view(a2)
+										}
+									}
+								},
+
+								row
+								{
+									column
+									{
+										open.web.html.div { id: "term", style: "overflow: auto; height: 400px" }
 									}
 								}
 							}
 						},
-						
-						[bootstrap.dependencies.scripts()]
+
+						[bootstrap.dependencies.scripts()],
+						script
+						{
+							type: "text/javascript",
+							src: "https://unpkg.com/jquery.terminal@2.x.x/js/jquery.terminal.min.js"
+						},
+						script
+						{
+							type: "text/javascript",
+							src: "/js/terminal-glue.js"
+						}
 					}
-				}
+				},
+
+			self$.eval():
+				response("You typed something!")
 		}
 	}
 }

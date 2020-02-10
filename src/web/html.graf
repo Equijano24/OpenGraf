@@ -4,7 +4,7 @@
    The list of tags is taken from: https://www.w3schools.com/tags/
 */
 
-//xtag = xml.xml-tag;
+//html-tag = xml.xml-tag;
 
 with
 {
@@ -15,126 +15,133 @@ with
 
 namespace
 {
-	a: xtag {tag-name: "a"}, //Defines a hyperlink.
-	abbr: xtag {tag-name: "abbr"}, //Defines an abbreviation or an acronym.
-	acronym: xtag {tag-name: "acronym"}, //Not supported in HTML5. Use <abbr> instead. Defines an acronym.
-	address: xtag {tag-name: "address"}, //Defines contact information for the author/owner of a document.
-	applet: xtag {tag-name: "applet"}, //Not supported in HTML5. Use <embed> or <object> instead. Defines an embedded applet.
-	area: xtag {tag-name: "area"}, //Defines an area inside an image-map.
-	article: xtag {tag-name: "article"}, //Defines an article.
-	aside: xtag {tag-name: "aside"}, //Defines content aside from the page content.
-	audio: xtag {tag-name: "audio"}, //Defines sound content.
-	b: xtag {tag-name: "b"}, //Defines bold text.
-	base: xtag {tag-name: "base"}, //Specifies the base URL/target for all relative URLs in a document.
-	basefont: xtag {tag-name: "basefont"}, //Not supported in HTML5. Use CSS instead. Specifies a default color, size, and font for all text in a document.
-	bdi: xtag {tag-name: "bdi"}, //Isolates a part of text that might be formatted in a different direction from other text outside it.
-	bdo: xtag {tag-name: "bdo"}, //Overrides the current text direction.
-	big: xtag {tag-name: "big"}, //Not supported in HTML5. Use CSS instead. Defines big text.
-	blockquote: xtag {tag-name: "blockquote"}, //Defines a section that is quoted from another source.
-	body: xtag {tag-name: "body"}, //Defines the document's body.
-	br: xtag {tag-name: "br"}, //Defines a single line break.
-	button: xtag {tag-name: "button"}, //Defines a clickable button.
-	canvas: xtag {tag-name: "canvas"}, //Used to draw graphics, on the fly, via scripting (usually JavaScript).
-	caption: xtag {tag-name: "caption"}, //Defines a table caption.
-	center: xtag {tag-name: "center"}, //Not supported in HTML5. Use CSS instead. Defines centered text.
-	cite: xtag {tag-name: "cite"}, //Defines the title of a work.
-	code: xtag {tag-name: "code"}, //Defines a piece of computer code.
-	col: xtag {tag-name: "col"}, //Specifies column properties for each column within a <colgroup> element .
-	colgroup: xtag {tag-name: "colgroup"}, //Specifies a group of one or more columns in a table for formatting.
-	data: xtag {tag-name: "data"}, //Links the given content with a machine-readable translation.
-	datalist: xtag {tag-name: "datalist"}, //Specifies a list of pre-defined options for input controls.
-	dd: xtag {tag-name: "dd"}, //Defines a description/value of a term in a description list.
-	del: xtag {tag-name: "del"}, //Defines text that has been deleted from a document.
-	details: xtag {tag-name: "details"}, //Defines additional details that the user can view or hide.
-	dfn: xtag {tag-name: "dfn"}, //Represents the defining instance of a term.
-	dialog: xtag {tag-name: "dialog"}, //Defines a dialog box or window.
-	dir: xtag {tag-name: "dir"}, //Not supported in HTML5. Use <ul> instead. Defines a directory list.
-	div: xtag {tag-name: "div"}, //Defines a section in a document.
-	dl: xtag {tag-name: "dl"}, //Defines a description list.
-	dt: xtag {tag-name: "dt"}, //Defines a term/name in a description list.
-	em: xtag {tag-name: "em"}, //Defines emphasized text .
-	embed: xtag {tag-name: "embed"}, //Defines a container for an external (non-HTML) application.
-	fieldset: xtag {tag-name: "fieldset"}, //Groups related elements in a form.
-	figcaption: xtag {tag-name: "figcaption"}, //Defines a caption for a <figure> element.
-	figure: xtag {tag-name: "figure"}, //Specifies self-contained content.
-	font: xtag {tag-name: "font"}, //Not supported in HTML5. Use CSS instead. Defines font, color, and size for text.
-	footer: xtag {tag-name: "footer"}, //Defines a footer for a document or section.
-	form: xtag {tag-name: "form"}, //Defines an HTML form for user input.
-	frame: xtag {tag-name: "frame"}, //Not supported in HTML5. Defines a window (a frame) in a frameset.
-	frameset: xtag {tag-name: "frameset"}, //Not supported in HTML5. Defines a set of frames.
-	h1: xtag {tag-name: "h1"}, //Defines HTML headings 1.
-	h2: xtag {tag-name: "h2"}, //Defines HTML headings 2.
-	h3: xtag {tag-name: "h3"}, //Defines HTML headings 3.
-	h4: xtag {tag-name: "h4"}, //Defines HTML headings 4.
-	h5: xtag {tag-name: "h5"}, //Defines HTML headings 5.
-	h6: xtag {tag-name: "h6"}, //Defines HTML headings 6.
-	head: xtag {tag-name: "head"}, //Defines information about the document.
-	header: xtag {tag-name: "header"}, //Defines a header for a document or section.
-	hr: xtag {tag-name: "hr"}, //Defines a thematic change in the content.
-	html: xtag {tag-name: "html"}, //Defines the root of an HTML document.
-	i: xtag {tag-name: "i"}, //Defines a part of text in an alternate voice or mood.
-	iframe: xtag {tag-name: "iframe"}, //Defines an inline frame.
-	img: xtag {tag-name: "img"}, //Defines an image.
-	input: xtag {tag-name: "input"}, //Defines an input control.
-	ins: xtag {tag-name: "ins"}, //Defines a text that has been inserted into a document.
-	kbd: xtag {tag-name: "kbd"}, //Defines keyboard input.
-	label: xtag {tag-name: "label"}, //Defines a label for an <input> element.
-	legend: xtag {tag-name: "legend"}, //Defines a caption for a <fieldset> element.
-	li: xtag {tag-name: "li"}, //Defines a list item.
-	link: xtag {tag-name: "link"}, //Defines the relationship between a document and an external resource (most used to link to style sheets).
-	main: xtag {tag-name: "main"}, //Specifies the main content of a document.
-	map: xtag {tag-name: "map"}, //Defines a client-side image-map.
-	mark: xtag {tag-name: "mark"}, //Defines marked/highlighted text.
-	meta: xtag {tag-name: "meta"}, //Defines metadata about an HTML document.
-	meter: xtag {tag-name: "meter"}, //Defines a scalar measurement within a known range (a gauge).
-	nav: xtag {tag-name: "nav"}, //Defines navigation links.
-	noframes: xtag {tag-name: "noframes"}, //Not supported in HTML5. Defines an alternate content for users that do not support frames.
-	noscript: xtag {tag-name: "noscript"}, //Defines an alternate content for users that do not support client-side scripts.
-	object: xtag {tag-name: "object"}, //Defines an embedded object.
-	ol: xtag {tag-name: "ol"}, //Defines an ordered list.
-	optgroup: xtag {tag-name: "optgroup"}, //Defines a group of related options in a drop-down list.
-	option: xtag {tag-name: "option"}, //Defines an option in a drop-down list.
-	output: xtag {tag-name: "output"}, //Defines the result of a calculation.
-	p: xtag {tag-name: "p"}, //Defines a paragraph.
-	param: xtag {tag-name: "param"}, //Defines a parameter for an object.
-	picture: xtag {tag-name: "picture"}, //Defines a container for multiple image resources.
-	pre: xtag {tag-name: "pre"}, //Defines preformatted text.
-	progress: xtag {tag-name: "progress"}, //Represents the progress of a task.
-	q: xtag {tag-name: "q"}, //Defines a short quotation.
-	rp: xtag {tag-name: "rp"}, //Defines what to show in browsers that do not support ruby annotations.
-	rt: xtag {tag-name: "rt"}, //Defines an explanation/pronunciation of characters (for East Asian typography).
-	ruby: xtag {tag-name: "ruby"}, //Defines a ruby annotation (for East Asian typography).
-	s: xtag {tag-name: "s"}, //Defines text that is no longer correct.
-	samp: xtag {tag-name: "samp"}, //Defines sample output from a computer program.
-	script: xtag {tag-name: "script"}, //Defines a client-side script.
-	section: xtag {tag-name: "section"}, //Defines a section in a document.
-	select: xtag {tag-name: "select"}, //Defines a drop-down list.
-	small: xtag {tag-name: "small"}, //Defines smaller text.
-	source: xtag {tag-name: "source"}, //Defines multiple media resources for media elements (<video> and <audio>).
-	span: xtag {tag-name: "span"}, //Defines a section in a document.
-	strike: xtag {tag-name: "strike"}, //Not supported in HTML5. Use <del> or <s> instead. Defines strikethrough text.
-	strong: xtag {tag-name: "strong"}, //Defines important text.
-	style: xtag {tag-name: "style"}, //Defines style information for a document.
-	sub: xtag {tag-name: "sub"}, //Defines subscripted text.
-	summary: xtag {tag-name: "summary"}, //Defines a visible heading for a <details> element.
-	sup: xtag {tag-name: "sup"}, //Defines superscripted text.
-	svg: xtag {tag-name: "svg"}, //Defines a container for SVG graphics.
-	table: xtag {tag-name: "table"}, //Defines a table.
-	tbody: xtag {tag-name: "tbody"}, //Groups the body content in a table.
-	td: xtag {tag-name: "td"}, //Defines a cell in a table.
-	template: xtag {tag-name: "template"}, //Defines a template.
-	textarea: xtag {tag-name: "textarea"}, //Defines a multiline input control (text area).
-	tfoot: xtag {tag-name: "tfoot"}, //Groups the footer content in a table.
-	th: xtag {tag-name: "th"}, //Defines a header cell in a table.
-	thead: xtag {tag-name: "thead"}, //Groups the header content in a table.
-	time: xtag {tag-name: "time"}, //Defines a date/time.
-	title: xtag {tag-name: "title"}, //Defines a title for the document.
-	tr: xtag {tag-name: "tr"}, //Defines a row in a table.
-	track: xtag {tag-name: "track"}, //Defines text tracks for media elements (<video> and <audio>).
-	tt: xtag {tag-name: "tt"}, //Not supported in HTML5. Use CSS instead. Defines teletype text.
-	u: xtag {tag-name: "u"}, //Defines text that should be stylistically different from normal text.
-	ul: xtag {tag-name: "ul"}, //Defines an unordered list.
-	var: xtag {tag-name: "var"}, //Defines a variable.
-	video: xtag {tag-name: "video"}, //Defines a video or movie.
-	wbr: xtag {tag-name: "wbr"} //Defines a possible line-break.
+	html-tag: xtag
+	{
+		// HTML does not fully support self closing tags such as <script src="..." />
+		rule>> self$.write-self-closing-to(buffer$ = io.text-writing?, attributes$ = text?):
+			buffer$.write-line("<{self$.tag-name}{attributes$}></{self$.tag-name}>"())
+	},
+
+	a: html-tag {tag-name: "a"}, //Defines a hyperlink.
+	abbr: html-tag {tag-name: "abbr"}, //Defines an abbreviation or an acronym.
+	acronym: html-tag {tag-name: "acronym"}, //Not supported in HTML5. Use <abbr> instead. Defines an acronym.
+	address: html-tag {tag-name: "address"}, //Defines contact information for the author/owner of a document.
+	applet: html-tag {tag-name: "applet"}, //Not supported in HTML5. Use <embed> or <object> instead. Defines an embedded applet.
+	area: html-tag {tag-name: "area"}, //Defines an area inside an image-map.
+	article: html-tag {tag-name: "article"}, //Defines an article.
+	aside: html-tag {tag-name: "aside"}, //Defines content aside from the page content.
+	audio: html-tag {tag-name: "audio"}, //Defines sound content.
+	b: html-tag {tag-name: "b"}, //Defines bold text.
+	base: html-tag {tag-name: "base"}, //Specifies the base URL/target for all relative URLs in a document.
+	basefont: html-tag {tag-name: "basefont"}, //Not supported in HTML5. Use CSS instead. Specifies a default color, size, and font for all text in a document.
+	bdi: html-tag {tag-name: "bdi"}, //Isolates a part of text that might be formatted in a different direction from other text outside it.
+	bdo: html-tag {tag-name: "bdo"}, //Overrides the current text direction.
+	big: html-tag {tag-name: "big"}, //Not supported in HTML5. Use CSS instead. Defines big text.
+	blockquote: html-tag {tag-name: "blockquote"}, //Defines a section that is quoted from another source.
+	body: html-tag {tag-name: "body"}, //Defines the document's body.
+	br: html-tag {tag-name: "br"}, //Defines a single line break.
+	button: html-tag {tag-name: "button"}, //Defines a clickable button.
+	canvas: html-tag {tag-name: "canvas"}, //Used to draw graphics, on the fly, via scripting (usually JavaScript).
+	caption: html-tag {tag-name: "caption"}, //Defines a table caption.
+	center: html-tag {tag-name: "center"}, //Not supported in HTML5. Use CSS instead. Defines centered text.
+	cite: html-tag {tag-name: "cite"}, //Defines the title of a work.
+	code: html-tag {tag-name: "code"}, //Defines a piece of computer code.
+	col: html-tag {tag-name: "col"}, //Specifies column properties for each column within a <colgroup> element .
+	colgroup: html-tag {tag-name: "colgroup"}, //Specifies a group of one or more columns in a table for formatting.
+	data: html-tag {tag-name: "data"}, //Links the given content with a machine-readable translation.
+	datalist: html-tag {tag-name: "datalist"}, //Specifies a list of pre-defined options for input controls.
+	dd: html-tag {tag-name: "dd"}, //Defines a description/value of a term in a description list.
+	del: html-tag {tag-name: "del"}, //Defines text that has been deleted from a document.
+	details: html-tag {tag-name: "details"}, //Defines additional details that the user can view or hide.
+	dfn: html-tag {tag-name: "dfn"}, //Represents the defining instance of a term.
+	dialog: html-tag {tag-name: "dialog"}, //Defines a dialog box or window.
+	dir: html-tag {tag-name: "dir"}, //Not supported in HTML5. Use <ul> instead. Defines a directory list.
+	div: html-tag {tag-name: "div"}, //Defines a section in a document.
+	dl: html-tag {tag-name: "dl"}, //Defines a description list.
+	dt: html-tag {tag-name: "dt"}, //Defines a term/name in a description list.
+	em: html-tag {tag-name: "em"}, //Defines emphasized text .
+	embed: html-tag {tag-name: "embed"}, //Defines a container for an external (non-HTML) application.
+	fieldset: html-tag {tag-name: "fieldset"}, //Groups related elements in a form.
+	figcaption: html-tag {tag-name: "figcaption"}, //Defines a caption for a <figure> element.
+	figure: html-tag {tag-name: "figure"}, //Specifies self-contained content.
+	font: html-tag {tag-name: "font"}, //Not supported in HTML5. Use CSS instead. Defines font, color, and size for text.
+	footer: html-tag {tag-name: "footer"}, //Defines a footer for a document or section.
+	form: html-tag {tag-name: "form"}, //Defines an HTML form for user input.
+	frame: html-tag {tag-name: "frame"}, //Not supported in HTML5. Defines a window (a frame) in a frameset.
+	frameset: html-tag {tag-name: "frameset"}, //Not supported in HTML5. Defines a set of frames.
+	h1: html-tag {tag-name: "h1"}, //Defines HTML headings 1.
+	h2: html-tag {tag-name: "h2"}, //Defines HTML headings 2.
+	h3: html-tag {tag-name: "h3"}, //Defines HTML headings 3.
+	h4: html-tag {tag-name: "h4"}, //Defines HTML headings 4.
+	h5: html-tag {tag-name: "h5"}, //Defines HTML headings 5.
+	h6: html-tag {tag-name: "h6"}, //Defines HTML headings 6.
+	head: html-tag {tag-name: "head"}, //Defines information about the document.
+	header: html-tag {tag-name: "header"}, //Defines a header for a document or section.
+	hr: html-tag {tag-name: "hr"}, //Defines a thematic change in the content.
+	html: html-tag {tag-name: "html"}, //Defines the root of an HTML document.
+	i: html-tag {tag-name: "i"}, //Defines a part of text in an alternate voice or mood.
+	iframe: html-tag {tag-name: "iframe"}, //Defines an inline frame.
+	img: html-tag {tag-name: "img"}, //Defines an image.
+	input: html-tag {tag-name: "input"}, //Defines an input control.
+	ins: html-tag {tag-name: "ins"}, //Defines a text that has been inserted into a document.
+	kbd: html-tag {tag-name: "kbd"}, //Defines keyboard input.
+	label: html-tag {tag-name: "label"}, //Defines a label for an <input> element.
+	legend: html-tag {tag-name: "legend"}, //Defines a caption for a <fieldset> element.
+	li: html-tag {tag-name: "li"}, //Defines a list item.
+	link: html-tag {tag-name: "link"}, //Defines the relationship between a document and an external resource (most used to link to style sheets).
+	main: html-tag {tag-name: "main"}, //Specifies the main content of a document.
+	map: html-tag {tag-name: "map"}, //Defines a client-side image-map.
+	mark: html-tag {tag-name: "mark"}, //Defines marked/highlighted text.
+	meta: html-tag {tag-name: "meta"}, //Defines metadata about an HTML document.
+	meter: html-tag {tag-name: "meter"}, //Defines a scalar measurement within a known range (a gauge).
+	nav: html-tag {tag-name: "nav"}, //Defines navigation links.
+	noframes: html-tag {tag-name: "noframes"}, //Not supported in HTML5. Defines an alternate content for users that do not support frames.
+	noscript: html-tag {tag-name: "noscript"}, //Defines an alternate content for users that do not support client-side scripts.
+	object: html-tag {tag-name: "object"}, //Defines an embedded object.
+	ol: html-tag {tag-name: "ol"}, //Defines an ordered list.
+	optgroup: html-tag {tag-name: "optgroup"}, //Defines a group of related options in a drop-down list.
+	option: html-tag {tag-name: "option"}, //Defines an option in a drop-down list.
+	output: html-tag {tag-name: "output"}, //Defines the result of a calculation.
+	p: html-tag {tag-name: "p"}, //Defines a paragraph.
+	param: html-tag {tag-name: "param"}, //Defines a parameter for an object.
+	picture: html-tag {tag-name: "picture"}, //Defines a container for multiple image resources.
+	pre: html-tag {tag-name: "pre"}, //Defines preformatted text.
+	progress: html-tag {tag-name: "progress"}, //Represents the progress of a task.
+	q: html-tag {tag-name: "q"}, //Defines a short quotation.
+	rp: html-tag {tag-name: "rp"}, //Defines what to show in browsers that do not support ruby annotations.
+	rt: html-tag {tag-name: "rt"}, //Defines an explanation/pronunciation of characters (for East Asian typography).
+	ruby: html-tag {tag-name: "ruby"}, //Defines a ruby annotation (for East Asian typography).
+	s: html-tag {tag-name: "s"}, //Defines text that is no longer correct.
+	samp: html-tag {tag-name: "samp"}, //Defines sample output from a computer program.
+	script: html-tag {tag-name: "script"}, //Defines a client-side script.
+	section: html-tag {tag-name: "section"}, //Defines a section in a document.
+	select: html-tag {tag-name: "select"}, //Defines a drop-down list.
+	small: html-tag {tag-name: "small"}, //Defines smaller text.
+	source: html-tag {tag-name: "source"}, //Defines multiple media resources for media elements (<video> and <audio>).
+	span: html-tag {tag-name: "span"}, //Defines a section in a document.
+	strike: html-tag {tag-name: "strike"}, //Not supported in HTML5. Use <del> or <s> instead. Defines strikethrough text.
+	strong: html-tag {tag-name: "strong"}, //Defines important text.
+	style: html-tag {tag-name: "style"}, //Defines style information for a document.
+	sub: html-tag {tag-name: "sub"}, //Defines subscripted text.
+	summary: html-tag {tag-name: "summary"}, //Defines a visible heading for a <details> element.
+	sup: html-tag {tag-name: "sup"}, //Defines superscripted text.
+	svg: html-tag {tag-name: "svg"}, //Defines a container for SVG graphics.
+	table: html-tag {tag-name: "table"}, //Defines a table.
+	tbody: html-tag {tag-name: "tbody"}, //Groups the body content in a table.
+	td: html-tag {tag-name: "td"}, //Defines a cell in a table.
+	template: html-tag {tag-name: "template"}, //Defines a template.
+	textarea: html-tag {tag-name: "textarea"}, //Defines a multiline input control (text area).
+	tfoot: html-tag {tag-name: "tfoot"}, //Groups the footer content in a table.
+	th: html-tag {tag-name: "th"}, //Defines a header cell in a table.
+	thead: html-tag {tag-name: "thead"}, //Groups the header content in a table.
+	time: html-tag {tag-name: "time"}, //Defines a date/time.
+	title: html-tag {tag-name: "title"}, //Defines a title for the document.
+	tr: html-tag {tag-name: "tr"}, //Defines a row in a table.
+	track: html-tag {tag-name: "track"}, //Defines text tracks for media elements (<video> and <audio>).
+	tt: html-tag {tag-name: "tt"}, //Not supported in HTML5. Use CSS instead. Defines teletype text.
+	u: html-tag {tag-name: "u"}, //Defines text that should be stylistically different from normal text.
+	ul: html-tag {tag-name: "ul"}, //Defines an unordered list.
+	var: html-tag {tag-name: "var"}, //Defines a variable.
+	video: html-tag {tag-name: "video"}, //Defines a video or movie.
+	wbr: html-tag {tag-name: "wbr"} //Defines a possible line-break.
 }
