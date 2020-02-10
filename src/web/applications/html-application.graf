@@ -28,8 +28,20 @@ box
 				}
 		},
 
-	//self$.json-response(content$ = ?):
+	self$.text-response(content$ = ?):
+		with
+		{
+			open.io,
+			open.web.html
+		}
+		>>
+		common.runtime.web.text-response
+		{
+			self$():
+				self$.write-content(text(!content$))
+		},
 
+	//self$.json-response(content$ = ?):
 
 	self$.full-routing(route$ = text?):
 		self$.split-routing([text.subtext(route$).trim('/').split('/')]),

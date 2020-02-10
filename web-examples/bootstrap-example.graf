@@ -11,8 +11,8 @@ with
 
 html-application
 {
-	a1: data {},
-	a2: data {},
+	a1: common.data {},
+	a2: common.data {},
 
 	routing: html-routing
 	{
@@ -89,7 +89,15 @@ html-application
 				},
 
 			self$.eval():
-				response("You typed something!")
+				text-response(
+					common.language.parser.evaluated(
+						context.settings.request.body-text()
+					) <<try
+					{
+						catch(ex$ = exception?):
+							"ERROR: {ex$}"()
+					}
+				)
 		}
 	}
 }
