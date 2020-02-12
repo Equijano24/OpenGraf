@@ -34,6 +34,12 @@ html-application
 						{
 							rel: "stylesheet",
 							href: "https://unpkg.com/jquery.terminal@2.x.x/css/jquery.terminal.min.css"
+						},
+
+						link
+						{
+							rel: "stylesheet",
+							href: "/css/example.css"
 						}
 					},
 
@@ -90,8 +96,10 @@ html-application
 
 			self$.eval():
 				text-response(
-					common.language.parser.evaluated(
-						context.settings.request.body-text()
+					context.render(
+						common.language.parser.evaluated(
+							context.settings.request.body-text(), yes
+						)
 					) <<try
 					{
 						catch(ex$ = exception?):
