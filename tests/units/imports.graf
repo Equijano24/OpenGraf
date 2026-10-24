@@ -1,0 +1,21 @@
+import(units: graf {path: "../../src/units"});
+import(another-units-alias: graf {path: "../../src/units"});
+import(whole-library: graf {path: "../../src"});
+
+box {
+	common.testing.gunit.test>> aliases-share-base-classes(): (
+		common.testing.gunit.assert-equals(units.unit, another-units-alias.unit);
+		common.testing.gunit.assert-equals(units.dimension, another-units-alias.dimension);
+		common.testing.gunit.assert-equals(units.length, another-units-alias.length)
+	),
+
+	common.testing.gunit.test>> library-root-shares-base-classes(): (
+		common.testing.gunit.assert-equals(units.unit, whole-library.units.unit);
+		common.testing.gunit.assert-equals(units.dimension, whole-library.units.dimension);
+		q$ = whole-library.units.length.define("root-meter", "m", 1)(3);
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert(match(q$.dimension, units.dimension?));
+		common.testing.gunit.assert(q$.compatible-with(units.length));
+		common.testing.gunit.assert-equals(3, q$.value())
+	)
+}

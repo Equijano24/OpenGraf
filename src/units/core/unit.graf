@@ -1,0 +1,54 @@
+import(open-graf-units-core: graf {path: "."});
+
+// Families and definitions are heirs; a numeric call creates a sealed instance.
+class {
+	amount: number?,
+	factory: class?,
+	id: string?,
+	symbol: string?,
+	kind: string?,
+	dimension: open-graf-units-core.dimension?,
+	scale: real?,
+	offset: 0,
+	prefixable: no,
+	exact: yes,
+	source: "user-defined",
+
+	self$(amount$ = number?):
+		composite>> new(self$) {amount: amount$, factory: self$},
+
+	self$.value(): self$.amount,
+
+	self$.with-value(amount$ = number?): self$.factory(amount$),
+
+	self$.compatible-with(other$ = box {kind: string?, dimension: all(open-graf-units-core.dimension?)?}?):
+		equals(self$.kind, other$.kind).and(self$.dimension.same-as(other$.dimension)),
+
+	self$.family(kind$ = string?, dimension$ = open-graf-units-core.dimension?): (
+		common.math.gt(0)? >> kind$.length();
+		heir(self$) {
+			override>> kind: kind$,
+			override>> dimension: open-graf-units-core.dimension(
+				dimension$.length, dimension$.mass, dimension$.duration,
+				dimension$.current, dimension$.temperature, dimension$.amount-of-substance,
+				dimension$.luminous-intensity, dimension$.information)
+		}
+	),
+
+	self$.define(id$ = string?, symbol$ = string?, scale$ = real?):
+		self$.define(id$, symbol$, scale$, no, yes, "user-defined"),
+
+	self$.define(id$ = string?, symbol$ = string?, scale$ = real?,
+		prefixable$ = bool?, exact$ = bool?, source$ = string?): (
+		common.math.gt(0)? >> scale$;
+		common.math.gt(0)? >> id$.length();
+		heir(self$) {
+			override>> id: id$,
+			override>> symbol: symbol$,
+			override>> scale: scale$,
+			override>> prefixable: prefixable$,
+			override>> exact: exact$,
+			override>> source: source$
+		}
+	)
+}

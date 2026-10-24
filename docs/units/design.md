@@ -1,7 +1,9 @@
 # Units: design contract
 
-Status: specification checkpoint. The replacement API is not implemented yet;
-`src/units` still contains the legacy API.
+Status: step 5 implements the [unit core](core.md), 25 families, local
+definitions, dimensions and immutable measurements in `src/units`. This document
+also specifies conversion, arithmetic and catalogue features scheduled for the
+following steps; it is not a claim that the entire target API is implemented.
 
 ## Object model
 
@@ -86,8 +88,8 @@ historical conventions, errors, and measured rather than exact constants.
 
 ## Public API contract
 
-These examples specify the replacement API; they are not executable examples of
-this checkpoint's legacy implementation.
+These examples specify later stages of the replacement API. Use the
+[core reference](core.md) for the currently executable API.
 
 ```graf
 meters(2).plus(centimeters(30)).value()     // 23/10, in meters

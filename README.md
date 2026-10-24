@@ -14,9 +14,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Units replacement
 
-The new units API is at the specification stage. The existing `src/units` files
-are legacy code. See the [technical documentation](docs/index.md) for the agreed
-object model, conversion rules, validation matrix and implementation status.
+The new core in `src/units` provides `unit`, dimensions, 25 quantity families,
+local definitions and immutable measurements for current Graf. See the
+[core API](docs/units/core.md) and [technical documentation](docs/index.md).
+Conversions, arithmetic and the reviewed catalogue remain in the next steps.
+Run `graf test tests/units` to check this section, or
+`graf run examples/units/core.graf` to run the executable example.
 
 ## Testing foundation
 
@@ -29,4 +32,4 @@ Run `graf test tests/testing` to execute both contemporary auxiliary suites.
 
 The existing library targets an older Graf version. This work rewrites units
 for current Graf; other legacy sections are not expected to pass its tests.
-See [test scope and discovery](docs/testing.md#compatibility-and-test-scope).
+See [test scope and discovery](docs/testing.md#compatibility-and-units-target).

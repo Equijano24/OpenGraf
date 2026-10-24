@@ -1,7 +1,8 @@
 # Testing with gunit
 
 Open Graf uses `common.testing.gunit` from the updated `Graf/develop` interpreter.
-The test command is available. The replacement units implementation is pending.
+The test command is available. The replacement unit core has 45 targeted tests;
+conversion, arithmetic and catalogue coverage will follow in the next steps.
 
 ## Command
 
@@ -111,11 +112,11 @@ receiver. `gunit-discovery-smoke.graf` checks these boundaries.
 
 The other OpenGraf components and tests were written for an older Graf. Only
 units are being rewritten. Passing gunit checks does not validate those legacy
-sections or imply that the new units implementation exists.
+sections. The new unit core has its own targeted suites.
 
-Once the replacement tests exist, run `graf test tests/units`. Import the
+Run `graf test tests/units` for the replacement core. Import the
 rewritten unit sources explicitly. Do not target the repository root or all of
 `tests`: unrelated legacy sources are not expected to load or pass on current
 Graf. `tests/testing` contains contemporary auxiliary gunit checks, not a
-migration of the legacy library. A missing `tests/units` directory exits 2 until
-that work is implemented; it must not appear green without tests.
+migration of the legacy library. The unit core currently has 45 passing tests;
+conversion and catalogue tests will be added with their implementation steps.

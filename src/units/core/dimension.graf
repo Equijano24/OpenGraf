@@ -1,0 +1,30 @@
+// Eight integral exponents: the seven SI base dimensions, then information.
+class {
+	length: integer?,
+	mass: integer?,
+	duration: integer?,
+	current: integer?,
+	temperature: integer?,
+	amount-of-substance: integer?,
+	luminous-intensity: integer?,
+	information: integer?,
+
+	self$(length$ = integer?, mass$ = integer?, duration$ = integer?,
+		current$ = integer?, temperature$ = integer?, amount$ = integer?,
+		luminous$ = integer?, information$ = integer?):
+		composite>> new(self$) {
+			length: length$, mass: mass$, duration: duration$, current: current$,
+			temperature: temperature$, amount-of-substance: amount$,
+			luminous-intensity: luminous$, information: information$
+		},
+
+	self$.same-as(other$ = box?):
+		equals(self$.length, other$.length)
+			.and(equals(self$.mass, other$.mass))
+			.and(equals(self$.duration, other$.duration))
+			.and(equals(self$.current, other$.current))
+			.and(equals(self$.temperature, other$.temperature))
+			.and(equals(self$.amount-of-substance, other$.amount-of-substance))
+			.and(equals(self$.luminous-intensity, other$.luminous-intensity))
+			.and(equals(self$.information, other$.information))
+}

@@ -1,0 +1,4 @@
+import(open-graf-units-core: graf {path: "core"});
+
+open-graf-units-core.unit.family("amount-of-substance",
+	open-graf-units-core.dimension(0, 0, 0, 0, 0, 1, 0, 0))

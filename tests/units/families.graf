@@ -1,0 +1,278 @@
+import(units: graf {path: "../../src/units"});
+
+box {
+	common.testing.gunit.test>> ratio-dimension(): (
+		factory$ = units.ratio.define("test-ratio", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.ratio?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("ratio", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 0, 0, 0, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> angle-dimension(): (
+		factory$ = units.angle.define("test-angle", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.angle?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("angle", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 0, 0, 0, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> solid-angle-dimension(): (
+		factory$ = units.solid-angle.define("test-solid-angle", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.solid-angle?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("solid-angle", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 0, 0, 0, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> length-dimension(): (
+		factory$ = units.length.define("test-length", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.length?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("length", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 1, 0, 0, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> area-dimension(): (
+		factory$ = units.area.define("test-area", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.area?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("area", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 2, 0, 0, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> volume-dimension(): (
+		factory$ = units.volume.define("test-volume", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.volume?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("volume", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 3, 0, 0, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> mass-dimension(): (
+		factory$ = units.mass.define("test-mass", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.mass?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("mass", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 0, 1, 0, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> duration-dimension(): (
+		factory$ = units.duration.define("test-duration", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.duration?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("duration", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 0, 0, 1, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> current-dimension(): (
+		factory$ = units.current.define("test-current", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.current?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("current", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 0, 0, 0, 1, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> temperature-point-dimension(): (
+		factory$ = units.temperature-point.define("test-temperature-point", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.temperature-point?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("temperature-point", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 0, 0, 0, 0, 1, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> temperature-difference-dimension(): (
+		factory$ = units.temperature-difference.define("test-temperature-difference", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.temperature-difference?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("temperature-difference", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 0, 0, 0, 0, 1, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> amount-of-substance-dimension(): (
+		factory$ = units.amount-of-substance.define("test-amount-of-substance", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.amount-of-substance?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("amount-of-substance", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 0, 0, 0, 0, 0, 1, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> luminous-intensity-dimension(): (
+		factory$ = units.luminous-intensity.define("test-luminous-intensity", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.luminous-intensity?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("luminous-intensity", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 0, 0, 0, 0, 0, 0, 1, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> information-dimension(): (
+		factory$ = units.information.define("test-information", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.information?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("information", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 0, 0, 0, 0, 0, 0, 0, 1 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> velocity-dimension(): (
+		factory$ = units.velocity.define("test-velocity", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.velocity?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("velocity", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 1, 0, -1, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> acceleration-dimension(): (
+		factory$ = units.acceleration.define("test-acceleration", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.acceleration?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("acceleration", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 1, 0, -2, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> force-dimension(): (
+		factory$ = units.force.define("test-force", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.force?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("force", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 1, 1, -2, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> pressure-dimension(): (
+		factory$ = units.pressure.define("test-pressure", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.pressure?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("pressure", q$.kind);
+		common.testing.gunit.assert-equals(tuple { -1, 1, -2, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> energy-dimension(): (
+		factory$ = units.energy.define("test-energy", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.energy?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("energy", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 2, 1, -2, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> torque-dimension(): (
+		factory$ = units.torque.define("test-torque", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.torque?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("torque", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 2, 1, -2, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> power-dimension(): (
+		factory$ = units.power.define("test-power", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.power?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("power", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 2, 1, -3, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> frequency-dimension(): (
+		factory$ = units.frequency.define("test-frequency", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.frequency?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("frequency", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 0, 0, -1, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> radioactivity-dimension(): (
+		factory$ = units.radioactivity.define("test-radioactivity", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.radioactivity?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("radioactivity", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 0, 0, -1, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> absorbed-dose-dimension(): (
+		factory$ = units.absorbed-dose.define("test-absorbed-dose", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.absorbed-dose?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("absorbed-dose", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 2, 0, -2, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	),
+
+	common.testing.gunit.test>> equivalent-dose-dimension(): (
+		factory$ = units.equivalent-dose.define("test-equivalent-dose", "u", 1);
+		q$ = factory$(7);
+		common.testing.gunit.assert(match(q$, units.equivalent-dose?));
+		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert-equals("equivalent-dose", q$.kind);
+		common.testing.gunit.assert-equals(tuple { 2, 0, -2, 0, 0, 0, 0, 0 },
+			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });
+		common.testing.gunit.assert-equals(7, q$.value())
+	)
+}
