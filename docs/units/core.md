@@ -14,9 +14,9 @@ Import the units directory explicitly. Paths are relative to the source file:
 // Save as examples/units/core.graf, relative to the repository root.
 import(units: graf {path: "../../src/units"});
 
-meters$ = units.length.define("meter", "m", 1);
+meters$ = units.length.definition("meter", "m", 1);
 length$ = meters$(1.over(3));
-changed$ = length$.with-value(2);
+changed$ = length$.quantity-with-value(2);
 
 (length$.value(), changed$.value(), length$.symbol,
  length$.dimension.length, length$.compatible-with(changed$))
@@ -46,20 +46,20 @@ complete definition supplies its metadata.
 A measurement composes `amount` and `factory`; it inherits metadata and behavior.
 It is a sealed composite instance. Its slots cannot be assigned, it cannot be
 extended or instantiated, and wrapping its constructor with `mutable>>` is
-refused. `.with-value(number)` makes a new measurement through the original
+refused. `.quantity-with-value(number)` makes a new measurement through the original
 factory. It never constructs an heir of an existing measurement. Numeric construction
-and replacement use `factory.make(number)`, which extensions can override.
+and replacement use `factory.quantity(number)`, which extensions can override.
 
 | Message | Implemented behavior |
 | --- | --- |
-| `family.define(id, symbol, scale)` | Local definition, not registered globally |
-| `family.define(id, symbol, scale, prefixable, exact, source)` | Definition with explicit provenance and flags |
-| `factory(number)` / `factory.make(number)` | Immutable measurement with the same numeric payload |
+| `family.definition(id, symbol, scale)` | Local definition, not registered globally |
+| `family.definition(id, symbol, scale, prefixable, exact, source)` | Definition with explicit provenance and flags |
+| `factory(number)` / `factory.quantity(number)` | Immutable measurement with the same numeric payload |
 | `factory(quantity)` | Compatible conversion or explicit compound classification |
-| `quantity.coherent()` | Numeric payload in the coherent unit |
+| `quantity.coherent-value()` | Numeric payload in the coherent unit |
 | `quantity.value()` | Displayed payload; also available as `quantity.amount` |
 | `quantity.factory` | Explicit reference to the definition that constructed it |
-| `quantity.with-value(number)` | New measurement in that same definition |
+| `quantity.quantity-with-value(number)` | New measurement in that same definition |
 | `quantity.compatible-with(other)` | Same kind identifier and all eight dimension exponents |
 | `unit.family(kind, dimension)` | Local family inheriting the receiver; copies dimension exponents |
 | `dimension(L, M, T, I, Theta, N, J, info)` | Immutable composite of eight integer exponents |
@@ -76,8 +76,8 @@ See [conversion and arithmetic](operations.md).
 
 | Label | Meaning and default |
 | --- | --- |
-| `id` | Nonempty local identifier, supplied to `define` |
-| `symbol` | Case-sensitive display symbol, supplied to `define` |
+| `id` | Nonempty local identifier, supplied to `definition` |
+| `symbol` | Case-sensitive display symbol, supplied to `definition` |
 | `kind` | Semantic family identifier |
 | `dimension` | Integral dimension value |
 | `scale` | Positive real factor relative to the family's coherent unit |
@@ -146,7 +146,7 @@ A local family needs a kind and a dimension, with no global registry:
 ```graf
 rate$ = units.unit.family("example-data-rate",
     units.dimension(0, 0, -1, 0, 0, 0, 0, 1));
-bits-per-second$ = rate$.define("example-bit-per-second", "bit/s", 1);
+bits-per-second$ = rate$.definition("example-bit-per-second", "bit/s", 1);
 bits-per-second$(64).value()
 // => 64
 ```
@@ -154,7 +154,7 @@ bits-per-second$(64).value()
 Use Graf inheritance to add behavior or refine metadata. An explicit
 `override>>` replaces inherited metadata so a read does not return both values.
 A factory must keep its numeric constructor contract and its metadata immutable;
-custom construction behavior should override the definition's `make` method. Mutating a custom
+custom construction behavior should override the definition's `quantity` method. Mutating a custom
 ancestor falls outside this immutable-definition protocol.
 
 The files in `src/units/core` supply the shared base classes. Public unit files

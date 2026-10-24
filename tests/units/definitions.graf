@@ -1,8 +1,8 @@
 import(units: graf {path: "../../src/units"});
 
 box {
-	common.testing.gunit.test>> metadata-is-single-and-immutable(): (
-		factory$ = units.length.define("test-meter", "m", 1, yes, yes, "test definition");
+	common.testing.gunit.test>> verify-metadata-is-single-and-immutable(): (
+		factory$ = units.length.definition("test-meter", "m", 1, yes, yes, "test definition");
 		q$ = factory$(2);
 		common.testing.gunit.assert-equals(tuple {"test-meter"}, tuple {q$.id});
 		common.testing.gunit.assert-equals(tuple {"m"}, tuple {q$.symbol});
@@ -17,24 +17,24 @@ box {
 		common.testing.gunit.assert-fails {q$.kind := "area"}
 	),
 
-	common.testing.gunit.test>> exact-factors-remain-numeric-values(): (
-		factory$ = units.length.define("test-inch", "in", 127.over(5000));
+	common.testing.gunit.test>> verify-exact-factors-remain-numeric-values(): (
+		factory$ = units.length.definition("test-inch", "in", 127.over(5000));
 		common.testing.gunit.assert-equals(127.over(5000), factory$.scale);
 		common.testing.gunit.assert(match(factory$.scale, rational?));
 		common.testing.gunit.assert-equals(5, factory$(5).value());
 		common.testing.gunit.assert-equals(yes, factory$.exact)
 	),
 
-	common.testing.gunit.test>> approximate-provenance-is-explicit(): (
-		factory$ = units.length.define("example-measured", "u", 2.5, no, no, "laboratory example");
+	common.testing.gunit.test>> verify-approximate-provenance-is-explicit(): (
+		factory$ = units.length.definition("example-measured", "u", 2.5, no, no, "laboratory example");
 		common.testing.gunit.assert-equals(no, factory$.exact);
 		common.testing.gunit.assert-equals("laboratory example", factory$.source);
 		common.testing.gunit.assert-equals(2.5, factory$.scale)
 	),
 
-	common.testing.gunit.test>> definitions-are-local-and-inheritable(): (
-		first$ = units.length.define("custom-first", "a", 2);
-		second$ = units.length.define("custom-second", "b", 3);
+	common.testing.gunit.test>> verify-definitions-are-local-and-inheritable(): (
+		first$ = units.length.definition("custom-first", "a", 2);
+		second$ = units.length.definition("custom-second", "b", 3);
 		child$ = heir(first$) {override>> id: "custom-child", override>> symbol: "c", override>> scale: 4};
 		common.testing.gunit.assert-equals(tuple {4}, tuple {child$(2).scale});
 		common.testing.gunit.assert-equals(tuple {"custom-child"}, tuple {child$(2).id});
@@ -45,9 +45,9 @@ box {
 		common.testing.gunit.assert-fails {units.length.custom-first}
 	),
 
-	common.testing.gunit.test>> custom-family-composes-a-dimension(): (
+	common.testing.gunit.test>> verify-custom-family-composes-a-dimension(): (
 		family$ = units.unit.family("custom-data-rate", units.dimension(0, 0, -1, 0, 0, 0, 0, 1));
-		factory$ = family$.define("custom-bit-per-second", "bit/s", 1);
+		factory$ = family$.definition("custom-bit-per-second", "bit/s", 1);
 		q$ = factory$(64);
 		common.testing.gunit.assert(match(q$, units.unit?));
 		common.testing.gunit.assert(match(q$, family$?));
@@ -56,23 +56,23 @@ box {
 		common.testing.gunit.assert-equals(1, q$.dimension.information)
 	),
 
-	common.testing.gunit.test>> invalid-definition-inputs-fail(): (
+	common.testing.gunit.test>> verify-invalid-definition-inputs-fail(): (
 		common.testing.gunit.assert-fails {
 			common.evaluation.error-handling.pattern-matching-exception,
-			units.length.define("zero", "z", 0)
+			units.length.definition("zero", "z", 0)
 		};
 		common.testing.gunit.assert-fails {
 			common.evaluation.error-handling.pattern-matching-exception,
-			units.length.define("negative", "n", -1)
+			units.length.definition("negative", "n", -1)
 		};
-		common.testing.gunit.assert-fails {units.length.define("", "u", 1)};
+		common.testing.gunit.assert-fails {units.length.definition("", "u", 1)};
 		common.testing.gunit.assert-fails {units.unit.family("", units.dimension(0, 0, 0, 0, 0, 0, 0, 0))};
-		common.testing.gunit.assert-fails {units.length.define("text", "t", "1")};
-		common.testing.gunit.assert-fails {units.length.define("bad-flags", "b", 1, "yes", yes, "source")};
+		common.testing.gunit.assert-fails {units.length.definition("text", "t", "1")};
+		common.testing.gunit.assert-fails {units.length.definition("bad-flags", "b", 1, "yes", yes, "source")};
 		common.testing.gunit.assert-fails {units.unit.family("bad-dimension", box {length: 1})}
 	),
 
-	common.testing.gunit.test>> dimensions-are-integral-values(): (
+	common.testing.gunit.test>> verify-dimensions-are-integral-values(): (
 		d$ = units.dimension(1, -2, 3, -4, 5, -6, 7, -8);
 		other$ = units.dimension(1, -2, 3, -4, 5, -6, 7, -8);
 		common.testing.gunit.assert(d$.same-as(other$));
@@ -85,7 +85,7 @@ box {
 		common.testing.gunit.assert-fails {new(units.dimension) {length: 1}}
 	),
 
-	common.testing.gunit.test>> semantic-kinds-are-independent-of-dimensions(): (
+	common.testing.gunit.test>> verify-semantic-kinds-are-independent-of-dimensions(): (
 		foreach {pair$ = (
 			tuple {units.angle, units.ratio},
 			tuple {units.angle, units.solid-angle},
@@ -100,7 +100,7 @@ box {
 		}
 	),
 
-	common.testing.gunit.test>> family-copies-mutable-dimension-input(): (
+	common.testing.gunit.test>> verify-family-copies-mutable-dimension-input(): (
 		d$ = (mutable>> new(units.dimension) {
 			length: 1, mass: 0, duration: 0, current: 0,
 			temperature: 0, amount-of-substance: 0, luminous-intensity: 0, information: 0
@@ -111,9 +111,9 @@ box {
 		common.testing.gunit.assert-fails {family$.dimension.length := 2}
 	),
 
-	common.testing.gunit.test>> compatibility-requires-kind-and-dimension(): (
-		first$ = units.length.define("first", "a", 1);
-		second$ = units.length.define("second", "b", 3);
+	common.testing.gunit.test>> verify-compatibility-requires-kind-and-dimension(): (
+		first$ = units.length.definition("first", "a", 1);
+		second$ = units.length.definition("second", "b", 3);
 		common.testing.gunit.assert(first$.compatible-with(second$));
 		common.testing.gunit.assert(first$(1).compatible-with(second$(1)));
 		common.testing.gunit.assert-equals(no, units.length.compatible-with(units.area));
@@ -123,7 +123,7 @@ box {
 		common.testing.gunit.assert-equals(no, first$.compatible-with(wrong$))
 	),
 
-	common.testing.gunit.test>> dimension-comparison-examines-every-exponent(): (
+	common.testing.gunit.test>> verify-dimension-comparison-examines-every-exponent(): (
 		zero$ = units.dimension(0, 0, 0, 0, 0, 0, 0, 0);
 		foreach {d$ = (
 			units.dimension(1, 0, 0, 0, 0, 0, 0, 0), units.dimension(0, 1, 0, 0, 0, 0, 0, 0),

@@ -2,7 +2,8 @@
 
 A general purpose open source library for the Graf programming language.
 
-See the [11-step plan and current progress](docs/plan-de-trabajo.md).
+See the [11-step plan and current progress](docs/plan-de-trabajo.md), and the
+[naming conventions and API migration](docs/naming.md).
 
 ## Author
 

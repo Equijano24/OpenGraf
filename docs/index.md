@@ -11,6 +11,7 @@ older Graf version.
 
 - [Plan de trabajo y avance](plan-de-trabajo.md)
 - [Testing with gunit](testing.md)
+- [Naming conventions and API migration](naming.md)
 - [Unit core API and executable example](units/core.md)
 - [Conversion and arithmetic](units/operations.md)
 - [Units design and API contract](units/design.md)

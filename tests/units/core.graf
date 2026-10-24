@@ -1,8 +1,8 @@
 import(units: graf {path: "../../src/units"});
 
 box {
-	common.testing.gunit.test>> constructors-preserve-numbers(): (
-		factory$ = units.length.define("test-meter", "m", 1);
+	common.testing.gunit.test>> verify-constructors-preserve-numbers(): (
+		factory$ = units.length.definition("test-meter", "m", 1);
 		foreach {n$ = (0, -7, 2.5, 18_446_744_073_709_551_616, 1.over(3), pi)} {
 			q$ := factory$(n$);
 			common.testing.gunit.assert-equals(n$, q$.value());
@@ -11,8 +11,8 @@ box {
 		}
 	),
 
-	common.testing.gunit.test>> numeric-kinds-stay-on-the-payload(): (
-		factory$ = units.length.define("test-meter", "m", 1);
+	common.testing.gunit.test>> verify-numeric-kinds-stay-on-the-payload(): (
+		factory$ = units.length.definition("test-meter", "m", 1);
 		common.testing.gunit.assert(match(factory$(2.5).value(), float64?));
 		common.testing.gunit.assert(match(factory$(1.over(3)).value(), rational?));
 		common.testing.gunit.assert(match(factory$(pi).value(), irrational?));
@@ -20,8 +20,8 @@ box {
 		common.testing.gunit.assert-equals(2, factory$(1.over(3)).value().times(6))
 	),
 
-	common.testing.gunit.test>> quantities-have-family-lineage(): (
-		factory$ = units.length.define("test-meter", "m", 1);
+	common.testing.gunit.test>> verify-quantities-have-family-lineage(): (
+		factory$ = units.length.definition("test-meter", "m", 1);
 		q$ = factory$(2);
 		common.testing.gunit.assert(match(q$, units.unit?));
 		common.testing.gunit.assert(match(q$, units.length?));
@@ -30,8 +30,8 @@ box {
 		common.testing.gunit.assert-not-equals(yes, match(q$, number?))
 	),
 
-	common.testing.gunit.test>> quantities-are-immutable-instances(): (
-		q$ = units.length.define("test-meter", "m", 1)(2);
+	common.testing.gunit.test>> verify-quantities-are-immutable-instances(): (
+		q$ = units.length.definition("test-meter", "m", 1)(2);
 		common.testing.gunit.assert(match(q$, immutable {amount, factory}?));
 		common.testing.gunit.assert-equals(no, match(q$, mutable?));
 		common.testing.gunit.assert-equals(no, match(q$, open?));
@@ -41,29 +41,29 @@ box {
 		common.testing.gunit.assert-fails {q$.extra := 1};
 		common.testing.gunit.assert-fails {heir(q$) {amount: 3}};
 		common.testing.gunit.assert-fails {new(q$) {amount: 3}};
-		common.testing.gunit.assert-fails {mutable>> units.length.define("test-meter", "m", 1)(2)};
+		common.testing.gunit.assert-fails {mutable>> units.length.definition("test-meter", "m", 1)(2)};
 		common.testing.gunit.assert-equals(2, q$.value())
 	),
 
-	common.testing.gunit.test>> with-value-uses-original-factory(): (
-		factory$ = units.length.define("test-meter", "m", 1);
+	common.testing.gunit.test>> verify-with-value-uses-original-factory(): (
+		factory$ = units.length.definition("test-meter", "m", 1);
 		q$ = factory$(2);
-		copy$ = q$.with-value(3.over(7));
+		copy$ = q$.quantity-with-value(3.over(7));
 		common.testing.gunit.assert-equals(2, q$.value());
 		common.testing.gunit.assert-equals(3.over(7), copy$.value());
 		common.testing.gunit.assert-equals(factory$, copy$.factory);
 		common.testing.gunit.assert(match(copy$, factory$?))
 	),
 
-	common.testing.gunit.test>> equal-payloads-use-the-same-factory(): (
-		factory$ = units.length.define("test-meter", "m", 1);
+	common.testing.gunit.test>> verify-equal-payloads-use-the-same-factory(): (
+		factory$ = units.length.definition("test-meter", "m", 1);
 		common.testing.gunit.assert-equals(factory$(2), factory$(2));
 		common.testing.gunit.assert-not-equals(factory$(2), factory$(3));
-		common.testing.gunit.assert-not-equals(factory$(2), units.area.define("test-area", "a", 1)(2))
+		common.testing.gunit.assert-not-equals(factory$(2), units.area.definition("test-area", "a", 1)(2))
 	),
 
-	common.testing.gunit.test>> abstract-families-and-invalid-payloads-are-refused(): (
-		factory$ = units.length.define("test-meter", "m", 1);
+	common.testing.gunit.test>> verify-abstract-families-and-invalid-payloads-are-refused(): (
+		factory$ = units.length.definition("test-meter", "m", 1);
 		common.testing.gunit.assert-fails {units.unit(2)};
 		common.testing.gunit.assert-fails {units.length(2)};
 		common.testing.gunit.assert-fails {factory$("2")};

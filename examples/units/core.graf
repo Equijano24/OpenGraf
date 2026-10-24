@@ -1,8 +1,8 @@
 import(units: graf {path: "../../src/units"});
 
-meters$ = units.length.define("meter", "m", 1);
+meters$ = units.length.definition("meter", "m", 1);
 length$ = meters$(1.over(3));
-changed$ = length$.with-value(2);
+changed$ = length$.quantity-with-value(2);
 
 (length$.value(), changed$.value(), length$.symbol,
  length$.dimension.length, length$.compatible-with(changed$))

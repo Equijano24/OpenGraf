@@ -27,7 +27,7 @@ and imports through aliases or the library root. A family copies mutable
 input dimensions rather than retaining changeable exponent fields.
 
 The 32 operation regressions check independent conversion anchors, round trips,
-left-factory retention, custom `make` validation, scalar and compound arithmetic,
+left-factory retention, custom `quantity` validation, scalar and compound arithmetic,
 all eight exponent operations, exact and precision-controlled roots, explicit
 classification, numeric failures and incompatible kinds. Actual values are
 collected in tuples so empty streams fail assertions instead of skipping them.
@@ -70,7 +70,7 @@ The CLI's pass/fail/load/no-match/cancellation codes were verified in step 4.
 | Temperature | Distinct kinds; generic arithmetic on points/offset values refused | Absolute-zero boundary and specialized point/delta arithmetic |
 | Prefixes | Eligibility metadata | SI/binary exponents, byte/bit factors, square/cube scaling, no double prefix |
 | Special cases | Distinct dose and radioactivity kinds | Logarithmic domains, pH activity, explicit reference/model conversions |
-| Extensibility | Local factories/families, conversion/arithmetic, overridden `make`, provenance and metadata overrides | Prefix/model-specific extensions |
+| Extensibility | Local factories/families, conversion/arithmetic, overridden `quantity`, provenance and metadata overrides | Prefix/model-specific extensions |
 | Migration | Old unit implementation removed; new core reference and executable example | Full old-API migration guidance and replacement of old catalogue examples/tests |
 | Documentation | Technical Markdown, API tables, site build | Complete catalogue, reviewed sources and final PDF verification |
 

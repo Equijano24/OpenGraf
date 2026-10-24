@@ -1,20 +1,20 @@
 import(units: graf {path: "../../src/units"});
 
 box {
-	common.testing.gunit.test>> constructors-convert-through-coherent-values(): (
-		meters$ = units.length.define("test-meter", "m", 1);
-		centimeters$ = units.length.define("test-centimeter", "cm", 1.over(100));
-		feet$ = units.length.define("test-foot", "ft", 381.over(1250));
+	common.testing.gunit.test>> verify-constructors-convert-through-coherent-values(): (
+		meters$ = units.length.definition("test-meter", "m", 1);
+		centimeters$ = units.length.definition("test-centimeter", "cm", 1.over(100));
+		feet$ = units.length.definition("test-foot", "ft", 381.over(1250));
 		common.testing.gunit.assert-equals(tuple {200}, tuple {centimeters$(meters$(2)).value()});
 		common.testing.gunit.assert-equals(tuple {381.over(1250)}, tuple {meters$(feet$(1)).value()});
 		common.testing.gunit.assert-equals(tuple {1}, tuple {feet$(meters$(381.over(1250))).value()});
-		common.testing.gunit.assert-equals(tuple {2}, tuple {meters$(2).coherent()});
-		common.testing.gunit.assert-equals(tuple {1}, tuple {centimeters$(100).coherent()})
+		common.testing.gunit.assert-equals(tuple {2}, tuple {meters$(2).coherent-value()});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {centimeters$(100).coherent-value()})
 	),
 
-	common.testing.gunit.test>> conversion-retains-the-target-factory(): (
-		meters$ = units.length.define("test-meter", "m", 1);
-		centimeters$ = units.length.define("test-centimeter", "cm", 1.over(100));
+	common.testing.gunit.test>> verify-conversion-retains-the-target-factory(): (
+		meters$ = units.length.definition("test-meter", "m", 1);
+		centimeters$ = units.length.definition("test-centimeter", "cm", 1.over(100));
 		a$ = meters$(1.over(3));
 		b$ = centimeters$(a$);
 		common.testing.gunit.assert-equals(tuple {100.over(3)}, tuple {b$.value()});
@@ -23,28 +23,28 @@ box {
 		common.testing.gunit.assert-equals(tuple {1.over(3)}, tuple {meters$(b$).value()})
 	),
 
-	common.testing.gunit.test>> kind-and-dimension-mismatches-fail(): (
-		meters$ = units.length.define("test-meter", "m", 1);
-		area$ = units.area.define("test-square-meter", "m2", 1);
+	common.testing.gunit.test>> verify-kind-and-dimension-mismatches-fail(): (
+		meters$ = units.length.definition("test-meter", "m", 1);
+		area$ = units.area.definition("test-square-meter", "m2", 1);
 		common.testing.gunit.assert-fails {meters$(area$(2))};
-		common.testing.gunit.assert-fails {units.angle.define("test-radian", "rad", 1)(units.ratio.define("test-ratio", "", 1)(2))};
-		common.testing.gunit.assert-fails {units.energy.define("test-joule", "J", 1)(units.torque.define("test-torque", "Nm", 1)(2))};
-		bad$ = units.unit.family("length", units.dimension(2, 0, 0, 0, 0, 0, 0, 0)).define("bad-dimension", "u", 1);
+		common.testing.gunit.assert-fails {units.angle.definition("test-radian", "rad", 1)(units.ratio.definition("test-ratio", "", 1)(2))};
+		common.testing.gunit.assert-fails {units.energy.definition("test-joule", "J", 1)(units.torque.definition("test-torque", "Nm", 1)(2))};
+		bad$ = units.unit.family("length", units.dimension(2, 0, 0, 0, 0, 0, 0, 0)).definition("bad-dimension", "u", 1);
 		common.testing.gunit.assert-fails {meters$(bad$(2))};
 		common.testing.gunit.assert-fails {meters$(units.length)}
 	),
 
-	common.testing.gunit.test>> custom-families-convert-without-a-registry(): (
+	common.testing.gunit.test>> verify-custom-families-convert-without-a-registry(): (
 		family$ = units.unit.family("custom-pixel-length", units.dimension(1, 0, 0, 0, 0, 0, 0, 0));
-		pixel$ = family$.define("pixel", "px", 1.over(4));
-		block$ = family$.define("block", "blk", 2);
+		pixel$ = family$.definition("pixel", "px", 1.over(4));
+		block$ = family$.definition("block", "blk", 2);
 		common.testing.gunit.assert-equals(tuple {8}, tuple {pixel$(block$(1)).value()});
 		common.testing.gunit.assert-equals(tuple {1}, tuple {block$(pixel$(8)).value()});
-		common.testing.gunit.assert-fails {units.length.define("test-meter", "m", 1)(pixel$(1))}
+		common.testing.gunit.assert-fails {units.length.definition("test-meter", "m", 1)(pixel$(1))}
 	),
 
-	common.testing.gunit.test>> unchanged-unit-conversion-preserves-numeric-kinds(): (
-		factory$ = units.length.define("test-meter", "m", 1);
+	common.testing.gunit.test>> verify-unchanged-unit-conversion-preserves-numeric-kinds(): (
+		factory$ = units.length.definition("test-meter", "m", 1);
 		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(factory$(factory$(2.5)).value(), float64?)});
 		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(factory$(factory$(pi)).value(), irrational?)});
 		common.testing.gunit.assert-equals(tuple {1.over(3)}, tuple {factory$(factory$(1.over(3))).value()})

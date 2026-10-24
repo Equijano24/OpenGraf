@@ -6,6 +6,7 @@ nav:
   - Overview: index.md
   - Plan y avance: plan-de-trabajo.md
   - Testing: testing.md
+  - Naming conventions: naming.md
   - Units:
       - Core API: units/core.md
       - Conversion and arithmetic: units/operations.md

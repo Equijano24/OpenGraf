@@ -4,7 +4,7 @@ import(open-graf-units-core: graf {path: "."});
 box {
 	self$(amount$ = number?, dimension$ = open-graf-units-core.dimension?): (
 		factory$ = open-graf-units-core.unit.family("compound", dimension$)
-			.define("compound", "", 1, no, yes, "derived coherent definition");
+			.definition("compound", "", 1, no, yes, "derived coherent definition");
 		definition$ = heir(factory$) {override>> self$.is-compound(): yes};
 		definition$(amount$)
 	)

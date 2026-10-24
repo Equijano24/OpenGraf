@@ -53,10 +53,19 @@ no se migran. El paso 6 añade operaciones a este núcleo, sin rehacerlo.
 
 El paso 6 conserva la fábrica izquierda en sumas y operaciones escalares,
 clasifica compuestos solo de forma explícita, propaga errores numéricos y verifica
-extensiones mediante `factory.make`. Rechaza la aritmética genérica sobre puntos
+extensiones mediante `factory.quantity`. Rechaza la aritmética genérica sobre puntos
 de temperatura y valores con offset; sus reglas especializadas quedan en el 9.
 
 Este checkpoint corrige además `gunit.assert-fails` en Graf: conserva las variables
 locales del test y ejecuta los efectos del cuerpo una vez. Dos regresiones .NET
 reprodujeron el fallo antes del arreglo. El runner sigue llamando cada setup y
 test mediante el deferreval `try` de Graf.
+
+## Revisión de nombres previa al paso 7
+
+Se revisaron las adiciones de los pasos 1–6 en Graf y OpenGraf. Las funciones que
+devuelven datos usan nombres de resultado (`quantity`, `definition`,
+`test-report`); las clases usan sustantivos y los procedimientos de prueba usan
+verbos de verificación. Se actualizaron los consumidores y la documentación.
+El detalle y el mapa de migración están en [convenciones de nombres](naming.md).
+Esta revisión no avanza el plan: siguen completos 6 pasos y el 7 es el siguiente.

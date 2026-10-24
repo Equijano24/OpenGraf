@@ -15,38 +15,38 @@ class {
 	exact: yes,
 	source: "user-defined",
 
-	self$(amount$ = number?): self$.make(amount$),
+	self$(amount$ = number?): self$.quantity(amount$),
 
-	self$.make(amount$ = number?):
+	self$.quantity(amount$ = number?):
 		composite>> new(self$) {amount: amount$, factory: self$},
 
 	self$(source$ = open-graf-units-core.quantity?): (
-		yes? >> self$.can-convert-from(source$);
-		coherent$ = source$.coherent();
-		amount$ = self$.from-coherent(coherent$);
-		self$.make(amount$)
+		yes? >> self$.is-convertible-from(source$);
+		coherent$ = source$.coherent-value();
+		amount$ = self$.display-value-of(coherent$);
+		self$.quantity(amount$)
 	),
 
 	self$.value(): self$.amount,
 
 	self$.is-compound(): no,
 
-	self$.can-convert-from(source$ = open-graf-units-core.quantity?):
+	self$.is-convertible-from(source$ = open-graf-units-core.quantity?):
 		self$.compatible-with(source$).or(
 			source$.is-compound().and(self$.dimension.same-as(source$.dimension))
 		),
 
-	self$.to-coherent(amount$ = number?): (
+	self$.coherent-value-of(amount$ = number?): (
 		scaled$ = if(equals(self$.scale, 1)) {amount$, amount$.times(self$.scale)};
 		if(equals(self$.offset, 0)) {scaled$, scaled$.plus(self$.offset)}
 	),
 
-	self$.from-coherent(amount$ = number?): (
+	self$.display-value-of(amount$ = number?): (
 		shifted$ = if(equals(self$.offset, 0)) {amount$, amount$.minus(self$.offset)};
 		if(equals(self$.scale, 1)) {shifted$, shifted$.over(self$.scale)}
 	),
 
-	self$.coherent(): self$.factory.to-coherent(self$.value()),
+	self$.coherent-value(): self$.factory.coherent-value-of(self$.value()),
 
 	self$.require-linear(): (
 		yes? >> self$.linear-arithmetic;
@@ -56,7 +56,7 @@ class {
 
 	self$.value-in-self(other$ = open-graf-units-core.quantity?): (
 		yes? >> self$.compatible-with(other$);
-		self$.factory.from-coherent(other$.coherent())
+		self$.factory.display-value-of(other$.coherent-value())
 	),
 
 	self$.plus(other$ = open-graf-units-core.quantity?): (
@@ -64,7 +64,7 @@ class {
 		other$.require-linear();
 		other-value$ = self$.value-in-self(other$);
 		amount$ = self$.value().plus(other-value$);
-		self$.with-value(amount$)
+		self$.quantity-with-value(amount$)
 	),
 
 	self$.minus(other$ = open-graf-units-core.quantity?): (
@@ -72,7 +72,7 @@ class {
 		other$.require-linear();
 		other-value$ = self$.value-in-self(other$);
 		amount$ = self$.value().minus(other-value$);
-		self$.with-value(amount$)
+		self$.quantity-with-value(amount$)
 	),
 
 	self$.times(other$ = any(number?, open-graf-units-core.quantity?)?): (
@@ -80,11 +80,11 @@ class {
 		if(match(other$, number?)) {
 			(
 				amount$ = self$.value().times(other$);
-				self$.with-value(amount$)
+				self$.quantity-with-value(amount$)
 			),
 			(
 				other$.require-linear();
-				amount$ = self$.coherent().times(other$.coherent());
+				amount$ = self$.coherent-value().times(other$.coherent-value());
 				dimension$ = self$.dimension.times(other$.dimension);
 				open-graf-units-core.compound(amount$, dimension$)
 			)
@@ -96,11 +96,11 @@ class {
 		if(match(other$, number?)) {
 			(
 				amount$ = self$.value().over(other$);
-				self$.with-value(amount$)
+				self$.quantity-with-value(amount$)
 			),
 			(
 				other$.require-linear();
-				amount$ = self$.coherent().over(other$.coherent());
+				amount$ = self$.coherent-value().over(other$.coherent-value());
 				dimension$ = self$.dimension.over(other$.dimension);
 				open-graf-units-core.compound(amount$, dimension$)
 			)
@@ -109,7 +109,7 @@ class {
 
 	self$.pow(exponent$ = integer?): (
 		self$.require-linear();
-		amount$ = self$.coherent().pow(exponent$);
+		amount$ = self$.coherent-value().pow(exponent$);
 		dimension$ = self$.dimension.pow(exponent$);
 		open-graf-units-core.compound(amount$, dimension$)
 	),
@@ -117,13 +117,13 @@ class {
 	self$.root(degree$ = integer?, precision$ = default(integer?, 15)?): (
 		self$.require-linear();
 		dimension$ = self$.dimension.root(degree$);
-		amount$ = self$.coherent().root(degree$, precision$);
+		amount$ = self$.coherent-value().root(degree$, precision$);
 		open-graf-units-core.compound(amount$, dimension$)
 	),
 
 	self$.rounded(places$ = integer?): (
 		amount$ = self$.value().round(places$);
-		self$.with-value(amount$)
+		self$.quantity-with-value(amount$)
 	),
 
 	self$.compared-to(other$ = open-graf-units-core.quantity?): self$.value().compared-to(self$.value-in-self(other$)),
@@ -133,7 +133,7 @@ class {
 	self$.gt(other$ = open-graf-units-core.quantity?): self$.value().gt(self$.value-in-self(other$)),
 	self$.gte(other$ = open-graf-units-core.quantity?): self$.value().gte(self$.value-in-self(other$)),
 
-	self$.with-value(amount$ = number?): self$.factory.make(amount$),
+	self$.quantity-with-value(amount$ = number?): self$.factory.quantity(amount$),
 
 	self$.compatible-with(other$ = box {kind: string?, dimension: all(open-graf-units-core.dimension?)?}?):
 		equals(self$.kind, other$.kind).and(self$.dimension.same-as(other$.dimension)),
@@ -150,10 +150,10 @@ class {
 		}
 	),
 
-	self$.define(id$ = string?, symbol$ = string?, scale$ = real?):
-		self$.define(id$, symbol$, scale$, no, yes, "user-defined"),
+	self$.definition(id$ = string?, symbol$ = string?, scale$ = real?):
+		self$.definition(id$, symbol$, scale$, no, yes, "user-defined"),
 
-	self$.define(id$ = string?, symbol$ = string?, scale$ = real?,
+	self$.definition(id$ = string?, symbol$ = string?, scale$ = real?,
 		prefixable$ = bool?, exact$ = bool?, source$ = string?): (
 		common.math.gt(0)? >> scale$;
 		common.math.gt(0)? >> id$.length();

@@ -12,13 +12,13 @@ Save this source as `examples/units/operations.graf` and run
 ```graf
 import(units: graf {path: "../../src/units"});
 
-meters$ = units.length.define("meter", "m", 1);
-centimeters$ = units.length.define("centimeter", "cm", 1.over(100));
-kilometers$ = units.length.define("kilometer", "km", 1000);
-hours$ = units.duration.define("hour", "h", 3600);
-meters-per-second$ = units.velocity.define("meter-per-second", "m/s", 1);
-kilometers-per-hour$ = units.velocity.define("kilometer-per-hour", "km/h", 5.over(18));
-square-meters$ = units.area.define("square-meter", "m2", 1);
+meters$ = units.length.definition("meter", "m", 1);
+centimeters$ = units.length.definition("centimeter", "cm", 1.over(100));
+kilometers$ = units.length.definition("kilometer", "km", 1000);
+hours$ = units.duration.definition("hour", "h", 3600);
+meters-per-second$ = units.velocity.definition("meter-per-second", "m/s", 1);
+kilometers-per-hour$ = units.velocity.definition("kilometer-per-hour", "km/h", 5.over(18));
+square-meters$ = units.area.definition("square-meter", "m2", 1);
 
 length$ = meters$(2).plus(centimeters$(30));
 speed$ = kilometers$(10).over(hours$(2));
@@ -43,7 +43,7 @@ factory and leaving the input unchanged. The mapping is:
 - To coherent value: `amount * scale + offset`.
 - From coherent value: `(coherent - offset) / scale`.
 
-`quantity.coherent()` returns a number, not another quantity. Identity mappings
+`quantity.coherent-value()` returns a number, not another quantity. Identity mappings
 skip multiplication by one and addition of zero, retaining the payload and its
 numeric backend. Exact rational factors remain rational; no automatic rounding
 or conversion to binary floating point is introduced by the unit layer.
@@ -111,14 +111,14 @@ single-valued. Arithmetic retains the actual left factory, including inherited
 methods and refinements.
 
 Every numeric constructor, compatible conversion and replacement payload passes
-through `factory.make(number)`. Its default implementation creates a composite
+through `factory.quantity(number)`. Its default implementation creates a composite
 instance with `amount` and the explicit `factory` reference. Extensions that
-validate or specialize construction should override `make` while keeping that
-contract. Operations returning a named quantity use its factory's `make`;
+validate or specialize construction should override `quantity` while keeping that
+contract. Operations returning a named quantity use its factory's `quantity`;
 compound operations use a fresh coherent compound definition.
 
-`to-coherent(number)` and `from-coherent(number)` implement the numeric mapping.
-`can-convert-from(quantity)` reports conversion eligibility; it includes explicit
+`coherent-value-of(number)` and `display-value-of(number)` implement the numeric mapping.
+`is-convertible-from(quantity)` reports conversion eligibility; it includes explicit
 compound classification. `compatible-with` remains the stricter same-kind and
 same-dimension check used by addition and comparisons.
 

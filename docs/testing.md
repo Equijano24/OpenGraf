@@ -40,7 +40,7 @@ files from loading. An empty target or filter cannot produce a passing check.
 ## Suite file format
 
 A file must return its suite box, or a stream of suite boxes. Do not call
-`gunit.run` or return report counts in a file intended for `graf test`:
+`gunit.test-report` or return report counts in a file intended for `graf test`:
 
 ```graf
 suite$ = (mutable>> box {
@@ -90,10 +90,10 @@ passes. .NET exceptions become Graf exception data through the same mechanism.
 Setups reset mutable state explicitly; the runner does not clone suites or roll
 back side effects.
 
-For manual use, `gunit.run(suite)` returns a report. `passed` and `failed` count
+For manual use, `gunit.test-report(suite)` returns a report. `passed` and `failed` count
 tests; `results.item` rows have `name`, `phase` (`"setup"` / `"test"`) and
 `outcome`. Failed outcomes contain an inspectable `error`; passed outcomes
-collect responses in `values.item`. The CLI uses `gunit.run-filtered` and reads
+collect responses in `values.item`. The CLI uses `gunit.filtered-test-report` and reads
 these reports, without duplicating discovery or the per-method try boundary.
 
 `assert-fails` is a native deferreval that runs its quoted body in the caller's

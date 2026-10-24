@@ -61,7 +61,7 @@ dimensionless ratios, not dimensionful values.
 Definitions carry `id`, `symbol`, `kind`, `dimension`, `scale`, `offset`, prefix
 eligibility, and exactness/source metadata. Measurements add `amount` and `factory`.
 Users extend families through inheritance or a definition factory such as
-`length.define("furlong", "fur", exactFactor)`. New dimensions/kinds compose the
+`length.definition("furlong", "fur", exactFactor)`. New dimensions/kinds compose the
 same protocol; no mutable global registration is required.
 
 ## Validation and documentation
@@ -113,20 +113,20 @@ or conversion to binary floating point occurs.
 | `factory(number)` | New immutable quantity in that unit |
 | `factory(quantity)` | Convert compatible kind, or classify a compound with matching dimensions |
 | `quantity.value()` | Original/display payload, still a Graf number |
-| `quantity.coherent()` | Payload in the family's coherent unit |
+| `quantity.coherent-value()` | Payload in the family's coherent unit |
 | `quantity.plus(other)` / `.minus(other)` | Compatible kind, left factory retained |
 | `quantity.times(number)` / `.over(number)` | Left factory retained |
 | `quantity.times(quantity)` / `.over(quantity)` | Coherent compound and composed dimensions |
 | `quantity.pow(integer)` | Compound with multiplied dimension exponents |
 | `quantity.root(integer, precision)` | Compound with divided integral exponents; numeric root delegated to Graf |
-| `factory.make(number)` | Overridable numeric construction protocol used by named results |
+| `factory.quantity(number)` | Overridable numeric construction protocol used by named results |
 | `quantity.rounded(places)` | Explicit rounding of displayed payload |
 | `angle.sin(precision)` / `.cos(precision)` / `.tan(precision)` | Dimensionless Graf number |
-| `family.define(id, symbol, scale)` | Local inheritable factory; no registration side effects |
+| `family.definition(id, symbol, scale)` | Local inheritable factory; no registration side effects |
 
 Factories and quantities share inheritance for method reuse, but a quantity's
 `factory` reference is explicit. A result must be constructed through that
-factory's `make(number)` protocol rather than by inheriting from an already
+factory's `quantity(number)` protocol rather than by inheriting from an already
 measured instance. Unit
 metadata is immutable and overridden explicitly so parent metadata does not
 appear as extra answers.
