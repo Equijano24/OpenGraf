@@ -49,5 +49,4 @@ suite$ = box {
 		common.testing.gunit.assert-equals(0, report$.failed)
 	)
 };
-report$ = common.testing.gunit.run(suite$);
-(report$.passed, report$.failed)
+suite$

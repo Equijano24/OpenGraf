@@ -35,5 +35,4 @@ suite$ = box {
 	)
 };
 
-report$ = common.testing.gunit.run(suite$);
-(report$.passed, report$.failed)
+suite$

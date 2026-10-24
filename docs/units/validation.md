@@ -19,7 +19,7 @@ Use `T-and-Q/Graf` on `develop`. Exception handling must obey these rules:
 The exception and label-modifier foundation has focused regression coverage in
 Graf. The gunit runner now guards each method and supports deferred failure assertions.
 Discovery now respects nearest/latest declarations and excludes nested data,
-method bodies and imported environments; the restored upstream CLI has no `graf test` command yet.
+method bodies and imported environments; the `graf test` command now provides targeted execution and status codes.
 
 ## Work remaining before release
 
@@ -30,7 +30,7 @@ method bodies and imported environments; the restored upstream CLI has no `graf 
 - [x] Deduplicate labels and preserve nearest/latest declaration selection, including unmarked replacements.
 - [x] Verify lazy `assert-fails`, including class-filtered assertions and empty
       or multiple response streams.
-- [ ] Provide `graf test` for files/directories, filters, useful diagnostics and
+- [x] Provide `graf test` for files/directories, filters, useful diagnostics and
       process exit codes for pass, failure and load error.
 - [ ] Implement the numeric/conversion core and independent extension examples.
 - [ ] Add the reviewed catalogue and its per-factory tests.
@@ -60,14 +60,18 @@ Measured constants need tolerance-based tests with documented reference values.
 
 The documentation builds successfully with MkDocs 1.6.1 in strict mode.
 Graf's exception and gunit checkpoint passed its complete .NET test
-suite: 1946 passed, 0 failed, 2 existing printed-form skips. These are Graf
+suite: 1955 passed, 0 failed, 2 existing printed-form skips. These are Graf
 engine results, not results for a replacement Open Graf units implementation.
 
-The gunit smoke suite in `tests/testing/gunit-smoke.graf` returns 5 passed and
-0 failed. The documentation's suite example returns 2 passed and 0 failed.
-Runner, assertions and discovery are complete. The test CLI and units
-implementation remain pending. The future units tests must be targeted explicitly
+The auxiliary `.graf` files now return suites for `graf test`. Their execution
+and discovery cases total 11 tests. The documentation example defines 2 tests.
+Runner, assertions and discovery are complete. The targeted test CLI is available; the units
+implementation remains pending. The replacement units tests must be targeted explicitly
 under `tests/units`; other legacy OpenGraf sections are not compatible test targets.
 
-The discovery smoke suite returns 6 passed and 0 failed; Graf includes 13
+The discovery smoke suite defines 6 tests; Graf includes 13
 discovery regressions alongside the 11 execution/assertion regressions.
+
+The actual `graf test tests/testing` command passes all 11 auxiliary tests and
+exits 0. Exit codes 1 (failed test), 2 (load/target/no matches) and 130
+(cancellation) were also verified. Replacement units tests remain pending.
