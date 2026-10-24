@@ -18,15 +18,16 @@ Use `T-and-Q/Graf` on `develop`. Exception handling must obey these rules:
 
 The exception and label-modifier foundation has focused regression coverage in
 Graf. The gunit runner now guards each method and supports deferred failure assertions.
-The separate discovery review remains pending; the restored upstream CLI has no `graf test` command yet.
+Discovery now respects nearest/latest declarations and excludes nested data,
+method bodies and imported environments; the restored upstream CLI has no `graf test` command yet.
 
 ## Work remaining before release
 
 - [x] Verify per-test setup execution, guarded test invocation and continuing after failures.
       Suites reset mutable state through setup methods; the runner does not clone them.
-- [ ] Restrict discovery to the target's visible lineage; never discover tests in
+- [x] Restrict discovery to the target's inheritance/instantiation lineage; never discover tests in
       nested data, method bodies or imported environments.
-- [ ] Deduplicate overridden labels and preserve nearest-definition ordering.
+- [x] Deduplicate labels and preserve nearest/latest declaration selection, including unmarked replacements.
 - [x] Verify lazy `assert-fails`, including class-filtered assertions and empty
       or multiple response streams.
 - [ ] Provide `graf test` for files/directories, filters, useful diagnostics and
@@ -59,10 +60,14 @@ Measured constants need tolerance-based tests with documented reference values.
 
 The documentation builds successfully with MkDocs 1.6.1 in strict mode.
 Graf's exception and gunit checkpoint passed its complete .NET test
-suite: 1933 passed, 0 failed, 2 existing printed-form skips. These are Graf
+suite: 1946 passed, 0 failed, 2 existing printed-form skips. These are Graf
 engine results, not results for a replacement Open Graf units implementation.
 
 The gunit smoke suite in `tests/testing/gunit-smoke.graf` returns 5 passed and
 0 failed. The documentation's suite example returns 2 passed and 0 failed.
-The runner and assertion step is complete; discovery review, test CLI and the
-units implementation remain separate pending steps.
+Runner, assertions and discovery are complete. The test CLI and units
+implementation remain pending. The future units tests must be targeted explicitly
+under `tests/units`; other legacy OpenGraf sections are not compatible test targets.
+
+The discovery smoke suite returns 6 passed and 0 failed; Graf includes 13
+discovery regressions alongside the 11 execution/assertion regressions.

@@ -75,3 +75,35 @@ graf run tests/testing/gunit-smoke.graf
 The expected result is `5`, then `0`. The smoke suite checks assertions, deferred
 failures, class filtering, continued execution after failure and setup failure.
 The command is `graf run` until the dedicated test CLI is implemented.
+
+## Discovery rules
+
+Gunit registers one method per label. It inspects the suite's own declarations,
+newest first, then inheritance and instantiation parents breadth-first. Parents
+at the same depth keep their declared order; shared ancestors are visited once.
+The nearest/latest declaration claims a label before its marker is checked.
+An unmarked override therefore removes an inherited test/setup, and changing a
+mark from setup to test replaces that role. Use distinct labels for distinct
+tests rather than overloading or accumulating them under the same name.
+
+Discovery reads declarations as data. It never enters nested data, method
+bodies or imported environments. Inherited methods receive the original suite
+as their receiver. The additional smoke suite checks these boundaries:
+
+```sh
+graf run tests/testing/gunit-discovery-smoke.graf
+```
+
+Its expected result is `6`, then `0`.
+
+## Compatibility and test scope
+
+OpenGraf's existing components and tests were written for an older Graf version.
+Only units are scheduled for rewriting in this project. Do not interpret checks
+of gunit or the new units as validation of the other legacy sections.
+
+When the dedicated test CLI is implemented, run the replacement units tests
+under the explicit `tests/units` target. Do not default to the repository root
+or all of `tests`: unrelated legacy tests are not expected to pass against
+current Graf. The two contemporary suites in `tests/testing` are auxiliary
+checks of gunit, not a migration of the legacy library.

@@ -23,3 +23,9 @@ object model, conversion rules, validation matrix and implementation status.
 See [Testing with gunit](docs/testing.md) for the runner, deferred assertions and
 failure reports. The executable [gunit smoke suite](tests/testing/gunit-smoke.graf)
 checks these prerequisites against the updated `Graf/develop` interpreter.
+
+## Compatibility
+
+The existing library targets an older Graf version. This work rewrites units
+for current Graf; other legacy sections are not expected to pass its tests.
+See [test scope and discovery](docs/testing.md#compatibility-and-test-scope).

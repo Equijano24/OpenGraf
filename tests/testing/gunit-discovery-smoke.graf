@@ -1,0 +1,53 @@
+suite$ = box {
+	common.testing.gunit.test>> nested-data(): (
+		target$ = box {
+			nested: box {common.testing.gunit.test>> hidden(): missing},
+			factory(): box {common.testing.gunit.test>> hidden(): missing},
+			common.testing.gunit.test>> visible(): 1
+		};
+		report$ = common.testing.gunit.run(target$);
+		common.testing.gunit.assert-equals(1, report$.passed);
+		common.testing.gunit.assert-equals(0, report$.failed)
+	),
+	common.testing.gunit.test>> imported-environment(): (
+		environment$ = box {common.testing.gunit.test>> hidden(): missing};
+		target$ = (with {environment$, common.testing.gunit}>> box {common.testing.gunit.test>> visible(): 1});
+		report$ = common.testing.gunit.run(target$);
+		common.testing.gunit.assert-equals(1, report$.passed);
+		common.testing.gunit.assert-equals(0, report$.failed)
+	),
+	common.testing.gunit.test>> marked-override(): (
+		base$ = heir {common.testing.gunit.test>> sample(): missing};
+		target$ = heir(base$) {override>> common.testing.gunit.test>> sample(): 1};
+		report$ = common.testing.gunit.run(target$);
+		common.testing.gunit.assert-equals(1, report$.passed);
+		common.testing.gunit.assert-equals(0, report$.failed)
+	),
+	common.testing.gunit.test>> unmarked-overrides(): (
+		base$ = heir {
+			common.testing.gunit.setup>> prepare(): missing,
+			common.testing.gunit.test>> removed(): missing
+		};
+		target$ = heir(base$) {override>> prepare(): 1, override>> removed(): 1, common.testing.gunit.test>> visible(): 1};
+		report$ = common.testing.gunit.run(target$);
+		common.testing.gunit.assert-equals(1, report$.passed);
+		common.testing.gunit.assert-equals(0, report$.failed)
+	),
+	common.testing.gunit.test>> latest-declaration(): (
+		target$ = box {common.testing.gunit.test>> sample(): missing, common.testing.gunit.test>> sample(): 1};
+		report$ = common.testing.gunit.run(target$);
+		common.testing.gunit.assert-equals(1, report$.passed);
+		common.testing.gunit.assert-equals(0, report$.failed)
+	),
+	common.testing.gunit.test>> diamond(): (
+		base$ = heir {common.testing.gunit.test>> shared(): 1};
+		left$ = heir(base$) {common.testing.gunit.test>> left(): 2};
+		right$ = heir(base$) {common.testing.gunit.test>> right(): 3};
+		target$ = heir(left$, right$) {};
+		report$ = common.testing.gunit.run(target$);
+		common.testing.gunit.assert-equals(3, report$.passed);
+		common.testing.gunit.assert-equals(0, report$.failed)
+	)
+};
+report$ = common.testing.gunit.run(suite$);
+(report$.passed, report$.failed)
