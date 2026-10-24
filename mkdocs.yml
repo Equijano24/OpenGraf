@@ -1,0 +1,10 @@
+site_name: Open Graf
+site_description: Technical reference for reusable Graf components
+repo_url: https://github.com/Equijano24/OpenGraf
+use_directory_urls: false
+nav:
+  - Overview: index.md
+  - Units:
+      - Design and API contract: units/design.md
+      - Validation and status: units/validation.md
+      - Sources: units/sources.md
