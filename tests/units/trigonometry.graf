@@ -1,0 +1,105 @@
+import(units: graf {path: "../../src/units"});
+
+box {
+	common.testing.gunit.test>> verify-exact-sine-of-degrees(): (
+		foreach {pair$ = (tuple {0, 0}, tuple {30, 1.over(2)}, tuple {90, 1},
+			tuple {180, 0}, tuple {270, -1}, tuple {360, 0}, tuple {-30, -1.over(2)})} {
+			common.testing.gunit.assert-equals(tuple {pair$.#1}, tuple {units.degrees(pair$.#0).sin(0)})
+		}
+	),
+
+	common.testing.gunit.test>> verify-exact-cosine-and-tangent(): (
+		common.testing.gunit.assert-equals(tuple {1}, tuple {units.degrees(0).cos()});
+		common.testing.gunit.assert-equals(tuple {1.over(2)}, tuple {units.degrees(60).cos(0)});
+		common.testing.gunit.assert-equals(tuple {0}, tuple {units.degrees(90).cos(40)});
+		common.testing.gunit.assert-equals(tuple {-1}, tuple {units.degrees(180).cos()});
+		common.testing.gunit.assert-equals(tuple {0}, tuple {units.degrees(0).tan()});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {units.degrees(45).tan(0)});
+		common.testing.gunit.assert-equals(tuple {-1}, tuple {units.degrees(135).tan()})
+	),
+
+	common.testing.gunit.test>> verify-reciprocal-circular-functions(): (
+		common.testing.gunit.assert-equals(tuple {1}, tuple {units.degrees(45).cot()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.degrees(60).sec(0)});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.degrees(30).csc(0)});
+		common.testing.gunit.assert-equals(tuple {common.math.cot(1, 25)}, tuple {units.radians(1).cot(25)});
+		common.testing.gunit.assert-equals(tuple {common.math.sec(1, 25)}, tuple {units.radians(1).sec(25)});
+		common.testing.gunit.assert-equals(tuple {common.math.csc(1, 25)}, tuple {units.radians(1).csc(25)})
+	),
+
+	common.testing.gunit.test>> verify-default-and-explicit-precision(): (
+		q$ = units.radians(2.5);
+		common.testing.gunit.assert-equals(tuple {common.math.sin(2.5, 15)}, tuple {q$.sin()});
+		common.testing.gunit.assert-equals(tuple {common.math.cos(2.5, 15)}, tuple {q$.cos()});
+		common.testing.gunit.assert-equals(tuple {common.math.tan(2.5, 15)}, tuple {q$.tan()});
+		common.testing.gunit.assert-equals(tuple {common.math.sin(2.5, 30)}, tuple {q$.sin(30)});
+		common.testing.gunit.assert-equals(tuple {common.math.cos(2.5, 30)}, tuple {q$.cos(30)});
+		common.testing.gunit.assert-equals(tuple {common.math.tan(2.5, 30)}, tuple {q$.tan(30)});
+		common.testing.gunit.assert-equals(tuple {2.5}, tuple {q$.value()})
+	),
+
+	common.testing.gunit.test>> verify-high-precision-rational-reference(): (
+		common.testing.gunit.assert-equals(tuple {0.841470984807896506652502321630(0)}, tuple {units.radians(1).sin(30)});
+		common.testing.gunit.assert-equals(tuple {0.540302305868139717400936607443(0)}, tuple {units.radians(1).cos(30)});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(units.radians(1).sin(30), rational?)});
+		common.testing.gunit.assert-equals(tuple {no}, tuple {match(units.radians(1).sin(30), float64?)})
+	),
+
+	common.testing.gunit.test>> verify-special-values-stay-exact-at-zero-precision(): (
+		common.testing.gunit.assert-equals(tuple {1.over(2)}, tuple {units.degrees(30).sin(0)});
+		common.testing.gunit.assert-equals(tuple {1.over(2)}, tuple {units.degrees(60).cos(0)});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(units.degrees(30).sin(0), rational?)});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(units.degrees(90).sin(), int32?)})
+	),
+
+	common.testing.gunit.test>> verify-periodic-values-do-not-normalize-the-payload(): (
+		q$ = units.degrees(360000030);
+		common.testing.gunit.assert-equals(tuple {1.over(2)}, tuple {q$.sin(0)});
+		common.testing.gunit.assert-equals(tuple {360000030}, tuple {q$.value()});
+		common.testing.gunit.assert-equals(tuple {-1.over(2)}, tuple {units.degrees(-30).sin(0)})
+	),
+
+	common.testing.gunit.test>> verify-custom-angular-definition-inherits-trigonometry(): (
+		turns$ = units.angle.definition("test-turn", "turn", pi.times(2));
+		common.testing.gunit.assert-equals(tuple {1}, tuple {turns$(1.over(4)).sin()});
+		common.testing.gunit.assert-equals(tuple {-1}, tuple {turns$(1.over(2)).cos()});
+		common.testing.gunit.assert-equals(tuple {90}, tuple {units.degrees(turns$(1.over(4))).value()});
+		common.testing.gunit.assert-equals(tuple {45}, tuple {units.degrees(turns$(1.over(8))).value()})
+	),
+
+	common.testing.gunit.test>> verify-invalid-precision-is-not-silently-coerced(): (
+		q$ = units.radians(1);
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, q$.sin(-1)};
+		common.testing.gunit.assert-fails {q$.cos(1.over(2))};
+		common.testing.gunit.assert-fails {q$.tan("20")};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, q$.sin(2147483648)}
+	),
+
+	common.testing.gunit.test>> verify-poles-propagate-numeric-domain-errors(): (
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, units.degrees(90).tan()};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, units.degrees(0).cot()};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, units.degrees(90).sec()};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, units.degrees(180).csc()}
+	),
+
+	common.testing.gunit.test>> verify-exact-values-do-not-require-millions-of-pi-digits(): (
+		common.testing.gunit.assert-equals(tuple {0}, tuple {units.radians(0).sin(2000000)});
+		common.testing.gunit.assert-fails {units.radians(1).sin(2000000)}
+	),
+
+	common.testing.gunit.test>> verify-nonangular-and-nonreal-inputs-are-refused(): (
+		q$ = units.length.definition("test-meter", "m", 1)(1);
+		common.testing.gunit.assert-fails {q$.sin()};
+		common.testing.gunit.assert-fails {units.degrees("30")};
+		common.testing.gunit.assert-fails {units.radians.sin()};
+		common.testing.gunit.assert-fails {units.degrees(30).ln(10)}
+	),
+
+	common.testing.gunit.test>> verify-high-precision-payloads-and-angular-conversions(): (
+		x$ = units.radians(1).sin(30);
+		q$ = units.radians(x$);
+		common.testing.gunit.assert-equals(tuple {x$}, tuple {q$.value()});
+		common.testing.gunit.assert-equals(tuple {x$}, tuple {units.radians(units.degrees(q$)).value()})
+	)
+
+}

@@ -10,8 +10,9 @@ an explicit exception.
 This review covers the units implementation, gunit foundation, SDK test command,
 engine helpers added for those features, their fixtures, examples and technical
 references. It does not migrate unrelated legacy OpenGraf components or rename
-all pre-existing Graf APIs. The eleven-step plan remains at six completed steps;
-step 7 has not started.
+all pre-existing Graf APIs. The review was completed before step 7; its naming
+conventions also apply to the angular API. The current checkpoint is recorded
+in the [eleven-step plan](plan-de-trabajo.md).
 
 ## Unit API migration
 

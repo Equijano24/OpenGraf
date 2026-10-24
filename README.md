@@ -20,9 +20,12 @@ local definitions and immutable measurements for current Graf. See the
 [core API](docs/units/core.md) and [technical documentation](docs/index.md).
 [Conversion and arithmetic](docs/units/operations.md) are implemented, including
 compound dimensions, powers, roots, comparisons and local extensions.
-Trigonometry and the reviewed catalogue remain in the next steps.
+[Angles and trigonometry](docs/units/angles.md) provide `radians`, `degrees`,
+symbolic conversion, circular/inverse functions and precision parameters.
+The reviewed catalogue and prefix API remain in step 8.
 Run `graf test tests/units` to check this section, or
-`graf run examples/units/operations.graf` to run the arithmetic example.
+`graf run examples/units/operations.graf` to run the arithmetic example, or
+`graf run examples/units/angles.graf` for angles.
 
 ## Testing foundation
 

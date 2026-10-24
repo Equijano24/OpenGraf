@@ -17,5 +17,15 @@ box {
 		common.testing.gunit.assert(match(q$.dimension, units.dimension?));
 		common.testing.gunit.assert(q$.compatible-with(units.length));
 		common.testing.gunit.assert-equals(3, q$.value())
+	),
+
+	common.testing.gunit.test>> verify-angular-imports-share-factories(): (
+		common.testing.gunit.assert-equals(tuple {units.angle}, tuple {another-units-alias.angle});
+		common.testing.gunit.assert-equals(tuple {units.radians}, tuple {another-units-alias.radians});
+		common.testing.gunit.assert-equals(tuple {units.degrees}, tuple {whole-library.units.degrees});
+		common.testing.gunit.assert-equals(tuple {180}, tuple {units.degrees(whole-library.units.radians(pi)).value()});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {another-units-alias.degrees(90).sin()});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(whole-library.units.radians(1), units.unit?)})
 	)
+
 }

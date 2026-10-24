@@ -22,6 +22,20 @@ NIST's SI overview identifies seven base units, 22 derived units with special
 names and 24 decimal prefixes. Its links and BIPM publications are the starting
 points for checking current definitions; historical tables need edition checks.
 
+## Reviewed angular definitions
+
+The radian and degree factories were checked on 2026-10-24 against BIPM,
+*SI Brochure*, ninth edition, version 4.01, Tables 4 and 8:
+<https://www.bipm.org/documents/20126/41483022/SI-Brochure-9-EN.pdf>.
+The radian is the coherent SI unit of plane angle. One degree is exactly
+(pi/180) radians; the implementation retains symbolic pi rather than a
+rounded decimal factor. NIST SP 330 (2019) independently confirms that relation:
+<https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.330-2019.pdf>.
+
+This review covers these two definitions. It does not mark the remaining
+catalogue or prefixes as reviewed. The `prefixable` flags record eligibility
+(radian yes, degree no), not an implemented prefix API.
+
 ## Secondary coverage reference
 
 Kurt Gieck and Reiner Gieck, *Manual de fórmulas técnicas*, Spanish edition

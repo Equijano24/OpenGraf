@@ -3,8 +3,9 @@
 The core is implemented for current Graf on `develop`. It provides 25 families,
 local unit definitions, integral dimensions, and immutable measurements.
 [Conversion and arithmetic](operations.md) are implemented in step 6.
-Trigonometry and the reviewed unit catalogue remain in the following steps; the
-complete target is in the [design contract](design.md).
+[Angles and trigonometry](angles.md) add the concrete `radians` and `degrees`
+factories in step 7. The reviewed catalogue remains in step 8; the complete
+target is in the [design contract](design.md).
 
 ## Import and construct
 

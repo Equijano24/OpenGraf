@@ -1,0 +1,5 @@
+import(open-graf-units-core: graf {path: "."});
+
+// Coherent plane-angle unit; the prefix flag is eligibility metadata.
+open-graf-units-core.angle.definition("radian", "rad", 1, yes, yes,
+	"BIPM SI Brochure, 9th edition v4.01, Table 4 (radian)")

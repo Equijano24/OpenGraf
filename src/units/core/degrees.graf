@@ -1,0 +1,5 @@
+import(open-graf-units-core: graf {path: "."});
+
+// The conversion is exact and symbolic: no decimal approximation of pi.
+open-graf-units-core.angle.definition("degree", "°", pi.over(180), no, yes,
+	"BIPM SI Brochure, 9th edition v4.01, Table 8 (degree)")

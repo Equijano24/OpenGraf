@@ -1,0 +1,84 @@
+import(units: graf {path: "../../src/units"});
+
+box {
+	common.testing.gunit.test>> verify-public-angular-definitions(): (
+		common.testing.gunit.assert-equals(tuple {"radian"}, tuple {units.radians.id});
+		common.testing.gunit.assert-equals(tuple {"rad"}, tuple {units.radians.symbol});
+		common.testing.gunit.assert-equals(tuple {"degree"}, tuple {units.degrees.id});
+		common.testing.gunit.assert-equals(tuple {"°"}, tuple {units.degrees.symbol});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {units.radians(2).compatible-with(units.degrees(2))});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(units.degrees(2), units.angle?)});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(units.radians(2), units.unit?)});
+		common.testing.gunit.assert-equals(tuple {yes, yes}, tuple {units.radians.exact, units.degrees.exact})
+	),
+
+	common.testing.gunit.test>> verify-numeric-constructors-use-their-own-units(): (
+		common.testing.gunit.assert-equals(tuple {20}, tuple {units.radians(20).value()});
+		common.testing.gunit.assert-equals(tuple {15}, tuple {units.degrees(15).value()});
+		common.testing.gunit.assert-equals(tuple {2.5}, tuple {units.radians(2.5).value()});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(units.radians(2.5).value(), float64?)});
+		common.testing.gunit.assert-equals(tuple {1.over(3)}, tuple {units.degrees(1.over(3)).value()});
+		common.testing.gunit.assert-equals(tuple {18_446_744_073_709_551_616}, tuple {units.radians(18_446_744_073_709_551_616).value()})
+	),
+
+	common.testing.gunit.test>> verify-symbolic-degree-radian-anchors(): (
+		common.testing.gunit.assert-equals(tuple {1}, tuple {units.radians.scale});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {units.degrees.scale.equal-to(pi.over(180))});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(units.degrees.scale, irrational?)});
+		foreach {pair$ = (tuple {0, 0}, tuple {30, pi.over(6)}, tuple {90, pi.over(2)},
+			tuple {180, pi}, tuple {360, pi.times(2)}, tuple {-90, pi.over(-2)})} {
+			common.testing.gunit.assert-equals(tuple {yes}, tuple {units.radians(units.degrees(pair$.#0)).value().equal-to(pair$.#1)});
+			common.testing.gunit.assert-equals(tuple {pair$.#0}, tuple {units.degrees(units.radians(pair$.#1)).value()})
+		}
+	),
+
+	common.testing.gunit.test>> verify-mixed-addition-and-subtraction-retain-left-factory(): (
+		a$ = units.radians(20);
+		b$ = units.degrees(15);
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {a$.plus(b$).value().equal-to(20.plus(pi.over(12)))});
+		common.testing.gunit.assert-equals(tuple {units.radians}, tuple {a$.plus(b$).factory});
+		common.testing.gunit.assert-equals(tuple {units.degrees}, tuple {b$.plus(a$).factory});
+		common.testing.gunit.assert-equals(tuple {105}, tuple {units.degrees(90).plus(units.radians(pi.over(12))).value()});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {units.radians(pi).minus(units.degrees(90)).value().equal-to(pi.over(2))});
+		common.testing.gunit.assert-equals(tuple {20, 15}, tuple {a$.value(), b$.value()})
+	),
+
+	common.testing.gunit.test>> verify-angles-remain-distinct-from-other-dimensionless-kinds(): (
+		ratio$ = units.ratio.definition("test-ratio", "", 1)(1);
+		solid$ = units.solid-angle.definition("test-steradian", "sr", 1)(1);
+		common.testing.gunit.assert-fails {units.radians(ratio$)};
+		common.testing.gunit.assert-fails {units.degrees(solid$)};
+		common.testing.gunit.assert-fails {units.radians(1).plus(ratio$)};
+		common.testing.gunit.assert-fails {units.radians(1).plus(1)};
+		common.testing.gunit.assert-fails {ratio$.sin()};
+		common.testing.gunit.assert-fails {solid$.sin()}
+	),
+
+	common.testing.gunit.test>> verify-angular-results-remain-immutable(): (
+		q$ = units.degrees(30);
+		common.testing.gunit.assert-fails {q$.amount := 40};
+		common.testing.gunit.assert-fails {units.degrees.scale := 1};
+		common.testing.gunit.assert-fails {mutable>> units.radians(2)};
+		common.testing.gunit.assert-equals(tuple {units.degrees}, tuple {q$.times(2).factory});
+		common.testing.gunit.assert-equals(tuple {60}, tuple {q$.times(2).value()});
+		common.testing.gunit.assert-equals(tuple {30}, tuple {q$.value()})
+	),
+
+	common.testing.gunit.test>> verify-angular-ordering-with-symbolic-right-operands(): (
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {units.radians(3).lt(units.degrees(180))});
+		common.testing.gunit.assert-equals(tuple {no}, tuple {units.radians(3).equal-to(units.degrees(180))});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {units.radians(4).compared-to(units.degrees(180))});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {units.degrees(30).equal-to(units.radians(pi.over(6)))})
+	)
+,
+
+	common.testing.gunit.test>> verify-provenance-and-prefix-overrides-retain-unit-membership(): (
+		custom$ = units.angle.definition("approx-angle", "u", 1, yes, no, "local estimate");
+		q$ = custom$(2);
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(q$, units.unit?)});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(q$, units.angle?)});
+		common.testing.gunit.assert-equals(tuple {yes, no, "local estimate"}, tuple {q$.prefixable, q$.exact, q$.source});
+		common.testing.gunit.assert-equals(tuple {yes, no}, tuple {units.radians.prefixable, units.degrees.prefixable})
+	)
+
+}

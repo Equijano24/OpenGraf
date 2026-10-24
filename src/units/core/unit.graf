@@ -9,11 +9,11 @@ class {
 	kind: string?,
 	dimension: open-graf-units-core.dimension?,
 	scale: real?,
-	offset: 0,
+	offset: default(real?, 0)?,
 	linear-arithmetic: bool?,
-	prefixable: no,
-	exact: yes,
-	source: "user-defined",
+	prefixable: default(bool?, no)?,
+	exact: default(bool?, yes)?,
+	source: default(string?, "user-defined")?,
 
 	self$(amount$ = number?): self$.quantity(amount$),
 

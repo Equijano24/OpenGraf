@@ -15,20 +15,20 @@ Trigonometría, catálogo y reglas de unidades especiales siguen pendientes.
 | 4 | Implementar `graf test`: archivos, carpetas, filtros, diagnósticos y códigos de salida. | Completado |
 | 5 | Implementar `unit`, sus familias y las medidas como instancias inmutables con número, fábrica y dimensiones. | Completado |
 | 6 | Completar conversiones, aritmética mixta, dimensiones compuestas, potencias, comparación y extensibilidad local. | Completado |
-| 7 | Integrar `common.math`: trigonometría, conversiones con π y precisión explícita, conservando los tipos numéricos de Graf. | **Siguiente** |
-| 8 | Construir el catálogo y los prefijos decimales/binarios; verificar factores con BIPM, NIST y CODATA, usando Gieck como referencia de cobertura. | Pendiente |
+| 7 | Integrar `common.math`: trigonometría, conversiones con π y precisión explícita, conservando los tipos numéricos de Graf. | Completado |
+| 8 | Construir el catálogo y los prefijos decimales/binarios; verificar factores con BIPM, NIST y CODATA, usando Gieck como referencia de cobertura. | **Siguiente** |
 | 9 | Resolver temperaturas absolutas y diferencias, unidades logarítmicas y conversiones con referencias o modelos explícitos. | Pendiente |
 | 10 | Migrar la API antigua, actualizar ejemplos y probar cada unidad, operación, extensión y error con gunit y la suite completa de Graf. | Pendiente |
 | 11 | Completar documentación técnica, catálogo, fuentes y migración; verificar sitio web y PDF y publicar los cambios de ambos repositorios. | Parcial: documentación inicial y checkpoints publicados; referencia final y PDF pendientes |
 
 ## Último checkpoint verificado
 
-- Graf: la suite completa de `develop` tiene **1957 pruebas correctas, 0 fallos y 2 omisiones existentes**. Incluye 13 regresiones de ejecución/aserciones, 13 de descubrimiento de gunit y 9 del comando de pruebas.
+- Graf: la suite completa de `develop` tiene **1980 pruebas correctas, 0 fallos y 2 omisiones existentes**. Incluye 13 regresiones de ejecución/aserciones, 13 de descubrimiento de gunit y 9 del comando de pruebas.
 - OpenGraf: las pruebas auxiliares [de ejecución](https://github.com/Equijano24/OpenGraf/blob/master/tests/testing/gunit-smoke.graf) y [de descubrimiento](https://github.com/Equijano24/OpenGraf/blob/master/tests/testing/gunit-discovery-smoke.graf) devuelven sus suites para `graf test`; `graf test tests/testing` verifica **11 correctas, 0 fallidas y 0 errores de carga** (5 de ejecución y 6 de descubrimiento).
-- OpenGraf units: `graf test tests/units` verifica **77 correctas, 0 fallidas y 0 errores de carga**. Incluye las 45 del núcleo y 32 de conversiones, aritmética, compuestos, potencias, raíces, comparación y extensiones locales. Las nuevas aserciones comprueban también que cada operación devuelva exactamente un resultado.
-- La documentación compila con `mkdocs build --strict`; los ejemplos del [núcleo](units/core.md) y de [operaciones](units/operations.md) se ejecutan con Graf actual.
+- OpenGraf units: `graf test tests/units` verifica **110 correctas, 0 fallidas y 0 errores de carga**. Incluye las 45 del núcleo, 32 de operaciones y 33 de ángulos, trigonometría, precisión y extensiones. Las nuevas aserciones comprueban también que cada operación devuelva exactamente un resultado.
+- La documentación compila con `mkdocs build --strict`; los ejemplos del [núcleo](units/core.md), de [operaciones](units/operations.md) y de [ángulos](units/angles.md) se ejecutan con Graf actual.
 
-Estas pruebas validan el motor, gunit, el núcleo y las operaciones de units. No
+Estas pruebas validan el motor, gunit, el núcleo, las operaciones y los ángulos de units. No
 certifican el catálogo ni las reglas especiales que siguen pendientes. Véanse la [API actual](units/core.md),
 el [diseño completo](units/design.md), la
 [validación pendiente](units/validation.md) y el [uso de gunit](testing.md).
@@ -68,4 +68,25 @@ devuelven datos usan nombres de resultado (`quantity`, `definition`,
 `test-report`); las clases usan sustantivos y los procedimientos de prueba usan
 verbos de verificación. Se actualizaron los consumidores y la documentación.
 El detalle y el mapa de migración están en [convenciones de nombres](naming.md).
-Esta revisión no avanza el plan: siguen completos 6 pasos y el 7 es el siguiente.
+La revisión de nombres se conserva. Tras completar el paso 7 hay **7 pasos completos** y el **8 es el siguiente**.
+
+
+## Paso 7 completado
+
+Se agregan `src/units/radians.graf` y `src/units/degrees.graf`, con una familia
+angular compartida en `src/units/core/angle.graf`. Las conversiones conservan π
+simbólico; las seis funciones circulares devuelven números y las siete inversas
+producen medidas en la unidad de la fábrica. Precisión opcional: 15 por defecto,
+con delegación explícita a `common.math`. Los ejemplos, rangos y errores están en
+la [referencia angular](units/angles.md).
+
+Graf incorpora 23 regresiones y el soporte aritmético/de comparación para
+operandos simbólicos a la derecha, cancelación exacta y formas equivalentes en π.
+La promoción numérica existente puede convertir racionales grandes a `float64`
+en operaciones posteriores; se documenta el límite y la cuestión pendiente en
+Graf, sin redefinir esa regla desde OpenGraf.
+
+El siguiente paso construye el catálogo y los prefijos. `meters` y las demás
+fábricas públicas del catálogo aún no se agregan; los ejemplos de longitudes
+siguen creando definiciones locales. Las reglas especializadas del paso 9,
+la migración completa y la verificación del PDF final siguen pendientes.

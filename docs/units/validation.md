@@ -1,21 +1,24 @@
 # Validation and implementation status
 
-Steps 5 and 6 replace the legacy units with the [core](core.md) and
-[conversion/arithmetic](operations.md): 25 families, local definitions, immutable
-measurements, compound dimensions, integer powers, roots and comparisons.
-Trigonometry, the reviewed catalogue and special-unit rules remain later steps.
-The [11-step plan](../plan-de-trabajo.md) records six completed steps and step 7 next.
+Steps 5–7 replace the legacy units with the [core](core.md),
+[conversion/arithmetic](operations.md) and [angles/trigonometry](angles.md):
+25 families, local definitions, immutable measurements, compound dimensions,
+powers, roots, comparisons, `radians`, `degrees` and precision-controlled circular/
+inverse functions. The reviewed catalogue and special-unit rules remain later
+steps. The [11-step plan](../plan-de-trabajo.md) records seven completed steps
+and step 8 next.
 
 ## Verified checkpoint
 
 | Check | Result |
 | --- | --- |
-| `graf test tests/units` | 77 passed, 0 failed, 0 load errors; exit 0 |
+| `graf test tests/units` | 110 passed, 0 failed, 0 load errors; exit 0 |
 | `graf test tests/testing` | 11 auxiliary gunit tests passed; exit 0 |
-| Complete Graf .NET suite on `develop` | 1957 passed, 0 failed, 2 existing printed-form skips |
-| Graf solution build | Successful; gunit caller-context fix included |
+| Complete Graf .NET suite on `develop` | 1980 passed, 0 failed, 2 existing printed-form skips |
+| Graf solution build | Successful; symbolic operand arithmetic/comparison fix included |
 | `graf run examples/units/core.graf` | Original 1/3, replacement 2, symbol m, length exponent 1, compatible yes |
 | `graf run examples/units/operations.graf` | 23/10, 200, 25/18, 5, 3, yes |
+| `graf run examples/units/angles.graf` | Constructor, symbolic pi/6, 180, mixed sum, sine, exact 1/2, inverse 30 and atan2 135 |
 | Host BigComplex payload check | Identity retained through construction, coherent mapping, conversion and replacement |
 | `mkdocs build --strict` | Successful |
 
@@ -31,6 +34,20 @@ left-factory retention, custom `quantity` validation, scalar and compound arithm
 all eight exponent operations, exact and precision-controlled roots, explicit
 classification, numeric failures and incompatible kinds. Actual values are
 collected in tuples so empty streams fail assertions instead of skipping them.
+
+The 33 angular checks cover independent degree/radian anchors, mixed arithmetic,
+kind boundaries, metadata overrides, aliases/root imports, six circular functions,
+seven inverses, principal ranges, axes/quadrants, explicit/default precision,
+30-digit rational reference values, periodic inputs, domains, immutability and
+custom angular factories including overridden construction. Tuples check response
+cardinality. The 23 new Graf regression cases cover symbolic operands on either
+side, exact cancellation and all comparison messages. Exact rational reference
+literals use `a.b(0)` to avoid invoking Graf's large-component promotion when
+constructing an expected value.
+
+The precision boundary in [angles](angles.md#precision-boundary) is explicit:
+`common.math` results retain their backend type, but subsequent generic numeric
+arithmetic still follows Graf's existing rational-to-float promotion rule.
 
 `tests/units` is the replacement test target. The old `tests/units-test.graf`,
 other tests and other library sections still target the obsolete API; they are
@@ -66,7 +83,7 @@ The CLI's pass/fail/load/no-match/cancellation codes were verified in step 4.
 | Dimensions and kinds | Eight integral fields; 25 family vectors; products, quotients, powers and integral roots | Further catalogue families |
 | Conversion | Coherent/affine mappings, anchors, round trips, kind/dimension checks, compound classification | Per-catalogue-factory anchors |
 | Arithmetic | Mixed addition/subtraction, scalars, compounds, powers, roots, comparisons and rounding | Special-unit operations |
-| Angles | Distinct angle family; symbolic pi accepted as payload | Trig functions, symbolic conversions and precision overloads |
+| Angles | Radians/degrees, symbolic conversion, circular/inverse methods, precision, domains and extension | Further catalogue angles; native large-rational promotion decision |
 | Temperature | Distinct kinds; generic arithmetic on points/offset values refused | Absolute-zero boundary and specialized point/delta arithmetic |
 | Prefixes | Eligibility metadata | SI/binary exponents, byte/bit factors, square/cube scaling, no double prefix |
 | Special cases | Distinct dose and radioactivity kinds | Logarithmic domains, pH activity, explicit reference/model conversions |
@@ -84,7 +101,7 @@ reference editions, uncertainty information and tolerance-based tests.
 | Legacy file | Replacement |
 | --- | --- |
 | `unit.graf` | Public entry point to the new core class |
-| `angle.graf` | Angle family; concrete angular definitions and methods follow later |
+| `angle.graf` | Shared angular family with circular/inverse methods; public `radians.graf` and `degrees.graf` definitions |
 | `distance.graf` | `length.graf` |
 | `weight.graf` | `mass.graf`; force is a distinct family |
 | `information-unit.graf` | `information.graf` |

@@ -1,0 +1,79 @@
+import(open-graf-units-core: graf {path: "."});
+
+family$ = open-graf-units-core.unit.family("angle",
+	open-graf-units-core.dimension(0, 0, 0, 0, 0, 0, 0, 0));
+
+// Coherent angular values are radians. Numeric work belongs to common.math.
+heir(family$) {
+	self$.sin(precision$ = default(integer?, 15)?): (
+		radians$ = self$.coherent-value();
+		common.math.sin(radians$, precision$)
+	),
+
+	self$.cos(precision$ = default(integer?, 15)?): (
+		radians$ = self$.coherent-value();
+		common.math.cos(radians$, precision$)
+	),
+
+	self$.tan(precision$ = default(integer?, 15)?): (
+		radians$ = self$.coherent-value();
+		common.math.tan(radians$, precision$)
+	),
+
+	self$.cot(precision$ = default(integer?, 15)?): (
+		radians$ = self$.coherent-value();
+		common.math.cot(radians$, precision$)
+	),
+
+	self$.sec(precision$ = default(integer?, 15)?): (
+		radians$ = self$.coherent-value();
+		common.math.sec(radians$, precision$)
+	),
+
+	self$.csc(precision$ = default(integer?, 15)?): (
+		radians$ = self$.coherent-value();
+		common.math.csc(radians$, precision$)
+	),
+
+	self$.asin(ratio$ = real?, precision$ = default(integer?, 15)?): (
+		radians$ = common.math.asin(ratio$, precision$);
+		amount$ = self$.display-value-of(radians$);
+		self$.quantity(amount$)
+	),
+
+	self$.acos(ratio$ = real?, precision$ = default(integer?, 15)?): (
+		radians$ = common.math.acos(ratio$, precision$);
+		amount$ = self$.display-value-of(radians$);
+		self$.quantity(amount$)
+	),
+
+	self$.atan(ratio$ = real?, precision$ = default(integer?, 15)?): (
+		radians$ = common.math.atan(ratio$, precision$);
+		amount$ = self$.display-value-of(radians$);
+		self$.quantity(amount$)
+	),
+
+	self$.acot(ratio$ = real?, precision$ = default(integer?, 15)?): (
+		radians$ = common.math.acot(ratio$, precision$);
+		amount$ = self$.display-value-of(radians$);
+		self$.quantity(amount$)
+	),
+
+	self$.asec(ratio$ = real?, precision$ = default(integer?, 15)?): (
+		radians$ = common.math.asec(ratio$, precision$);
+		amount$ = self$.display-value-of(radians$);
+		self$.quantity(amount$)
+	),
+
+	self$.acsc(ratio$ = real?, precision$ = default(integer?, 15)?): (
+		radians$ = common.math.acsc(ratio$, precision$);
+		amount$ = self$.display-value-of(radians$);
+		self$.quantity(amount$)
+	),
+
+	self$.atan2(y$ = real?, x$ = real?, precision$ = default(integer?, 15)?): (
+		radians$ = common.math.atan2(y$, x$, precision$);
+		amount$ = self$.display-value-of(radians$);
+		self$.quantity(amount$)
+	)
+}

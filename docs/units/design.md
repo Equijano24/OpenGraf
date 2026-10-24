@@ -1,9 +1,10 @@
 # Units: design contract
 
-Status: steps 5 and 6 implement the [unit core](core.md) and
-[conversion/arithmetic](operations.md), including local extensions and explicit
-compound classification. Trigonometry, the reviewed catalogue and special-unit
-rules remain in later steps; this document specifies the complete target API.
+Status: steps 5–7 implement the [unit core](core.md),
+[conversion/arithmetic](operations.md) and [angles/trigonometry](angles.md),
+including local extensions, explicit compound classification, `radians`, and
+`degrees`. The reviewed catalogue and special-unit rules remain in later steps;
+this document specifies the complete target API.
 
 ## Object model
 
@@ -37,9 +38,11 @@ mapping in the target factory. Exact decimal factors use rational numbers;
 angular factors retain symbolic pi. Arithmetic delegates to the supplied numeric
 backend, including its supported operations and explicit precision controls.
 
-Angles implement `.sin()`, `.cos()`, and `.tan()` with a default precision and
-explicit-precision overloads, delegating to `common.math` in radians. Inverse
-trigonometric helpers return angle quantities. Logarithms operate on explicit
+Angles implement `.sin()`, `.cos()`, `.tan()`, `.cot()`, `.sec()` and `.csc()`
+with optional precision (default 15), delegating to `common.math` in radians.
+Concrete factories implement `.asin`, `.acos`, `.atan`, `.acot`, `.asec`, `.acsc`
+and `.atan2(y, x)`; their results are angular quantities in that factory.
+Inverse precision controls the radian calculation before display conversion. Logarithms operate on explicit
 dimensionless ratios, not dimensionful values.
 
 ## Special quantity rules
@@ -90,7 +93,8 @@ historical conventions, errors, and measured rather than exact constants.
 
 Conversion and arithmetic below are implemented with explicitly defined local
 factories, as shown in the [operation reference](operations.md). Ready-made
-catalogue factories and angle trigonometric methods remain later steps.
+`radians`/`degrees` and their trigonometric methods are also implemented.
+Other catalogue factories remain in step 8.
 
 ```graf
 meters(2).plus(centimeters(30)).value()     // 23/10, in meters
@@ -106,7 +110,9 @@ An unadorned number passed to a factory is always measured in that factory's
 unit. A bare scalar passed to addition/subtraction is refused; it has no unit.
 Scalar multiplication/division retain the factory. Division by zero and numeric
 domain failures use the numeric backend's Graf exceptions. No implicit rounding
-or conversion to binary floating point occurs.
+or conversion to binary floating point is added by the unit layer. Native
+arithmetic retains Graf's promotion rules, including its existing large-rational
+precision boundary documented in the [angular reference](angles.md#precision-boundary).
 
 | Operation | Result contract |
 | --- | --- |
@@ -121,7 +127,8 @@ or conversion to binary floating point occurs.
 | `quantity.root(integer, precision)` | Compound with divided integral exponents; numeric root delegated to Graf |
 | `factory.quantity(number)` | Overridable numeric construction protocol used by named results |
 | `quantity.rounded(places)` | Explicit rounding of displayed payload |
-| `angle.sin(precision)` / `.cos(precision)` / `.tan(precision)` | Dimensionless Graf number |
+| `angle.sin(precision)` / `.cos` / `.tan` / `.cot` / `.sec` / `.csc` | Dimensionless Graf number; default precision 15 |
+| `angular-factory.asin(ratio, precision)` and other inverses | Angular quantity in the receiver factory |
 | `family.definition(id, symbol, scale)` | Local inheritable factory; no registration side effects |
 
 Factories and quantities share inheritance for method reuse, but a quantity's

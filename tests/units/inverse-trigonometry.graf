@@ -1,0 +1,105 @@
+import(units: graf {path: "../../src/units"});
+
+box {
+	common.testing.gunit.test>> verify-inverses-return-angular-measurements(): (
+		q$ = units.radians.asin(1);
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {q$.value().equal-to(pi.over(2))});
+		common.testing.gunit.assert-equals(tuple {units.radians}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(q$, units.angle?)});
+		common.testing.gunit.assert-equals(tuple {90}, tuple {units.degrees(q$).value()});
+		common.testing.gunit.assert-equals(tuple {units.degrees}, tuple {units.degrees.asin(1.over(2)).factory})
+	),
+
+	common.testing.gunit.test>> verify-independent-exact-inverse-degree-anchors(): (
+		common.testing.gunit.assert-equals(tuple {30}, tuple {units.degrees.asin(0.5, 0).value()});
+		common.testing.gunit.assert-equals(tuple {60}, tuple {units.degrees.acos(1.over(2), 0).value()});
+		common.testing.gunit.assert-equals(tuple {45}, tuple {units.degrees.atan(1, 0).value()});
+		common.testing.gunit.assert-equals(tuple {90}, tuple {units.degrees.acot(0, 0).value()});
+		common.testing.gunit.assert-equals(tuple {60}, tuple {units.degrees.asec(2, 0).value()});
+		common.testing.gunit.assert-equals(tuple {30}, tuple {units.degrees.acsc(2, 0).value()})
+	),
+
+	common.testing.gunit.test>> verify-inverse-principal-ranges(): (
+		common.testing.gunit.assert-equals(tuple {-30}, tuple {units.degrees.asin(-1.over(2)).value()});
+		common.testing.gunit.assert-equals(tuple {120}, tuple {units.degrees.acos(-1.over(2)).value()});
+		common.testing.gunit.assert-equals(tuple {-45}, tuple {units.degrees.atan(-1).value()});
+		common.testing.gunit.assert-equals(tuple {135}, tuple {units.degrees.acot(-1).value()});
+		common.testing.gunit.assert-equals(tuple {120}, tuple {units.degrees.asec(-2).value()});
+		common.testing.gunit.assert-equals(tuple {-30}, tuple {units.degrees.acsc(-2).value()})
+	),
+
+	common.testing.gunit.test>> verify-atan2-quadrants-and-axes(): (
+		foreach {row$ = (tuple {1, 1, 45}, tuple {1, -1, 135}, tuple {-1, -1, -135},
+			tuple {-1, 1, -45}, tuple {1, 0, 90}, tuple {-1, 0, -90},
+			tuple {0, 1, 0}, tuple {0, -1, 180})} {
+			common.testing.gunit.assert-equals(tuple {row$.#2}, tuple {units.degrees.atan2(row$.#0, row$.#1).value()})
+		};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, units.radians.atan2(0, 0)}
+	),
+
+	common.testing.gunit.test>> verify-inverse-default-and-explicit-precision(): (
+		x$ = 1.over(3);
+		common.testing.gunit.assert-equals(tuple {common.math.asin(x$, 15)}, tuple {units.radians.asin(x$).value()});
+		common.testing.gunit.assert-equals(tuple {common.math.acos(x$, 30)}, tuple {units.radians.acos(x$, 30).value()});
+		common.testing.gunit.assert-equals(tuple {common.math.atan(x$, 30)}, tuple {units.radians.atan(x$, 30).value()});
+		common.testing.gunit.assert-equals(tuple {common.math.acot(x$, 30)}, tuple {units.radians.acot(x$, 30).value()});
+		common.testing.gunit.assert-equals(tuple {common.math.asec(3, 30)}, tuple {units.radians.asec(3, 30).value()});
+		common.testing.gunit.assert-equals(tuple {common.math.acsc(3, 30)}, tuple {units.radians.acsc(3, 30).value()});
+		common.testing.gunit.assert-equals(tuple {common.math.atan2(1, 3, 30)}, tuple {units.radians.atan2(1, 3, 30).value()});
+		common.testing.gunit.assert-equals(tuple {common.math.asin(x$, 30)}, tuple {units.degrees.asin(x$, 30).coherent-value()})
+	),
+
+	common.testing.gunit.test>> verify-custom-angular-factory-inherits-inverses(): (
+		turns$ = units.angle.definition("test-turn", "turn", pi.times(2));
+		q$ = turns$.asin(1);
+		common.testing.gunit.assert-equals(tuple {1.over(4)}, tuple {q$.value()});
+		common.testing.gunit.assert-equals(tuple {turns$}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {1.over(8)}, tuple {turns$.atan2(1, 1).value()});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {q$.sin()})
+	),
+
+	common.testing.gunit.test>> verify-inverse-domain-errors(): (
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, units.radians.asin(2)};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, units.degrees.acos(-2)};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, units.radians.asec(1.over(2))};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, units.degrees.acsc(0)}
+	),
+
+	common.testing.gunit.test>> verify-inverse-invalid-precision(): (
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, units.radians.asin(1, -1)};
+		common.testing.gunit.assert-fails {units.degrees.atan(1, 1.over(2))};
+		common.testing.gunit.assert-fails {units.degrees.atan2(1, 1, "30")};
+		common.testing.gunit.assert-equals(tuple {90}, tuple {units.degrees.asin(1, 2000000).value()});
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, units.radians.asin(1, 2147483648)}
+	),
+
+	common.testing.gunit.test>> verify-inverses-require-real-ratios-and-concrete-factories(): (
+		common.testing.gunit.assert-fails {units.degrees.asin("0.5")};
+		common.testing.gunit.assert-fails {units.degrees.asin(units.radians(1))};
+		common.testing.gunit.assert-fails {units.radians.atan2(1, units.degrees(1))};
+		common.testing.gunit.assert-fails {units.angle.asin(1)};
+		common.testing.gunit.assert-fails {units.radians(2).asin(1)}
+	),
+
+	common.testing.gunit.test>> verify-inverse-result-is-immutable(): (
+		q$ = units.degrees.asin(1.over(2));
+		common.testing.gunit.assert-fails {q$.amount := 20};
+		common.testing.gunit.assert-equals(tuple {30}, tuple {q$.value()});
+		common.testing.gunit.assert-equals(tuple {units.degrees}, tuple {q$.plus(units.radians(pi.over(6))).factory});
+		common.testing.gunit.assert-equals(tuple {60}, tuple {q$.plus(units.radians(pi.over(6))).value()})
+	),
+
+	common.testing.gunit.test>> verify-inverse-results-use-overridden-quantity-protocol(): (
+		parent$ = units.angle.definition("test-positive-radian", "rad", 1);
+		positive$ = heir(parent$) {
+			override>> self$.quantity(amount$ = number?): (
+				common.math.gte(0)? >> amount$;
+				composite>> new(self$) {amount: amount$, factory: self$}
+			)
+		};
+		common.testing.gunit.assert-equals(tuple {positive$}, tuple {positive$.asin(1).factory});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {positive$.asin(1).value().equal-to(pi.over(2))});
+		common.testing.gunit.assert-fails {positive$.asin(-1)}
+	)
+
+}

@@ -10,6 +10,7 @@ nav:
   - Units:
       - Core API: units/core.md
       - Conversion and arithmetic: units/operations.md
+      - Angles and trigonometry: units/angles.md
       - Design and API contract: units/design.md
       - Validation and status: units/validation.md
       - Sources: units/sources.md

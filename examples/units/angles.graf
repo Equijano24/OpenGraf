@@ -1,0 +1,13 @@
+// Save as examples/units/angles.graf, relative to the repository root.
+import(units: graf {path: "../../src/units"});
+
+(units.radians(20).value(),
+ units.radians(units.degrees(30)).value(),
+ units.degrees(units.radians(pi)).value(),
+ units.radians(20).plus(units.degrees(15)).value().round(6),
+ units.radians(2.5).sin(),
+ units.degrees(30).sin(0),
+ units.degrees.asin(1.over(2)).value(),
+ units.degrees.atan2(1, -1).value())
+// => 20, symbolic pi/6, 180, 20 + 261799/1000000,
+//    149618036025989/250000000000000, 1/2, 30, 135
