@@ -6,6 +6,7 @@ organized as an API and engineering reference.
 The units replacement is currently specified, not released. The existing files
 under `src/units` are legacy code and do not implement the API below.
 
+- [Testing with gunit](testing.md)
 - [Units design and API contract](units/design.md)
 - [Validation and implementation status](units/validation.md)
 - [Sources and conversion policy](units/sources.md)
@@ -23,7 +24,7 @@ mkdocs build --strict
 sources, install Pandoc and a LaTeX PDF engine, then run:
 
 ```sh
-pandoc docs/index.md docs/units/design.md docs/units/validation.md \
+pandoc docs/index.md docs/testing.md docs/units/design.md docs/units/validation.md \
   docs/units/sources.md --standalone --toc -o open-graf-units.pdf
 ```
 

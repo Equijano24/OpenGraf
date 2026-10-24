@@ -17,16 +17,17 @@ Use `T-and-Q/Graf` on `develop`. Exception handling must obey these rules:
 5. Handler-body failures propagate independently of dispatch misses.
 
 The exception and label-modifier foundation has focused regression coverage in
-Graf. The gunit runner still needs restricted discovery and assertion-body
-validation; the restored upstream CLI has no `graf test` command yet.
+Graf. The gunit runner now guards each method and supports deferred failure assertions.
+The separate discovery review remains pending; the restored upstream CLI has no `graf test` command yet.
 
 ## Work remaining before release
 
-- [ ] Verify gunit setup isolation, test invocation and continuing after failures.
+- [x] Verify per-test setup execution, guarded test invocation and continuing after failures.
+      Suites reset mutable state through setup methods; the runner does not clone them.
 - [ ] Restrict discovery to the target's visible lineage; never discover tests in
       nested data, method bodies or imported environments.
 - [ ] Deduplicate overridden labels and preserve nearest-definition ordering.
-- [ ] Verify lazy `assert-fails`, including class-filtered assertions and empty
+- [x] Verify lazy `assert-fails`, including class-filtered assertions and empty
       or multiple response streams.
 - [ ] Provide `graf test` for files/directories, filters, useful diagnostics and
       process exit codes for pass, failure and load error.
@@ -57,6 +58,11 @@ Measured constants need tolerance-based tests with documented reference values.
 ## Specification checkpoint checks
 
 The documentation builds successfully with MkDocs 1.6.1 in strict mode.
-Graf's exception/modifier prerequisite checkpoint passed its complete .NET test
-suite: 1922 passed, 0 failed, 2 existing printed-form skips. These are Graf
+Graf's exception and gunit checkpoint passed its complete .NET test
+suite: 1933 passed, 0 failed, 2 existing printed-form skips. These are Graf
 engine results, not results for a replacement Open Graf units implementation.
+
+The gunit smoke suite in `tests/testing/gunit-smoke.graf` returns 5 passed and
+0 failed. The documentation's suite example returns 2 passed and 0 failed.
+The runner and assertion step is complete; discovery review, test CLI and the
+units implementation remain separate pending steps.
