@@ -4,6 +4,7 @@ repo_url: https://github.com/Equijano24/OpenGraf
 use_directory_urls: false
 nav:
   - Overview: index.md
+  - Plan y avance: plan-de-trabajo.md
   - Testing: testing.md
   - Units:
       - Design and API contract: units/design.md

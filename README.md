@@ -2,6 +2,8 @@
 
 A general purpose open source library for the Graf programming language.
 
+See the [11-step plan and current progress](docs/plan-de-trabajo.md).
+
 ## Author
 
 * **Esteban Quijano Vincenzi** - *Initial work* - [OpenGraf](https://github.com/OpenGraf)

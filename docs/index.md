@@ -6,6 +6,7 @@ organized as an API and engineering reference.
 The units replacement is currently specified, not released. The existing files
 under `src/units` are legacy code and do not implement the API below.
 
+- [Plan de trabajo y avance](plan-de-trabajo.md)
 - [Testing with gunit](testing.md)
 - [Units design and API contract](units/design.md)
 - [Validation and implementation status](units/validation.md)
