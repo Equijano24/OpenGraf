@@ -1,20 +1,22 @@
 # Validation and implementation status
 
-Step 5 replaces the legacy unit sources with the [new core](core.md): `unit`,
-eight integral dimension exponents, 25 families, local definitions and immutable
-measurements. Conversion, arithmetic, the reviewed catalogue and special-unit
-rules are not implemented yet. The [11-step plan](../plan-de-trabajo.md) records
-five completed steps and step 6 next.
+Steps 5 and 6 replace the legacy units with the [core](core.md) and
+[conversion/arithmetic](operations.md): 25 families, local definitions, immutable
+measurements, compound dimensions, integer powers, roots and comparisons.
+Trigonometry, the reviewed catalogue and special-unit rules remain later steps.
+The [11-step plan](../plan-de-trabajo.md) records six completed steps and step 7 next.
 
 ## Verified checkpoint
 
 | Check | Result |
 | --- | --- |
-| `graf test tests/units` | 45 passed, 0 failed, 0 load errors; exit 0 |
+| `graf test tests/units` | 77 passed, 0 failed, 0 load errors; exit 0 |
 | `graf test tests/testing` | 11 auxiliary gunit tests passed; exit 0 |
-| Complete Graf .NET suite on `develop` | 1955 passed, 0 failed, 2 existing printed-form skips |
-| Graf solution build | Successful; no engine changes required for this step |
+| Complete Graf .NET suite on `develop` | 1957 passed, 0 failed, 2 existing printed-form skips |
+| Graf solution build | Successful; gunit caller-context fix included |
 | `graf run examples/units/core.graf` | Original 1/3, replacement 2, symbol m, length exponent 1, compatible yes |
+| `graf run examples/units/operations.graf` | 23/10, 200, 25/18, 5, 3, yes |
+| Host BigComplex payload check | Identity retained through construction, coherent mapping, conversion and replacement |
 | `mkdocs build --strict` | Successful |
 
 The unit suites cover each family with an independent expected dimension
@@ -23,6 +25,12 @@ immutable slots, refusal to extend or reopen a measurement, invalid payloads,
 exact/inexact metadata, inherited overrides, local custom families, compatibility
 and imports through aliases or the library root. A family copies mutable
 input dimensions rather than retaining changeable exponent fields.
+
+The 32 operation regressions check independent conversion anchors, round trips,
+left-factory retention, custom `make` validation, scalar and compound arithmetic,
+all eight exponent operations, exact and precision-controlled roots, explicit
+classification, numeric failures and incompatible kinds. Actual values are
+collected in tuples so empty streams fail assertions instead of skipping them.
 
 `tests/units` is the replacement test target. The old `tests/units-test.graf`,
 other tests and other library sections still target the obsolete API; they are
@@ -42,8 +50,11 @@ Use `T-and-Q/Graf` on `develop`. The completed testing foundation ensures:
 6. Discovery selects nearest/latest declarations and skips nested data, method
    bodies and imported environments.
 7. `graf test` supports explicit targets, filters, diagnostics and exit codes.
+8. `assert-fails` evaluates quoted code in the caller context, including local
+   variables and receiver; side effects execute once. A successful local
+   expression cannot pass by losing its binding and raising an unrelated error.
 
-Graf has 11 gunit execution/assertion regressions, 13 discovery regressions and
+Graf has 13 gunit execution/assertion regressions, 13 discovery regressions and
 9 command regressions. OpenGraf's auxiliary suites add 11 Graf-language checks.
 The CLI's pass/fail/load/no-match/cancellation codes were verified in step 4.
 
@@ -52,14 +63,14 @@ The CLI's pass/fail/load/no-match/cancellation codes were verified in step 4.
 | Concern | Implemented now | Still required |
 | --- | --- | --- |
 | Construction | Core numeric constructor, payload preservation, family lineage, immutable instance behavior | Per-catalogue-factory construction |
-| Dimensions and kinds | Eight integral fields; 25 family vectors; incompatible semantic kinds | Composed exponents, powers and roots |
-| Conversion | Compatibility check and factor metadata | Independent physical anchors, round trips, incompatible conversion failures |
-| Arithmetic | Replacement payload through the original factory | Mixed addition, scalar operations, compounds, comparisons |
+| Dimensions and kinds | Eight integral fields; 25 family vectors; products, quotients, powers and integral roots | Further catalogue families |
+| Conversion | Coherent/affine mappings, anchors, round trips, kind/dimension checks, compound classification | Per-catalogue-factory anchors |
+| Arithmetic | Mixed addition/subtraction, scalars, compounds, powers, roots, comparisons and rounding | Special-unit operations |
 | Angles | Distinct angle family; symbolic pi accepted as payload | Trig functions, symbolic conversions and precision overloads |
-| Temperature | Distinct point and difference kinds | Absolute-zero boundary, point/delta arithmetic, affine restrictions |
+| Temperature | Distinct kinds; generic arithmetic on points/offset values refused | Absolute-zero boundary and specialized point/delta arithmetic |
 | Prefixes | Eligibility metadata | SI/binary exponents, byte/bit factors, square/cube scaling, no double prefix |
 | Special cases | Distinct dose and radioactivity kinds | Logarithmic domains, pH activity, explicit reference/model conversions |
-| Extensibility | Local factories/families, provenance, inheritance and metadata overrides | Conversion and arithmetic with user definitions |
+| Extensibility | Local factories/families, conversion/arithmetic, overridden `make`, provenance and metadata overrides | Prefix/model-specific extensions |
 | Migration | Old unit implementation removed; new core reference and executable example | Full old-API migration guidance and replacement of old catalogue examples/tests |
 | Documentation | Technical Markdown, API tables, site build | Complete catalogue, reviewed sources and final PDF verification |
 

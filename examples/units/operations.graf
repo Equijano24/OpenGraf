@@ -1,0 +1,17 @@
+import(units: graf {path: "../../src/units"});
+
+meters$ = units.length.define("meter", "m", 1);
+centimeters$ = units.length.define("centimeter", "cm", 1.over(100));
+kilometers$ = units.length.define("kilometer", "km", 1000);
+hours$ = units.duration.define("hour", "h", 3600);
+meters-per-second$ = units.velocity.define("meter-per-second", "m/s", 1);
+kilometers-per-hour$ = units.velocity.define("kilometer-per-hour", "km/h", 5.over(18));
+square-meters$ = units.area.define("square-meter", "m2", 1);
+
+length$ = meters$(2).plus(centimeters$(30));
+speed$ = kilometers$(10).over(hours$(2));
+side$ = meters$(square-meters$(9).root(2));
+
+(length$.value(), centimeters$(meters$(2)).value(),
+ meters-per-second$(speed$).value(), kilometers-per-hour$(speed$).value(),
+ side$.value(), meters$(2).equal-to(centimeters$(200)))

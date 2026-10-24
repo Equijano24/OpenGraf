@@ -2,9 +2,9 @@
 
 The core is implemented for current Graf on `develop`. It provides 25 families,
 local unit definitions, integral dimensions, and immutable measurements.
-Conversion, quantity arithmetic, trigonometry and the reviewed unit catalogue
-are the following implementation steps; the complete target is in the
-[design contract](design.md).
+[Conversion and arithmetic](operations.md) are implemented in step 6.
+Trigonometry and the reviewed unit catalogue remain in the following steps; the
+complete target is in the [design contract](design.md).
 
 ## Import and construct
 
@@ -47,13 +47,16 @@ A measurement composes `amount` and `factory`; it inherits metadata and behavior
 It is a sealed composite instance. Its slots cannot be assigned, it cannot be
 extended or instantiated, and wrapping its constructor with `mutable>>` is
 refused. `.with-value(number)` makes a new measurement through the original
-factory. It never constructs an heir of an existing measurement.
+factory. It never constructs an heir of an existing measurement. Numeric construction
+and replacement use `factory.make(number)`, which extensions can override.
 
 | Message | Implemented behavior |
 | --- | --- |
 | `family.define(id, symbol, scale)` | Local definition, not registered globally |
 | `family.define(id, symbol, scale, prefixable, exact, source)` | Definition with explicit provenance and flags |
-| `factory(number)` | Immutable measurement with the same numeric payload |
+| `factory(number)` / `factory.make(number)` | Immutable measurement with the same numeric payload |
+| `factory(quantity)` | Compatible conversion or explicit compound classification |
+| `quantity.coherent()` | Numeric payload in the coherent unit |
 | `quantity.value()` | Displayed payload; also available as `quantity.amount` |
 | `quantity.factory` | Explicit reference to the definition that constructed it |
 | `quantity.with-value(number)` | New measurement in that same definition |
@@ -66,7 +69,8 @@ factory. It never constructs an heir of an existing measurement.
 measurement. It checks eligibility; it does not convert or compare amounts.
 Composite equality requires the same definition parent, amount and factory.
 Equivalent measurements expressed in different definitions are not converted
-by `equals`; conversion and numeric comparisons belong to step 6.
+by `equals`; use `.equal-to` for numeric equality after compatible conversion.
+See [conversion and arithmetic](operations.md).
 
 ## Definition metadata
 
@@ -77,7 +81,8 @@ by `equals`; conversion and numeric comparisons belong to step 6.
 | `kind` | Semantic family identifier |
 | `dimension` | Integral dimension value |
 | `scale` | Positive real factor relative to the family's coherent unit |
-| `offset` | Zero in this core; affine rules are pending |
+| `offset` | Zero by default; explicit affine mappings can override it |
+| `linear-arithmetic` | Boolean capability, `yes` for ordinary families and `no` for temperature points |
 | `prefixable` | Eligibility metadata, default `no`; prefix generation is pending |
 | `exact` | Definition author's exactness claim, default `yes` |
 | `source` | Provenance text, default `"user-defined"` |
@@ -129,9 +134,9 @@ The fields, in constructor order, are:
 | `power` | L^2*M*T^-3 |
 | `absorbed-dose`, `equivalent-dose` | L^2*T^-2; two distinct kinds |
 
-Temperature and dose families establish distinct types here. Their domain
-rules, temperature point/difference arithmetic, weighting models and other
-special conversions are still pending. These family declarations are not a
+Temperature and dose families establish distinct types here. Temperature points
+refuse generic linear arithmetic. Their domain rules, point/difference arithmetic,
+weighting models and other special conversions are still pending. These family declarations are not a
 completed catalogue of concrete physical units.
 
 ## Local extension
@@ -149,7 +154,7 @@ bits-per-second$(64).value()
 Use Graf inheritance to add behavior or refine metadata. An explicit
 `override>>` replaces inherited metadata so a read does not return both values.
 A factory must keep its numeric constructor contract and its metadata immutable;
-custom behavior should create results through the definition. Mutating a custom
+custom construction behavior should override the definition's `make` method. Mutating a custom
 ancestor falls outside this immutable-definition protocol.
 
 The files in `src/units/core` supply the shared base classes. Public unit files

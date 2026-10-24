@@ -1,0 +1,61 @@
+import(units: graf {path: "../../src/units"});
+
+box {
+	common.testing.gunit.test>> integer-powers-use-coherent-units(): (
+		centimeters$ = units.length.define("test-centimeter", "cm", 1.over(100));
+		q$ = centimeters$(20).pow(2);
+		common.testing.gunit.assert-equals(tuple {1.over(25)}, tuple {q$.value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {q$.dimension.length});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {q$.is-compound()});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {centimeters$(20).pow(0).value()});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {centimeters$(20).pow(0).dimension.same-as(units.ratio.dimension)});
+		common.testing.gunit.assert-equals(tuple {5}, tuple {centimeters$(20).pow(-1).value()});
+		common.testing.gunit.assert-equals(tuple {-1}, tuple {centimeters$(20).pow(-1).dimension.length})
+	),
+
+	common.testing.gunit.test>> exact-roots-and-negative-degrees(): (
+		area$ = units.area.define("test-square-meter", "m2", 1);
+		volume$ = units.volume.define("test-cubic-meter", "m3", 1);
+		meters$ = units.length.define("test-meter", "m", 1);
+		common.testing.gunit.assert-equals(tuple {3}, tuple {meters$(area$(9).root(2)).value()});
+		common.testing.gunit.assert-equals(tuple {-2}, tuple {meters$(volume$(-8).root(3)).value()});
+		common.testing.gunit.assert-equals(tuple {1.over(3)}, tuple {area$(9).root(-2).value()});
+		common.testing.gunit.assert-equals(tuple {-1}, tuple {area$(9).root(-2).dimension.length})
+	),
+
+	common.testing.gunit.test>> nonintegral-dimensions-and-invalid-degrees-fail(): (
+		q$ = units.length.define("test-meter", "m", 1)(2);
+		common.testing.gunit.assert-fails {q$.root(2)};
+		common.testing.gunit.assert-fails {q$.root(0)};
+		common.testing.gunit.assert-fails {q$.root(1.over(2))};
+		common.testing.gunit.assert-fails {q$.pow(1.over(2))};
+		common.testing.gunit.assert-fails {units.area.define("test-area", "m2", 1)(-1).root(2)}
+	),
+
+	common.testing.gunit.test>> root-precision-is-explicit-and-delegated(): (
+		area$ = units.area.define("test-area", "m2", 1);
+		common.testing.gunit.assert-equals(tuple {2.root(2, 25)}, tuple {area$(2).root(2, 25).value()});
+		common.testing.gunit.assert-equals(tuple {2.root(2, 15)}, tuple {area$(2).root(2).value()});
+		common.testing.gunit.assert-fails {area$(2).root(2, -1)}
+	),
+
+	common.testing.gunit.test>> all-eight-exponents-compose(): (
+		a$ = units.dimension(1, -2, 3, -4, 5, -6, 7, -8);
+		b$ = units.dimension(-8, 7, -6, 5, -4, 3, -2, 1);
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {a$.times(b$).same-as(units.dimension(-7, 5, -3, 1, 1, -3, 5, -7))});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {a$.over(b$).same-as(units.dimension(9, -9, 9, -9, 9, -9, 9, -9))});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {a$.pow(-2).same-as(units.dimension(-2, 4, -6, 8, -10, 12, -14, 16))});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {a$.pow(2).root(2).same-as(a$)});
+		common.testing.gunit.assert-fails {a$.root(2)};
+		common.testing.gunit.assert-fails {a$.root(0)}
+	),
+
+	common.testing.gunit.test>> every-root-exponent-must-be-integral(): (
+		foreach {d$ = (
+			units.dimension(1, 0, 0, 0, 0, 0, 0, 0), units.dimension(0, 1, 0, 0, 0, 0, 0, 0),
+			units.dimension(0, 0, 1, 0, 0, 0, 0, 0), units.dimension(0, 0, 0, 1, 0, 0, 0, 0),
+			units.dimension(0, 0, 0, 0, 1, 0, 0, 0), units.dimension(0, 0, 0, 0, 0, 1, 0, 0),
+			units.dimension(0, 0, 0, 0, 0, 0, 1, 0), units.dimension(0, 0, 0, 0, 0, 0, 0, 1)
+		)} {common.testing.gunit.assert-fails {d$.root(2)}}
+	)
+}

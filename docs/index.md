@@ -4,13 +4,15 @@ Open Graf provides reusable components written in Graf. This documentation is
 organized as an API and engineering reference.
 
 The new unit core is implemented under `src/units`: dimensions, 25 families,
-local definitions and immutable measurements. Conversion, arithmetic and the
-complete catalogue remain in the plan. Other library sections still target an
+local definitions, immutable measurements, conversion, arithmetic, dimensions,
+powers, roots and comparisons. Trigonometry and the complete catalogue remain
+in the plan. Other library sections still target an
 older Graf version.
 
 - [Plan de trabajo y avance](plan-de-trabajo.md)
 - [Testing with gunit](testing.md)
 - [Unit core API and executable example](units/core.md)
+- [Conversion and arithmetic](units/operations.md)
 - [Units design and API contract](units/design.md)
 - [Validation and implementation status](units/validation.md)
 - [Sources and conversion policy](units/sources.md)
@@ -28,7 +30,7 @@ mkdocs build --strict
 sources, install Pandoc and a LaTeX PDF engine, then run:
 
 ```sh
-pandoc docs/index.md docs/testing.md docs/units/core.md docs/units/design.md docs/units/validation.md \
+pandoc docs/index.md docs/testing.md docs/units/core.md docs/units/operations.md docs/units/design.md docs/units/validation.md \
   docs/units/sources.md --standalone --toc -o open-graf-units.pdf
 ```
 

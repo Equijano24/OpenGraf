@@ -8,6 +8,7 @@ nav:
   - Testing: testing.md
   - Units:
       - Core API: units/core.md
+      - Conversion and arithmetic: units/operations.md
       - Design and API contract: units/design.md
       - Validation and status: units/validation.md
       - Sources: units/sources.md

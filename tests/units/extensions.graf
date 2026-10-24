@@ -1,0 +1,93 @@
+import(units: graf {path: "../../src/units"});
+
+box {
+	common.testing.gunit.test>> inherited-definitions-retain-custom-methods(): (
+		parent$ = units.length.define("test-meter", "m", 1);
+		child$ = heir(parent$) {
+			override>> id: "custom-two-meters",
+			override>> symbol: "u",
+			override>> scale: 2,
+			self$.description(): self$.id.conc(": ").conc(self$.symbol)
+		};
+		q$ = child$(3);
+		common.testing.gunit.assert-equals(tuple {6}, tuple {parent$(q$).value()});
+		common.testing.gunit.assert-equals(tuple {4}, tuple {q$.plus(parent$(2)).value()});
+		common.testing.gunit.assert-equals(tuple {child$}, tuple {q$.plus(parent$(2)).factory});
+		common.testing.gunit.assert-equals(tuple {"custom-two-meters: u"}, tuple {q$.times(2).description()});
+		common.testing.gunit.assert-equals(tuple {child$}, tuple {q$.rounded(0).factory});
+		common.testing.gunit.assert-equals(tuple {tuple {2}}, tuple {tuple {q$.scale}});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {parent$.scale})
+	),
+
+	common.testing.gunit.test>> custom-family-supports-all-linear-operations(): (
+		family$ = units.unit.family("custom-pixel-length", units.dimension(1, 0, 0, 0, 0, 0, 0, 0));
+		pixels$ = family$.define("pixel", "px", 1.over(4));
+		blocks$ = family$.define("block", "blk", 2);
+		q$ = pixels$(2);
+		common.testing.gunit.assert-equals(tuple {10}, tuple {q$.plus(blocks$(1)).value()});
+		common.testing.gunit.assert-equals(tuple {-6}, tuple {q$.minus(blocks$(1)).value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {q$.times(blocks$(2)).value()});
+		common.testing.gunit.assert-equals(tuple {1.over(4)}, tuple {q$.over(blocks$(1)).value()});
+		common.testing.gunit.assert-equals(tuple {-1}, tuple {q$.compared-to(blocks$(1))});
+		common.testing.gunit.assert-equals(tuple {1.over(4)}, tuple {q$.pow(2).value()})
+	),
+
+	common.testing.gunit.test>> all-result-construction-uses-the-factory-make-protocol(): (
+		parent$ = units.length.define("test-meter", "m", 1);
+		checked$ = heir(parent$) {
+			override>> self$.make(amount$ = number?): (
+				common.math.gte(0)? >> amount$;
+				composite>> new(self$) {amount: amount$, factory: self$}
+			)
+		};
+		q$ = checked$(2);
+		common.testing.gunit.assert-equals(tuple {3}, tuple {q$.plus(parent$(1)).value()});
+		common.testing.gunit.assert-equals(tuple {checked$}, tuple {q$.times(2).factory});
+		common.testing.gunit.assert-fails {checked$(-1)};
+		common.testing.gunit.assert-fails {checked$(parent$(-1))};
+		common.testing.gunit.assert-fails {q$.minus(parent$(3))};
+		common.testing.gunit.assert-fails {q$.times(-1)};
+		common.testing.gunit.assert-fails {q$.with-value(-1)}
+	),
+
+	common.testing.gunit.test>> named-kinds-with-identical-dimensions-stay-distinct(): (
+		foreach {pair$ = (
+			tuple {units.angle, units.ratio}, tuple {units.energy, units.torque},
+			tuple {units.frequency, units.radioactivity}, tuple {units.absorbed-dose, units.equivalent-dose}
+		)} {
+			a$ := pair$.#0.define("first", "a", 1)(2);
+			b$ := pair$.#1.define("second", "b", 1)(2);
+			common.testing.gunit.assert-fails {a$.factory(b$)};
+			common.testing.gunit.assert-fails {a$.plus(b$)};
+			common.testing.gunit.assert-fails {a$.minus(b$)};
+			common.testing.gunit.assert-fails {a$.equal-to(b$)}
+		}
+	),
+
+	common.testing.gunit.test>> affine-mapping-converts-but-generic-arithmetic-is-refused(): (
+		base$ = units.unit.family("custom-coordinate", units.dimension(1, 0, 0, 0, 0, 0, 0, 0)).define("base", "u", 1);
+		shifted$ = heir(base$) {override>> id: "shifted", override>> scale: 2, override>> offset: 10};
+		q$ = shifted$(3);
+		common.testing.gunit.assert-equals(tuple {16}, tuple {q$.coherent()});
+		common.testing.gunit.assert-equals(tuple {16}, tuple {base$(q$).value()});
+		common.testing.gunit.assert-equals(tuple {3}, tuple {shifted$(base$(16)).value()});
+		common.testing.gunit.assert-fails {q$.plus(q$)};
+		common.testing.gunit.assert-fails {q$.minus(q$)};
+		common.testing.gunit.assert-fails {q$.times(2)};
+		common.testing.gunit.assert-fails {q$.over(2)};
+		common.testing.gunit.assert-fails {q$.pow(2)};
+		common.testing.gunit.assert-fails {q$.root(1)};
+		common.testing.gunit.assert-fails {base$(2).times(q$)}
+	),
+
+	common.testing.gunit.test>> temperature-points-await-their-special-operations(): (
+		point$ = units.temperature-point.define("test-point", "K", 1)(2);
+		delta$ = units.temperature-difference.define("test-delta", "K", 1)(2);
+		common.testing.gunit.assert-fails {point$.plus(point$)};
+		common.testing.gunit.assert-fails {point$.minus(point$)};
+		common.testing.gunit.assert-fails {point$.times(2)};
+		common.testing.gunit.assert-fails {point$.over(2)};
+		common.testing.gunit.assert-fails {point$.times(delta$)};
+		common.testing.gunit.assert-equals(tuple {4}, tuple {delta$.plus(delta$).value()})
+	)
+}

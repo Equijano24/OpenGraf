@@ -1,3 +1,5 @@
+import(open-graf-units-core: graf {path: "."});
+
 // Eight integral exponents: the seven SI base dimensions, then information.
 class {
 	length: integer?,
@@ -26,5 +28,52 @@ class {
 			.and(equals(self$.temperature, other$.temperature))
 			.and(equals(self$.amount-of-substance, other$.amount-of-substance))
 			.and(equals(self$.luminous-intensity, other$.luminous-intensity))
-			.and(equals(self$.information, other$.information))
+			.and(equals(self$.information, other$.information)),
+
+	self$.times(other$ = box?):
+		open-graf-units-core.dimension(
+			self$.length.plus(other$.length),
+			self$.mass.plus(other$.mass),
+			self$.duration.plus(other$.duration),
+			self$.current.plus(other$.current),
+			self$.temperature.plus(other$.temperature),
+			self$.amount-of-substance.plus(other$.amount-of-substance),
+			self$.luminous-intensity.plus(other$.luminous-intensity),
+			self$.information.plus(other$.information)),
+
+	self$.over(other$ = box?):
+		open-graf-units-core.dimension(
+			self$.length.minus(other$.length),
+			self$.mass.minus(other$.mass),
+			self$.duration.minus(other$.duration),
+			self$.current.minus(other$.current),
+			self$.temperature.minus(other$.temperature),
+			self$.amount-of-substance.minus(other$.amount-of-substance),
+			self$.luminous-intensity.minus(other$.luminous-intensity),
+			self$.information.minus(other$.information)),
+
+	self$.pow(exponent$ = integer?):
+		open-graf-units-core.dimension(
+			self$.length.times(exponent$),
+			self$.mass.times(exponent$),
+			self$.duration.times(exponent$),
+			self$.current.times(exponent$),
+			self$.temperature.times(exponent$),
+			self$.amount-of-substance.times(exponent$),
+			self$.luminous-intensity.times(exponent$),
+			self$.information.times(exponent$)),
+
+	self$.root(exponent$ = integer?):
+		(
+		common.math.gt(0)? >> exponent$.abs();
+		open-graf-units-core.dimension(
+			self$.length.over(exponent$),
+			self$.mass.over(exponent$),
+			self$.duration.over(exponent$),
+			self$.current.over(exponent$),
+			self$.temperature.over(exponent$),
+			self$.amount-of-substance.over(exponent$),
+			self$.luminous-intensity.over(exponent$),
+			self$.information.over(exponent$))
+	)
 }

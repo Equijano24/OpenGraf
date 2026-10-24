@@ -1,0 +1,9 @@
+import(open-graf-units-core: graf {path: "."});
+
+// A structural measurement protocol, independent of the unit class under construction.
+interface {
+	amount: number?,
+	factory: class?,
+	kind: string?,
+	dimension: all(open-graf-units-core.dimension?)?
+}

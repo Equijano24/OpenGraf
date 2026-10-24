@@ -1,9 +1,9 @@
 # Units: design contract
 
-Status: step 5 implements the [unit core](core.md), 25 families, local
-definitions, dimensions and immutable measurements in `src/units`. This document
-also specifies conversion, arithmetic and catalogue features scheduled for the
-following steps; it is not a claim that the entire target API is implemented.
+Status: steps 5 and 6 implement the [unit core](core.md) and
+[conversion/arithmetic](operations.md), including local extensions and explicit
+compound classification. Trigonometry, the reviewed catalogue and special-unit
+rules remain in later steps; this document specifies the complete target API.
 
 ## Object model
 
@@ -88,8 +88,9 @@ historical conventions, errors, and measured rather than exact constants.
 
 ## Public API contract
 
-These examples specify later stages of the replacement API. Use the
-[core reference](core.md) for the currently executable API.
+Conversion and arithmetic below are implemented with explicitly defined local
+factories, as shown in the [operation reference](operations.md). Ready-made
+catalogue factories and angle trigonometric methods remain later steps.
 
 ```graf
 meters(2).plus(centimeters(30)).value()     // 23/10, in meters
@@ -117,13 +118,16 @@ or conversion to binary floating point occurs.
 | `quantity.times(number)` / `.over(number)` | Left factory retained |
 | `quantity.times(quantity)` / `.over(quantity)` | Coherent compound and composed dimensions |
 | `quantity.pow(integer)` | Compound with multiplied dimension exponents |
+| `quantity.root(integer, precision)` | Compound with divided integral exponents; numeric root delegated to Graf |
+| `factory.make(number)` | Overridable numeric construction protocol used by named results |
 | `quantity.rounded(places)` | Explicit rounding of displayed payload |
 | `angle.sin(precision)` / `.cos(precision)` / `.tan(precision)` | Dimensionless Graf number |
 | `family.define(id, symbol, scale)` | Local inheritable factory; no registration side effects |
 
 Factories and quantities share inheritance for method reuse, but a quantity's
 `factory` reference is explicit. A result must be constructed through that
-factory rather than by inheriting from an already measured instance. Unit
+factory's `make(number)` protocol rather than by inheriting from an already
+measured instance. Unit
 metadata is immutable and overridden explicitly so parent metadata does not
 appear as extra answers.
 

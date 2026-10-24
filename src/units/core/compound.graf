@@ -1,0 +1,11 @@
+import(open-graf-units-core: graf {path: "."});
+
+// Each result owns a local coherent definition; no global dimension registry.
+box {
+	self$(amount$ = number?, dimension$ = open-graf-units-core.dimension?): (
+		factory$ = open-graf-units-core.unit.family("compound", dimension$)
+			.define("compound", "", 1, no, yes, "derived coherent definition");
+		definition$ = heir(factory$) {override>> self$.is-compound(): yes};
+		definition$(amount$)
+	)
+}

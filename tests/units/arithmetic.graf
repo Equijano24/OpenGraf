@@ -1,0 +1,75 @@
+import(units: graf {path: "../../src/units"});
+
+box {
+	common.testing.gunit.test>> mixed-addition-preserves-left-factory(): (
+		meters$ = units.length.define("test-meter", "m", 1);
+		centimeters$ = units.length.define("test-centimeter", "cm", 1.over(100));
+		a$ = meters$(2);
+		b$ = centimeters$(30);
+		common.testing.gunit.assert-equals(tuple {23.over(10)}, tuple {a$.plus(b$).value()});
+		common.testing.gunit.assert-equals(tuple {230}, tuple {b$.plus(a$).value()});
+		common.testing.gunit.assert-equals(tuple {meters$}, tuple {a$.plus(b$).factory});
+		common.testing.gunit.assert-equals(tuple {centimeters$}, tuple {b$.plus(a$).factory});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {a$.value()});
+		common.testing.gunit.assert-equals(tuple {30}, tuple {b$.value()})
+	),
+
+	common.testing.gunit.test>> mixed-subtraction-and-negative-results(): (
+		meters$ = units.length.define("test-meter", "m", 1);
+		centimeters$ = units.length.define("test-centimeter", "cm", 1.over(100));
+		common.testing.gunit.assert-equals(tuple {17.over(10)}, tuple {meters$(2).minus(centimeters$(30)).value()});
+		common.testing.gunit.assert-equals(tuple {-170}, tuple {centimeters$(30).minus(meters$(2)).value()})
+	),
+
+	common.testing.gunit.test>> scalar-operations-preserve-factory-and-payload(): (
+		factory$ = units.length.define("test-meter", "m", 1);
+		q$ = factory$(1.over(3));
+		common.testing.gunit.assert-equals(tuple {2}, tuple {q$.times(6).value()});
+		common.testing.gunit.assert-equals(tuple {1.over(6)}, tuple {q$.over(2).value()});
+		common.testing.gunit.assert-equals(tuple {factory$}, tuple {q$.times(6).factory});
+		common.testing.gunit.assert-equals(tuple {factory$}, tuple {q$.over(2).factory});
+		common.testing.gunit.assert-equals(tuple {-1}, tuple {q$.times(-3).value()});
+		common.testing.gunit.assert-equals(tuple {0}, tuple {q$.times(0).value()});
+		common.testing.gunit.assert-equals(tuple {1.over(3)}, tuple {q$.value()})
+	),
+
+	common.testing.gunit.test>> bare-scalars-and-wrong-kinds-are-refused(): (
+		q$ = units.length.define("test-meter", "m", 1)(2);
+		common.testing.gunit.assert-fails {q$.plus(3)};
+		common.testing.gunit.assert-fails {q$.minus(3)};
+		common.testing.gunit.assert-fails {q$.plus(units.area.define("test-area", "m2", 1)(3))};
+		common.testing.gunit.assert-fails {q$.times("3")};
+		common.testing.gunit.assert-fails {q$.times(units.length)}
+	),
+
+	common.testing.gunit.test>> division-by-zero-propagates-numeric-error(): (
+		q$ = units.length.define("test-meter", "m", 1)(2);
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, q$.over(0)};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, q$.over(q$.with-value(0))}
+	),
+
+	common.testing.gunit.test>> comparison-converts-compatible-quantities(): (
+		meters$ = units.length.define("test-meter", "m", 1);
+		centimeters$ = units.length.define("test-centimeter", "cm", 1.over(100));
+		q$ = meters$(2);
+		common.testing.gunit.assert-equals(tuple {0}, tuple {q$.compared-to(centimeters$(200))});
+		common.testing.gunit.assert-equals(tuple {-1}, tuple {q$.compared-to(centimeters$(201))});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {q$.compared-to(centimeters$(199))});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {q$.equal-to(centimeters$(200))});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {q$.lt(centimeters$(201))});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {q$.lte(centimeters$(200))});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {q$.gt(centimeters$(199))});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {q$.gte(centimeters$(200))});
+		common.testing.gunit.assert-fails {q$.compared-to(2)};
+		common.testing.gunit.assert-fails {q$.equal-to(units.area.define("test-area", "m2", 1)(2))}
+	),
+
+	common.testing.gunit.test>> rounding-is-explicit-and-uses-the-display-unit(): (
+		factory$ = units.length.define("test-meter", "m", 1);
+		q$ = factory$(1.over(3));
+		common.testing.gunit.assert-equals(tuple {33.over(100)}, tuple {q$.rounded(2).value()});
+		common.testing.gunit.assert-equals(tuple {factory$}, tuple {q$.rounded(2).factory});
+		common.testing.gunit.assert-equals(tuple {1.over(3)}, tuple {q$.value()});
+		common.testing.gunit.assert-fails {q$.rounded(1.over(2))}
+	)
+}

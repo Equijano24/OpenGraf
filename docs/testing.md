@@ -1,8 +1,9 @@
 # Testing with gunit
 
 Open Graf uses `common.testing.gunit` from the updated `Graf/develop` interpreter.
-The test command is available. The replacement unit core has 45 targeted tests;
-conversion, arithmetic and catalogue coverage will follow in the next steps.
+The replacement units have 77 targeted tests, covering the core, conversion,
+arithmetic, dimensions and local extensions. Catalogue and special-unit coverage
+will follow in the next steps.
 
 ## Command
 
@@ -95,6 +96,11 @@ tests; `results.item` rows have `name`, `phase` (`"setup"` / `"test"`) and
 collect responses in `values.item`. The CLI uses `gunit.run-filtered` and reads
 these reports, without duplicating discovery or the per-method try boundary.
 
+`assert-fails` is a native deferreval that runs its quoted body in the caller's
+context. Test-local variables and the receiver remain available, and body side
+effects run once. This prevents unrelated variable errors from making broad
+negative assertions pass. Every setup/test still runs through Graf `try`.
+
 ## Discovery
 
 One method is registered per label. Own declarations are inspected newest
@@ -118,5 +124,7 @@ Run `graf test tests/units` for the replacement core. Import the
 rewritten unit sources explicitly. Do not target the repository root or all of
 `tests`: unrelated legacy sources are not expected to load or pass on current
 Graf. `tests/testing` contains contemporary auxiliary gunit checks, not a
-migration of the legacy library. The unit core currently has 45 passing tests;
-conversion and catalogue tests will be added with their implementation steps.
+migration of the legacy library. The replacement currently has 77 passing tests. New operation assertions
+collect their actual response in a tuple, so empty streams fail comparison
+instead of skipping an assertion. Catalogue and special-unit tests will be
+added with their implementation steps.

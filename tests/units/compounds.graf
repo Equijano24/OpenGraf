@@ -1,0 +1,94 @@
+import(units: graf {path: "../../src/units"});
+
+box {
+	common.testing.gunit.test>> product-uses-coherent-values-and-composed-dimensions(): (
+		centimeters$ = units.length.define("test-centimeter", "cm", 1.over(100));
+		q$ = centimeters$(20).times(centimeters$(30));
+		common.testing.gunit.assert-equals(tuple {3.over(50)}, tuple {q$.value()});
+		common.testing.gunit.assert-equals(tuple {"compound"}, tuple {q$.kind});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {q$.is-compound()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {q$.dimension.length});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {q$.scale});
+		common.testing.gunit.assert-equals(tuple {0}, tuple {q$.offset});
+		common.testing.gunit.assert-equals(tuple {no}, tuple {match(q$, mutable?)});
+		common.testing.gunit.assert-fails {q$.amount := 5}
+	),
+
+	common.testing.gunit.test>> explicit-area-classification(): (
+		centimeters$ = units.length.define("test-centimeter", "cm", 1.over(100));
+		square-centimeters$ = units.area.define("test-square-centimeter", "cm2", 1.over(10000));
+		q$ = square-centimeters$(centimeters$(20).times(centimeters$(30)));
+		common.testing.gunit.assert-equals(tuple {600}, tuple {q$.value()});
+		common.testing.gunit.assert-equals(tuple {square-centimeters$}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {"area"}, tuple {q$.kind});
+		common.testing.gunit.assert-equals(tuple {no}, tuple {q$.is-compound()})
+	),
+
+	common.testing.gunit.test>> velocity-from-kilometers-and-hours(): (
+		kilometers$ = units.length.define("test-kilometer", "km", 1000);
+		hours$ = units.duration.define("test-hour", "h", 3600);
+		meters-per-second$ = units.velocity.define("test-mps", "m/s", 1);
+		kilometers-per-hour$ = units.velocity.define("test-kph", "km/h", 5.over(18));
+		q$ = kilometers$(10).over(hours$(2));
+		common.testing.gunit.assert-equals(tuple {25.over(18)}, tuple {q$.value()});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {q$.dimension.length});
+		common.testing.gunit.assert-equals(tuple {-1}, tuple {q$.dimension.duration});
+		common.testing.gunit.assert-equals(tuple {25.over(18)}, tuple {meters-per-second$(q$).value()});
+		common.testing.gunit.assert-equals(tuple {5}, tuple {kilometers-per-hour$(q$).value()})
+	),
+
+	common.testing.gunit.test>> energy-and-torque-require-explicit-classification(): (
+		force$ = units.force.define("test-newton", "N", 1);
+		length$ = units.length.define("test-meter", "m", 1);
+		joules$ = units.energy.define("test-joule", "J", 1);
+		torque$ = units.torque.define("test-torque", "Nm", 1);
+		q$ = force$(3).times(length$(2));
+		common.testing.gunit.assert-equals(tuple {6}, tuple {joules$(q$).value()});
+		common.testing.gunit.assert-equals(tuple {6}, tuple {torque$(q$).value()});
+		common.testing.gunit.assert-fails {joules$(torque$(6))};
+		common.testing.gunit.assert-fails {joules$(6).plus(torque$(6))}
+	),
+
+	common.testing.gunit.test>> wrong-dimension-classification-is-refused(): (
+		meters$ = units.length.define("test-meter", "m", 1);
+		q$ = meters$(2).times(meters$(3));
+		common.testing.gunit.assert-fails {meters$(q$)};
+		common.testing.gunit.assert-fails {meters$(2).plus(q$)};
+		common.testing.gunit.assert-fails {meters$(2).compared-to(q$)}
+	),
+
+	common.testing.gunit.test>> dimensionless-quotients-remain-quantities(): (
+		meters$ = units.length.define("test-meter", "m", 1);
+		centimeters$ = units.length.define("test-centimeter", "cm", 1.over(100));
+		ratio$ = units.ratio.define("test-ratio", "", 1);
+		q$ = meters$(1).over(centimeters$(2));
+		common.testing.gunit.assert-equals(tuple {50}, tuple {q$.value()});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {q$.dimension.same-as(units.ratio.dimension)});
+		common.testing.gunit.assert-equals(tuple {no}, tuple {match(q$, number?)});
+		common.testing.gunit.assert-equals(tuple {50}, tuple {ratio$(q$).value()})
+	),
+
+	common.testing.gunit.test>> compounds-participate-in-further-operations(): (
+		meters$ = units.length.define("test-meter", "m", 1);
+		seconds$ = units.duration.define("test-second", "s", 1);
+		a$ = meters$(2).times(meters$(3));
+		b$ = meters$(4).times(meters$(5));
+		common.testing.gunit.assert-equals(tuple {26}, tuple {a$.plus(b$).value()});
+		common.testing.gunit.assert-equals(tuple {a$.factory}, tuple {a$.plus(b$).factory});
+		common.testing.gunit.assert-equals(tuple {12}, tuple {a$.times(2).value()});
+		common.testing.gunit.assert-equals(tuple {3}, tuple {a$.over(seconds$(2)).value()});
+		common.testing.gunit.assert-equals(tuple {3}, tuple {a$.times(meters$(2)).dimension.length});
+		common.testing.gunit.assert-fails {a$.plus(meters$(2).over(seconds$(1)))}
+	),
+
+	common.testing.gunit.test>> information-dimension-survives-rate-construction(): (
+		bits$ = units.information.define("test-bit", "bit", 1);
+		seconds$ = units.duration.define("test-second", "s", 1);
+		family$ = units.unit.family("custom-bit-rate", units.dimension(0, 0, -1, 0, 0, 0, 0, 1));
+		rate$ = family$.define("test-bit-rate", "bit/s", 1);
+		q$ = bits$(128).over(seconds$(2));
+		common.testing.gunit.assert-equals(tuple {64}, tuple {rate$(q$).value()});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {-1}, tuple {q$.dimension.duration})
+	)
+}
