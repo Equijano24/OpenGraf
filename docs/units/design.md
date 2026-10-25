@@ -1,9 +1,10 @@
 # Units: design contract
 
-Status: steps 5–7 implement the [unit core](core.md),
+Status: steps 5–8 implement the [unit core](core.md),
 [conversion/arithmetic](operations.md) and [angles/trigonometry](angles.md),
 including local extensions, explicit compound classification, `radians`, and
-`degrees`. The reviewed catalogue and special-unit rules remain in later steps;
+`degrees`, the [290-factory catalogue](catalogue.md), 87 families and
+[decimal/binary prefixes](prefixes.md). Special-unit rules remain in step 9;
 this document specifies the complete target API.
 
 ## Object model
@@ -62,7 +63,9 @@ dimensionless ratios, not dimensionful values.
 ## Extensibility
 
 Definitions carry `id`, `symbol`, `kind`, `dimension`, `scale`, `offset`, prefix
-eligibility, and exactness/source metadata. Measurements add `amount` and `factory`.
+eligibility, and exactness/source metadata. Measured factors carry
+`scale-uncertainty` and `reference-edition`; prefix metadata records the applied
+name/system and prevents repeated prefixing. Measurements add `amount` and `factory`.
 Users extend families through inheritance or a definition factory such as
 `length.definition("furlong", "fur", exactFactor)`. New dimensions/kinds compose the
 same protocol; no mutable global registration is required.
@@ -94,7 +97,8 @@ historical conventions, errors, and measured rather than exact constants.
 Conversion and arithmetic below are implemented with explicitly defined local
 factories, as shown in the [operation reference](operations.md). Ready-made
 `radians`/`degrees` and their trigonometric methods are also implemented.
-Other catalogue factories remain in step 8.
+The [catalogue reference](catalogue.md) lists the concrete factories now available.
+Absolute-temperature, logarithmic and contextual factories remain in step 9.
 
 ```graf
 meters(2).plus(centimeters(30)).value()     // 23/10, in meters
@@ -171,8 +175,10 @@ metadata. Symbols are case sensitive. Do not resolve ambiguous `ton`, `gallon`,
 Spanish/English documentation independently of code names.
 
 SI prefixes are decimal powers from quetta to quecto. Information uses separate
-decimal and binary prefix factories. A prefix multiplies the unit's scale, keeps
-the family/kind, and adds provenance. Prefixing an affine point or an already
+decimal and binary prefix factories. A prefix multiplies the unit's scale with `exact-product`, keeps
+the family/kind, and adds provenance. Coherent conversion uses the explicit
+`exact-product` / `exact-quotient` protocol without changing native ordinary
+promotion. Use `square(prefixed-length)` / `cube(prefixed-length)` for powers. Prefixing an affine point or an already
 prefixed definition is refused. Area and volume prefixes apply before the power:
 a square centimeter is `(1/100)^2` square meters.
 

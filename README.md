@@ -15,17 +15,20 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Units replacement
 
-The new core in `src/units` provides `unit`, dimensions, 25 quantity families,
+The new core in `src/units` provides `unit`, dimensions, 87 quantity families,
 local definitions and immutable measurements for current Graf. See the
 [core API](docs/units/core.md) and [technical documentation](docs/index.md).
 [Conversion and arithmetic](docs/units/operations.md) are implemented, including
 compound dimensions, powers, roots, comparisons and local extensions.
 [Angles and trigonometry](docs/units/angles.md) provide `radians`, `degrees`,
 symbolic conversion, circular/inverse functions and precision parameters.
-The reviewed catalogue and prefix API remain in step 8.
+The reviewed [catalogue](docs/units/catalogue.md) has 290 factories, including
+meters, kilometers, feet and SI/engineering units. The [prefix API](docs/units/prefixes.md)
+provides all 24 SI and 10 binary prefixes. Special-unit rules remain in step 9.
 Run `graf test tests/units` to check this section, or
 `graf run examples/units/operations.graf` to run the arithmetic example, or
-`graf run examples/units/angles.graf` for angles.
+`graf run examples/units/angles.graf` for angles, or
+`graf run examples/units/catalogue.graf` for catalogue units and prefixes.
 
 ## Testing foundation
 

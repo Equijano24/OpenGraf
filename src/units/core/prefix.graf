@@ -1,0 +1,46 @@
+import(open-graf-units-core: graf {path: "."});
+
+// A prefix is immutable data and an explicit factory transformation.
+class {
+	name: string?,
+	symbol: string?,
+	radix: integer?,
+	exponent: integer?,
+	factor: real?,
+	source: string?,
+
+	self$(name$ = string?, symbol$ = string?, radix$ = integer?, exponent$ = integer?, source$ = string?): (
+		yes? >> equals(radix$, 10).or(equals(radix$, 2));
+		common.math.gt(0)? >> name$.length();
+		common.math.gt(0)? >> symbol$.length();
+		factor$ = if(exponent$.gte(0)) {radix$.pow(exponent$), 1.exact-quotient(radix$.pow(exponent$.abs()))};
+		composite>> new(self$) {name: name$, symbol: symbol$, radix: radix$, exponent: exponent$, factor: factor$, source: source$}
+	),
+
+	self$(factory$ = class?): (
+		factory$.require-linear();
+		common.math.gt(0)? >> factory$.scale;
+		""? >> factory$.prefix-name;
+		if(equals(self$.radix, 10)) {yes? >> factory$.prefixable, yes? >> factory$.binary-prefixable};
+		if(equals(self$.radix, 2)) {
+			yes? >> (equals(factory$.kind, "information").and(factory$.dimension.same-as(open-graf-units-core.dimension(0, 0, 0, 0, 0, 0, 0, 1))))
+				.or(equals(factory$.kind, "information-rate").and(factory$.dimension.same-as(open-graf-units-core.dimension(0, 0, -1, 0, 0, 0, 0, 1))))
+		};
+		scale$ = factory$.scale.exact-product(self$.factor);
+		uncertainty$ = factory$.scale-uncertainty.exact-product(self$.factor);
+		id$ = self$.name.conc(factory$.id);
+		symbol$ = self$.symbol.conc(factory$.symbol);
+		source$ = factory$.source.conc("; ").conc(self$.source);
+		heir(factory$) {
+			override>> id: id$,
+			override>> symbol: symbol$,
+			override>> scale: scale$,
+			override>> scale-uncertainty: uncertainty$,
+			override>> prefixable: no,
+			override>> binary-prefixable: no,
+			override>> prefix-name: self$.name,
+			override>> prefix-system: if(equals(self$.radix, 10)) {"decimal", "binary"},
+			override>> source: source$
+		}
+	)
+}

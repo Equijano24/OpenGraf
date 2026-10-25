@@ -27,5 +27,14 @@ box {
 		common.testing.gunit.assert-equals(tuple {1}, tuple {another-units-alias.degrees(90).sin()});
 		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(whole-library.units.radians(1), units.unit?)})
 	)
+,
+
+	common.testing.gunit.test>> verify-catalogue-and-prefixes-share-import-identities(): (
+		common.testing.gunit.assert-equals(tuple {units.meters}, tuple {another-units-alias.meters});
+		common.testing.gunit.assert-equals(tuple {units.kilometers}, tuple {whole-library.units.kilometers});
+		common.testing.gunit.assert-equals(tuple {units.si-prefixes.quecto}, tuple {whole-library.units.si-prefixes.quecto});
+		common.testing.gunit.assert-equals(tuple {units.binary-prefixes.quebi}, tuple {another-units-alias.binary-prefixes.quebi});
+		common.testing.gunit.assert-equals(tuple {304.8(0)}, tuple {units.meters(whole-library.units.feet(1000)).value()})
+	)
 
 }

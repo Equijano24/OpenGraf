@@ -1,24 +1,25 @@
 # Validation and implementation status
 
-Steps 5–7 replace the legacy units with the [core](core.md),
-[conversion/arithmetic](operations.md) and [angles/trigonometry](angles.md):
-25 families, local definitions, immutable measurements, compound dimensions,
-powers, roots, comparisons, `radians`, `degrees` and precision-controlled circular/
-inverse functions. The reviewed catalogue and special-unit rules remain later
-steps. The [11-step plan](../plan-de-trabajo.md) records seven completed steps
-and step 8 next.
+Steps 5–8 implement the [core](core.md), [conversion/arithmetic](operations.md),
+[angles](angles.md), [catalogue](catalogue.md) and [prefixes](prefixes.md):
+87 families, 290 named factories, all 24 SI and 10 binary prefixes, immutable
+measurements and explicit local extension. Absolute temperatures, logarithmic
+units and reference/model conversions remain step 9. The [plan](../plan-de-trabajo.md)
+records eight completed steps and step 9 next.
 
 ## Verified checkpoint
 
 | Check | Result |
 | --- | --- |
-| `graf test tests/units` | 110 passed, 0 failed, 0 load errors; exit 0 |
+| `graf test tests/units` | 437 passed, 0 failed, 0 load errors; exit 0 |
 | `graf test tests/testing` | 11 auxiliary gunit tests passed; exit 0 |
-| Complete Graf .NET suite on `develop` | 1980 passed, 0 failed, 2 existing printed-form skips |
-| Graf solution build | Successful; symbolic operand arithmetic/comparison fix included |
+| Complete Graf .NET suite on `develop` | 1991 passed, 0 failed, 2 existing printed-form skips |
+| Graf solution build | Successful; symbolic operands and explicit exact-factor arithmetic included |
 | `graf run examples/units/core.graf` | Original 1/3, replacement 2, symbol m, length exponent 1, compatible yes |
 | `graf run examples/units/operations.graf` | 23/10, 200, 25/18, 5, 3, yes |
 | `graf run examples/units/angles.graf` | Constructor, symbolic pi/6, 180, mixed sum, sine, exact 1/2, inverse 30 and atan2 135 |
+| `graf run examples/units/catalogue.graf` | Exact international foot, U.S./Imperial gallons, decimal/binary byte, quecto gram, quebi byte and cubic centimeter anchors |
+| `python3 tools/units_catalogue.py --check` | Generated sources/reference/integration tests match reviewed data; no stale generated definitions |
 | Host BigComplex payload check | Identity retained through construction, coherent mapping, conversion and replacement |
 | `mkdocs build --strict` | Successful |
 
@@ -48,6 +49,18 @@ constructing an expected value.
 The precision boundary in [angles](angles.md#precision-boundary) is explicit:
 `common.math` results retain their backend type, but subsequent generic numeric
 arithmetic still follows Graf's existing rational-to-float promotion rule.
+
+Step 8 adds 327 checks: one integration test for each of the 290 catalogue
+factories, 17 independent physical-anchor groups, five defining-equation groups,
+12 prefix behavior groups, two explicit reference tables covering every prefix,
+and a shared-import check. Generated integration cases check construction,
+factory identity, family/dimension shape, coherent mapping and round trips;
+hand-maintained anchors/equations catch a wrong factor or vector that a generated
+round trip alone cannot detect. Prefix tests cover extreme exact factors,
+byte/bit scaling, powers, kilogram rules, double-prefix refusal, affine and
+non-information refusal, custom construction, immutable data, source/uncertainty
+metadata and all 34 standard factors. The native exact-factor API has 11
+additional regression cases.
 
 `tests/units` is the replacement test target. The old `tests/units-test.graf`,
 other tests and other library sections still target the obsolete API; they are
@@ -79,17 +92,17 @@ The CLI's pass/fail/load/no-match/cancellation codes were verified in step 4.
 
 | Concern | Implemented now | Still required |
 | --- | --- | --- |
-| Construction | Core numeric constructor, payload preservation, family lineage, immutable instance behavior | Per-catalogue-factory construction |
-| Dimensions and kinds | Eight integral fields; 25 family vectors; products, quotients, powers and integral roots | Further catalogue families |
-| Conversion | Coherent/affine mappings, anchors, round trips, kind/dimension checks, compound classification | Per-catalogue-factory anchors |
+| Construction | Core numeric constructor, payload preservation, family lineage, immutable instance behavior | Absolute-temperature/logarithmic/contextual construction |
+| Dimensions and kinds | Eight integral fields; 87 family vectors; products, quotients, powers and integral roots | Application-specific extensions |
+| Conversion | Coherent/affine mappings, anchors, round trips, kind/dimension checks, compound classification | Special-unit/model anchors |
 | Arithmetic | Mixed addition/subtraction, scalars, compounds, powers, roots, comparisons and rounding | Special-unit operations |
 | Angles | Radians/degrees, symbolic conversion, circular/inverse methods, precision, domains and extension | Further catalogue angles; native large-rational promotion decision |
 | Temperature | Distinct kinds; generic arithmetic on points/offset values refused | Absolute-zero boundary and specialized point/delta arithmetic |
-| Prefixes | Eligibility metadata | SI/binary exponents, byte/bit factors, square/cube scaling, no double prefix |
+| Prefixes | All 24 SI and 10 binary factors, byte/bit rates, square/cube scaling, eligibility and double-prefix refusal | Special-unit/model eligibility in step 9 |
 | Special cases | Distinct dose and radioactivity kinds | Logarithmic domains, pH activity, explicit reference/model conversions |
 | Extensibility | Local factories/families, conversion/arithmetic, overridden `quantity`, provenance and metadata overrides | Prefix/model-specific extensions |
 | Migration | Old unit implementation removed; new core reference and executable example | Full old-API migration guidance and replacement of old catalogue examples/tests |
-| Documentation | Technical Markdown, API tables, site build | Complete catalogue, reviewed sources and final PDF verification |
+| Documentation | Technical Markdown, 290-factory catalogue, prefix reference, reviewed source/correction notes and site build | Special-unit reference, full migration guidance and final PDF verification |
 
 Round trips alone cannot detect a shared wrong factor. Later catalogue tests
 must include independent anchors such as the exact international inch, liter

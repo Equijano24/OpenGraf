@@ -1,0 +1,14 @@
+import(open-graf-units-core: graf {path: "core"});
+
+namespace {
+	kibi: open-graf-units-core.prefix("kibi", "Ki", 2, 10, "BIPM-SI-9-v4.01/Chapter 3; IEC-80000-13-2025"),
+	mebi: open-graf-units-core.prefix("mebi", "Mi", 2, 20, "BIPM-SI-9-v4.01/Chapter 3; IEC-80000-13-2025"),
+	gibi: open-graf-units-core.prefix("gibi", "Gi", 2, 30, "BIPM-SI-9-v4.01/Chapter 3; IEC-80000-13-2025"),
+	tebi: open-graf-units-core.prefix("tebi", "Ti", 2, 40, "BIPM-SI-9-v4.01/Chapter 3; IEC-80000-13-2025"),
+	pebi: open-graf-units-core.prefix("pebi", "Pi", 2, 50, "BIPM-SI-9-v4.01/Chapter 3; IEC-80000-13-2025"),
+	exbi: open-graf-units-core.prefix("exbi", "Ei", 2, 60, "BIPM-SI-9-v4.01/Chapter 3; IEC-80000-13-2025"),
+	zebi: open-graf-units-core.prefix("zebi", "Zi", 2, 70, "BIPM-SI-9-v4.01/Chapter 3; IEC-80000-13-2025"),
+	yobi: open-graf-units-core.prefix("yobi", "Yi", 2, 80, "BIPM-SI-9-v4.01/Chapter 3; IEC-80000-13-2025"),
+	robi: open-graf-units-core.prefix("robi", "Ri", 2, 90, "BIPM-SI-9-v4.01/Chapter 3; IEC-80000-13-2025"),
+	quebi: open-graf-units-core.prefix("quebi", "Qi", 2, 100, "BIPM-SI-9-v4.01/Chapter 3; IEC-80000-13-2025")
+}

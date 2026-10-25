@@ -37,7 +37,8 @@ There is no implicit interpretation of a bare number as degrees.
 
 Both scales are exact; pi is a symbolic Graf number. Metadata records BIPM's SI
 Brochure, ninth edition, version 4.01, Tables 4 and 8. See [sources](sources.md).
-Prefix eligibility is metadata; the prefix API belongs to step 8.
+The [prefix API](prefixes.md) implements that eligibility: radians accept SI
+prefixes and degrees refuse them.
 
 Each definition inherits `angle`, which inherits `unit`. Measurements are
 immutable instances with their original number and an explicit `factory`
@@ -129,6 +130,7 @@ rules. Graf currently can promote a rational with components beyond Int64 to
 `float64`, even without a float operand. Thus an arbitrary-precision sine result
 is rational, but later `.times(1)` can lose digits. This existing engine behavior
 is not redefined by units; see the precision question recorded in Graf's
-`Open-Work-Checklist`. Exact circular anchors and symbolic angular conversion do
-not require that promotion. Complex numeric payload construction remains supported;
+`Open-Work-Checklist`. Coherent conversion now explicitly uses `exact-product` / `exact-quotient`,
+which preserve rational factors; exact circular anchors and symbolic angular
+conversion do not require generic numeric promotion. Complex numeric payload construction remains supported;
 complex circular-function support depends on Graf and is not added here.

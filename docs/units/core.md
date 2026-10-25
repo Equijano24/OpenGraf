@@ -1,11 +1,11 @@
 # Unit core API
 
-The core is implemented for current Graf on `develop`. It provides 25 families,
+The core is implemented for current Graf on `develop`. It provides 87 families,
 local unit definitions, integral dimensions, and immutable measurements.
 [Conversion and arithmetic](operations.md) are implemented in step 6.
 [Angles and trigonometry](angles.md) add the concrete `radians` and `degrees`
-factories in step 7. The reviewed catalogue remains in step 8; the complete
-target is in the [design contract](design.md).
+factories in step 7. Step 8 adds the [catalogue](catalogue.md) and [prefix API](prefixes.md); the
+complete target is in the [design contract](design.md).
 
 ## Import and construct
 
@@ -84,14 +84,20 @@ See [conversion and arithmetic](operations.md).
 | `scale` | Positive real factor relative to the family's coherent unit |
 | `offset` | Zero by default; explicit affine mappings can override it |
 | `linear-arithmetic` | Boolean capability, `yes` for ordinary families and `no` for temperature points |
-| `prefixable` | Eligibility metadata, default `no`; prefix generation is pending |
+| `prefixable` | SI-prefix eligibility, default `no`; see [prefixes](prefixes.md) |
 | `exact` | Definition author's exactness claim, default `yes` |
+| `binary-prefixable` | Binary-prefix eligibility; default `no` |
+| `prefix-name` / `prefix-system` | Prefix provenance; defaults empty / `none` |
+| `scale-uncertainty` | Absolute standard uncertainty of the scale in coherent units; default 0 |
+| `reference-edition` | Edition/year for measured factors; default empty |
 | `source` | Provenance text, default `"user-defined"` |
 
 Use exact rational factors when the definition is exact. The six-argument form
 can mark a measured factor as inexact and name its source. No measurement
 uncertainty model or automatic factor verification is implied by these fields.
-The catalogue step will add reviewed definitions and their sources.
+The [catalogue](catalogue.md) provides reviewed definitions and sources; daltons
+record the CODATA edition and absolute scale uncertainty. Coherent conversion
+uses Graf's explicit exact-factor messages, preserving exact rational factors.
 
 Nonpositive factors and empty identifiers fail through Graf predicate casts.
 Non-numeric payloads, invalid flags, nonintegral dimensions and incomplete
@@ -161,11 +167,17 @@ ancestor falls outside this immutable-definition protocol.
 The files in `src/units/core` supply the shared base classes. Public unit files
 mount that directory under an internal alias, so importing units directly or
 through the library root reaches the same base `unit` and `dimension` classes.
-No other legacy component is evaluated by the units examples or tests.
+Concrete catalogue definitions live in `src/units/core/catalogue-definitions`;
+public files forward to that shared module, so aliases and library-root imports
+refer to the same factory. No other legacy component is evaluated by the units
+examples or tests.
 
 ## Validation
 
-Run `graf test tests/units` from the repository root. The suites cover all 25
-families, payload preservation, immutable instances, exact factor metadata,
+Run `graf test tests/units` from the repository root. The suites cover the 87 families and 290 catalogue factories, payload preservation, immutable instances, exact factor metadata,
 local extension, compatibility, provenance and invalid input. See the
 [validation status](validation.md) for the verified counts and remaining work.
+
+The [catalogue reference](catalogue.md#family-dimensions) lists all 87 family
+vectors, including the 62 engineering families added in step 8. The original
+25-family table above remains a guide to the initial core.

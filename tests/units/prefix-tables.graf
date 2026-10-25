@@ -1,0 +1,57 @@
+// Reference tables are explicit; factors are not recomputed with the implementation algorithm.
+import(units: graf {path: "../../src/units"});
+
+box {
+	common.testing.gunit.test>> verify-all-24-si-prefix-reference-factors(): (
+		foreach {row$ = (
+			tuple {units.si-prefixes.quetta, 1000000000000000000000000000000, "Q", 30},
+			tuple {units.si-prefixes.ronna, 1000000000000000000000000000, "R", 27},
+			tuple {units.si-prefixes.yotta, 1000000000000000000000000, "Y", 24},
+			tuple {units.si-prefixes.zetta, 1000000000000000000000, "Z", 21},
+			tuple {units.si-prefixes.exa, 1000000000000000000, "E", 18},
+			tuple {units.si-prefixes.peta, 1000000000000000, "P", 15},
+			tuple {units.si-prefixes.tera, 1000000000000, "T", 12},
+			tuple {units.si-prefixes.giga, 1000000000, "G", 9},
+			tuple {units.si-prefixes.mega, 1000000, "M", 6},
+			tuple {units.si-prefixes.kilo, 1000, "k", 3},
+			tuple {units.si-prefixes.hecto, 100, "h", 2},
+			tuple {units.si-prefixes.deca, 10, "da", 1},
+			tuple {units.si-prefixes.deci, 0.1(0), "d", -1},
+			tuple {units.si-prefixes.centi, 0.01(0), "c", -2},
+			tuple {units.si-prefixes.milli, 0.001(0), "m", -3},
+			tuple {units.si-prefixes.micro, 0.000001(0), "µ", -6},
+			tuple {units.si-prefixes.nano, 0.000000001(0), "n", -9},
+			tuple {units.si-prefixes.pico, 0.000000000001(0), "p", -12},
+			tuple {units.si-prefixes.femto, 0.000000000000001(0), "f", -15},
+			tuple {units.si-prefixes.atto, 0.000000000000000001(0), "a", -18},
+			tuple {units.si-prefixes.zepto, 0.000000000000000000001(0), "z", -21},
+			tuple {units.si-prefixes.yocto, 0.000000000000000000000001(0), "y", -24},
+			tuple {units.si-prefixes.ronto, 0.000000000000000000000000001(0), "r", -27},
+			tuple {units.si-prefixes.quecto, 0.000000000000000000000000000001(0), "q", -30}
+		)} {
+			prefix$ := row$.#0;
+			common.testing.gunit.assert-equals(tuple {row$.#1, row$.#2, row$.#3, 10, no},
+				tuple {prefix$.factor, prefix$.symbol, prefix$.exponent, prefix$.radix, match(prefix$.factor,float64?)});
+			common.testing.gunit.assert-equals(tuple {row$.#1}, tuple {units.meters(prefix$(units.meters)(1)).value()})
+		}
+	),
+
+	common.testing.gunit.test>> verify-all-10-binary-prefix-reference-factors(): (
+		foreach {row$ = (
+			tuple {units.binary-prefixes.kibi, 1024, "Ki", 10},
+			tuple {units.binary-prefixes.mebi, 1048576, "Mi", 20},
+			tuple {units.binary-prefixes.gibi, 1073741824, "Gi", 30},
+			tuple {units.binary-prefixes.tebi, 1099511627776, "Ti", 40},
+			tuple {units.binary-prefixes.pebi, 1125899906842624, "Pi", 50},
+			tuple {units.binary-prefixes.exbi, 1152921504606846976, "Ei", 60},
+			tuple {units.binary-prefixes.zebi, 1180591620717411303424, "Zi", 70},
+			tuple {units.binary-prefixes.yobi, 1208925819614629174706176, "Yi", 80},
+			tuple {units.binary-prefixes.robi, 1237940039285380274899124224, "Ri", 90},
+			tuple {units.binary-prefixes.quebi, 1267650600228229401496703205376, "Qi", 100}
+		)} {
+			prefix$ := row$.#0;
+			common.testing.gunit.assert-equals(tuple {row$.#1,row$.#2,row$.#3,2}, tuple {prefix$.factor,prefix$.symbol,prefix$.exponent,prefix$.radix});
+			common.testing.gunit.assert-equals(tuple {row$.#1}, tuple {units.bytes(prefix$(units.bytes)(1)).value()})
+		}
+	)
+}

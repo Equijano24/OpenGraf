@@ -1,0 +1,125 @@
+// Generated integration checks; see catalogue-anchors.graf for independent anchors.
+import(units: graf {path: "../../../src/units"});
+
+box {
+	common.testing.gunit.test>> verify-pebibits(): (
+		q$ = units.pebibits(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 0, 0, 0, 0, 0, 0, 0, 1},
+			tuple {q$.value(), match(q$, units.information?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.pebibits}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {2251799813685248}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.pebibits(q$).value()})
+	),
+	common.testing.gunit.test>> verify-exbibytes(): (
+		q$ = units.exbibytes(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 0, 0, 0, 0, 0, 0, 0, 1},
+			tuple {q$.value(), match(q$, units.information?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.exbibytes}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {18446744073709551616}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.exbibytes(q$).value()})
+	),
+	common.testing.gunit.test>> verify-exbibits(): (
+		q$ = units.exbibits(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 0, 0, 0, 0, 0, 0, 0, 1},
+			tuple {q$.value(), match(q$, units.information?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.exbibits}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {2305843009213693952}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.exbibits(q$).value()})
+	),
+	common.testing.gunit.test>> verify-zebibytes(): (
+		q$ = units.zebibytes(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 0, 0, 0, 0, 0, 0, 0, 1},
+			tuple {q$.value(), match(q$, units.information?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.zebibytes}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {18889465931478580854784}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.zebibytes(q$).value()})
+	),
+	common.testing.gunit.test>> verify-zebibits(): (
+		q$ = units.zebibits(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 0, 0, 0, 0, 0, 0, 0, 1},
+			tuple {q$.value(), match(q$, units.information?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.zebibits}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {2361183241434822606848}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.zebibits(q$).value()})
+	),
+	common.testing.gunit.test>> verify-yobibytes(): (
+		q$ = units.yobibytes(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 0, 0, 0, 0, 0, 0, 0, 1},
+			tuple {q$.value(), match(q$, units.information?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.yobibytes}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {19342813113834066795298816}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.yobibytes(q$).value()})
+	),
+	common.testing.gunit.test>> verify-yobibits(): (
+		q$ = units.yobibits(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 0, 0, 0, 0, 0, 0, 0, 1},
+			tuple {q$.value(), match(q$, units.information?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.yobibits}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {2417851639229258349412352}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.yobibits(q$).value()})
+	),
+	common.testing.gunit.test>> verify-robibytes(): (
+		q$ = units.robibytes(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 0, 0, 0, 0, 0, 0, 0, 1},
+			tuple {q$.value(), match(q$, units.information?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.robibytes}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {19807040628566084398385987584}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.robibytes(q$).value()})
+	),
+	common.testing.gunit.test>> verify-robibits(): (
+		q$ = units.robibits(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 0, 0, 0, 0, 0, 0, 0, 1},
+			tuple {q$.value(), match(q$, units.information?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.robibits}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {2475880078570760549798248448}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.robibits(q$).value()})
+	),
+	common.testing.gunit.test>> verify-quebibytes(): (
+		q$ = units.quebibytes(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 0, 0, 0, 0, 0, 0, 0, 1},
+			tuple {q$.value(), match(q$, units.information?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.quebibytes}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {20282409603651670423947251286016}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.quebibytes(q$).value()})
+	),
+	common.testing.gunit.test>> verify-quebibits(): (
+		q$ = units.quebibits(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 0, 0, 0, 0, 0, 0, 0, 1},
+			tuple {q$.value(), match(q$, units.information?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.quebibits}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {2535301200456458802993406410752}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.quebibits(q$).value()})
+	),
+	common.testing.gunit.test>> verify-ratios(): (
+		q$ = units.ratios(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 0, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.ratio?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.ratios}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.ratios(q$).value()})
+	),
+	common.testing.gunit.test>> verify-percentages(): (
+		q$ = units.percentages(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 0, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.ratio?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.percentages}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.02(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.percentages(q$).value()})
+	),
+	common.testing.gunit.test>> verify-per-milles(): (
+		q$ = units.per-milles(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 0, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.ratio?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.per-milles}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.002(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.per-milles(q$).value()})
+	),
+	common.testing.gunit.test>> verify-parts-per-million(): (
+		q$ = units.parts-per-million(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 0, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.ratio?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.parts-per-million}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.000002(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.parts-per-million(q$).value()})
+	)
+}

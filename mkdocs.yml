@@ -11,6 +11,8 @@ nav:
       - Core API: units/core.md
       - Conversion and arithmetic: units/operations.md
       - Angles and trigonometry: units/angles.md
+      - Catalogue: units/catalogue.md
+      - Decimal and binary prefixes: units/prefixes.md
       - Design and API contract: units/design.md
       - Validation and status: units/validation.md
       - Sources: units/sources.md

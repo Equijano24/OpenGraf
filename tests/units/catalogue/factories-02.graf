@@ -1,0 +1,205 @@
+// Generated integration checks; see catalogue-anchors.graf for independent anchors.
+import(units: graf {path: "../../../src/units"});
+
+box {
+	common.testing.gunit.test>> verify-square-kilometers(): (
+		q$ = units.square-kilometers(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 2, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.area?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.square-kilometers}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {2000000}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.square-kilometers(q$).value()})
+	),
+	common.testing.gunit.test>> verify-cubic-kilometers(): (
+		q$ = units.cubic-kilometers(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.cubic-kilometers}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {2000000000}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.cubic-kilometers(q$).value()})
+	),
+	common.testing.gunit.test>> verify-square-inches(): (
+		q$ = units.square-inches(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 2, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.area?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.square-inches}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.00129032(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.square-inches(q$).value()})
+	),
+	common.testing.gunit.test>> verify-cubic-inches(): (
+		q$ = units.cubic-inches(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.cubic-inches}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.000032774128(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.cubic-inches(q$).value()})
+	),
+	common.testing.gunit.test>> verify-square-feet(): (
+		q$ = units.square-feet(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 2, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.area?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.square-feet}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.18580608(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.square-feet(q$).value()})
+	),
+	common.testing.gunit.test>> verify-cubic-feet(): (
+		q$ = units.cubic-feet(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.cubic-feet}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.056633693184(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.cubic-feet(q$).value()})
+	),
+	common.testing.gunit.test>> verify-square-yards(): (
+		q$ = units.square-yards(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 2, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.area?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.square-yards}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {1.67225472(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.square-yards(q$).value()})
+	),
+	common.testing.gunit.test>> verify-cubic-yards(): (
+		q$ = units.cubic-yards(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.cubic-yards}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {1.529109715968(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.cubic-yards(q$).value()})
+	),
+	common.testing.gunit.test>> verify-ares(): (
+		q$ = units.ares(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 2, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.area?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.ares}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {200}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.ares(q$).value()})
+	),
+	common.testing.gunit.test>> verify-hectares(): (
+		q$ = units.hectares(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 2, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.area?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.hectares}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {20000}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.hectares(q$).value()})
+	),
+	common.testing.gunit.test>> verify-international-acres(): (
+		q$ = units.international-acres(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 2, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.area?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.international-acres}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {8093.7128448(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.international-acres(q$).value()})
+	),
+	common.testing.gunit.test>> verify-barns(): (
+		q$ = units.barns(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 2, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.area?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.barns}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.0000000000000000000000000002(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.barns(q$).value()})
+	),
+	common.testing.gunit.test>> verify-liters(): (
+		q$ = units.liters(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.liters}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.002(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.liters(q$).value()})
+	),
+	common.testing.gunit.test>> verify-milliliters(): (
+		q$ = units.milliliters(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.milliliters}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.000002(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.milliliters(q$).value()})
+	),
+	common.testing.gunit.test>> verify-centiliters(): (
+		q$ = units.centiliters(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.centiliters}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.00002(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.centiliters(q$).value()})
+	),
+	common.testing.gunit.test>> verify-deciliters(): (
+		q$ = units.deciliters(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.deciliters}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.0002(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.deciliters(q$).value()})
+	),
+	common.testing.gunit.test>> verify-hectoliters(): (
+		q$ = units.hectoliters(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.hectoliters}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.2(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.hectoliters(q$).value()})
+	),
+	common.testing.gunit.test>> verify-us-liquid-gallons(): (
+		q$ = units.us-liquid-gallons(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.us-liquid-gallons}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.007570823568(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.us-liquid-gallons(q$).value()})
+	),
+	common.testing.gunit.test>> verify-us-liquid-quarts(): (
+		q$ = units.us-liquid-quarts(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.us-liquid-quarts}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.001892705892(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.us-liquid-quarts(q$).value()})
+	),
+	common.testing.gunit.test>> verify-us-liquid-pints(): (
+		q$ = units.us-liquid-pints(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.us-liquid-pints}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.000946352946(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.us-liquid-pints(q$).value()})
+	),
+	common.testing.gunit.test>> verify-us-fluid-ounces(): (
+		q$ = units.us-fluid-ounces(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.us-fluid-ounces}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.000059147059125(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.us-fluid-ounces(q$).value()})
+	),
+	common.testing.gunit.test>> verify-imperial-gallons(): (
+		q$ = units.imperial-gallons(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.imperial-gallons}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.00909218(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.imperial-gallons(q$).value()})
+	),
+	common.testing.gunit.test>> verify-imperial-quarts(): (
+		q$ = units.imperial-quarts(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.imperial-quarts}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.002273045(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.imperial-quarts(q$).value()})
+	),
+	common.testing.gunit.test>> verify-imperial-pints(): (
+		q$ = units.imperial-pints(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.imperial-pints}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.0011365225(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.imperial-pints(q$).value()})
+	),
+	common.testing.gunit.test>> verify-imperial-fluid-ounces(): (
+		q$ = units.imperial-fluid-ounces(2);
+		common.testing.gunit.assert-equals(tuple {2, yes, 3, 0, 0, 0, 0, 0, 0, 0},
+			tuple {q$.value(), match(q$, units.volume?), q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information});
+		common.testing.gunit.assert-equals(tuple {units.imperial-fluid-ounces}, tuple {q$.factory});
+		common.testing.gunit.assert-equals(tuple {0.000056826125(0)}, tuple {q$.coherent-value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.imperial-fluid-ounces(q$).value()})
+	)
+}

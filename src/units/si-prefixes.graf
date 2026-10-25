@@ -1,0 +1,28 @@
+import(open-graf-units-core: graf {path: "core"});
+
+namespace {
+	quetta: open-graf-units-core.prefix("quetta", "Q", 10, 30, "BIPM-SI-9-v4.01/Table 7"),
+	ronna: open-graf-units-core.prefix("ronna", "R", 10, 27, "BIPM-SI-9-v4.01/Table 7"),
+	yotta: open-graf-units-core.prefix("yotta", "Y", 10, 24, "BIPM-SI-9-v4.01/Table 7"),
+	zetta: open-graf-units-core.prefix("zetta", "Z", 10, 21, "BIPM-SI-9-v4.01/Table 7"),
+	exa: open-graf-units-core.prefix("exa", "E", 10, 18, "BIPM-SI-9-v4.01/Table 7"),
+	peta: open-graf-units-core.prefix("peta", "P", 10, 15, "BIPM-SI-9-v4.01/Table 7"),
+	tera: open-graf-units-core.prefix("tera", "T", 10, 12, "BIPM-SI-9-v4.01/Table 7"),
+	giga: open-graf-units-core.prefix("giga", "G", 10, 9, "BIPM-SI-9-v4.01/Table 7"),
+	mega: open-graf-units-core.prefix("mega", "M", 10, 6, "BIPM-SI-9-v4.01/Table 7"),
+	kilo: open-graf-units-core.prefix("kilo", "k", 10, 3, "BIPM-SI-9-v4.01/Table 7"),
+	hecto: open-graf-units-core.prefix("hecto", "h", 10, 2, "BIPM-SI-9-v4.01/Table 7"),
+	deca: open-graf-units-core.prefix("deca", "da", 10, 1, "BIPM-SI-9-v4.01/Table 7"),
+	deci: open-graf-units-core.prefix("deci", "d", 10, -1, "BIPM-SI-9-v4.01/Table 7"),
+	centi: open-graf-units-core.prefix("centi", "c", 10, -2, "BIPM-SI-9-v4.01/Table 7"),
+	milli: open-graf-units-core.prefix("milli", "m", 10, -3, "BIPM-SI-9-v4.01/Table 7"),
+	micro: open-graf-units-core.prefix("micro", "µ", 10, -6, "BIPM-SI-9-v4.01/Table 7"),
+	nano: open-graf-units-core.prefix("nano", "n", 10, -9, "BIPM-SI-9-v4.01/Table 7"),
+	pico: open-graf-units-core.prefix("pico", "p", 10, -12, "BIPM-SI-9-v4.01/Table 7"),
+	femto: open-graf-units-core.prefix("femto", "f", 10, -15, "BIPM-SI-9-v4.01/Table 7"),
+	atto: open-graf-units-core.prefix("atto", "a", 10, -18, "BIPM-SI-9-v4.01/Table 7"),
+	zepto: open-graf-units-core.prefix("zepto", "z", 10, -21, "BIPM-SI-9-v4.01/Table 7"),
+	yocto: open-graf-units-core.prefix("yocto", "y", 10, -24, "BIPM-SI-9-v4.01/Table 7"),
+	ronto: open-graf-units-core.prefix("ronto", "r", 10, -27, "BIPM-SI-9-v4.01/Table 7"),
+	quecto: open-graf-units-core.prefix("quecto", "q", 10, -30, "BIPM-SI-9-v4.01/Table 7")
+}

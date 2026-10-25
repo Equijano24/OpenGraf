@@ -1,0 +1,165 @@
+// Independent anchors and physical identities, maintained separately from catalogue generation.
+import(units: graf {path: "../../src/units"});
+
+box {
+	common.testing.gunit.test>> verify-international-length-anchors(): (
+		common.testing.gunit.assert-equals(tuple {2.54(0)}, tuple {units.centimeters(units.inches(1)).value()});
+		common.testing.gunit.assert-equals(tuple {12}, tuple {units.inches(units.feet(1)).value()});
+		common.testing.gunit.assert-equals(tuple {3}, tuple {units.feet(units.yards(1)).value()});
+		common.testing.gunit.assert-equals(tuple {5280}, tuple {units.feet(units.miles(1)).value()});
+		common.testing.gunit.assert-equals(tuple {1852}, tuple {units.meters(units.nautical-miles(1)).value()});
+		common.testing.gunit.assert-equals(tuple {149597870700}, tuple {units.meters(units.astronomical-units(1)).value()})
+	),
+
+	common.testing.gunit.test>> verify-area-and-volume-anchors(): (
+		common.testing.gunit.assert-equals(tuple {6.4516(0)}, tuple {units.square-centimeters(units.square-inches(1)).value()});
+		common.testing.gunit.assert-equals(tuple {144}, tuple {units.square-inches(units.square-feet(1)).value()});
+		common.testing.gunit.assert-equals(tuple {43560}, tuple {units.square-feet(units.international-acres(1)).value()});
+		common.testing.gunit.assert-equals(tuple {10000}, tuple {units.square-meters(units.hectares(1)).value()});
+		common.testing.gunit.assert-equals(tuple {1000}, tuple {units.liters(units.cubic-meters(1)).value()});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {units.cubic-centimeters(units.milliliters(1)).value()});
+		common.testing.gunit.assert-equals(tuple {1728}, tuple {units.cubic-inches(units.cubic-feet(1)).value()})
+	),
+
+	common.testing.gunit.test>> verify-us-and-imperial-liquid-conventions(): (
+		common.testing.gunit.assert-equals(tuple {231}, tuple {units.cubic-inches(units.us-liquid-gallons(1)).value()});
+		common.testing.gunit.assert-equals(tuple {3.785411784(0)}, tuple {units.liters(units.us-liquid-gallons(1)).value()});
+		common.testing.gunit.assert-equals(tuple {4.54609(0)}, tuple {units.liters(units.imperial-gallons(1)).value()});
+		common.testing.gunit.assert-equals(tuple {128}, tuple {units.us-fluid-ounces(units.us-liquid-gallons(1)).value()});
+		common.testing.gunit.assert-equals(tuple {160}, tuple {units.imperial-fluid-ounces(units.imperial-gallons(1)).value()});
+		common.testing.gunit.assert-equals(tuple {42}, tuple {units.us-liquid-gallons(units.petroleum-barrels(1)).value()});
+		common.testing.gunit.assert-not-equals(tuple {units.us-liquid-gallons.scale}, tuple {units.imperial-gallons.scale})
+	),
+
+	common.testing.gunit.test>> verify-mass-conventions-and-gravity(): (
+		common.testing.gunit.assert-equals(tuple {453.59237(0)}, tuple {units.grams(units.pounds(1)).value()});
+		common.testing.gunit.assert-equals(tuple {16}, tuple {units.avoirdupois-ounces(units.pounds(1)).value()});
+		common.testing.gunit.assert-equals(tuple {480}, tuple {units.grains(units.troy-ounces(1)).value()});
+		common.testing.gunit.assert-equals(tuple {2000}, tuple {units.pounds(units.us-short-tons(1)).value()});
+		common.testing.gunit.assert-equals(tuple {2240}, tuple {units.pounds(units.imperial-long-tons(1)).value()});
+		common.testing.gunit.assert-equals(tuple {200}, tuple {units.milligrams(units.metric-carats(1)).value()});
+		common.testing.gunit.assert-equals(tuple {9.80665(0)}, tuple {units.kilograms(units.technical-mass-units(1)).value()});
+		common.testing.gunit.assert-fails {units.newtons(units.kilograms(1))}
+	),
+
+	common.testing.gunit.test>> verify-fixed-duration-and-speed-anchors(): (
+		common.testing.gunit.assert-equals(tuple {86400}, tuple {units.seconds(units.days(1)).value()});
+		common.testing.gunit.assert-equals(tuple {604800}, tuple {units.seconds(units.weeks(1)).value()});
+		common.testing.gunit.assert-equals(tuple {31557600}, tuple {units.seconds(units.julian-years(1)).value()});
+		common.testing.gunit.assert-equals(tuple {10}, tuple {units.meters-per-second(units.kilometers-per-hour(36)).value()});
+		common.testing.gunit.assert-equals(tuple {1.852(0)}, tuple {units.kilometers-per-hour(units.knots(1)).value()});
+		common.testing.gunit.assert-equals(tuple {0.44704(0)}, tuple {units.meters-per-second(units.miles-per-hour(1)).value()})
+	),
+
+	common.testing.gunit.test>> verify-angular-and-frequency-conventions(): (
+		common.testing.gunit.assert-equals(tuple {360}, tuple {units.degrees(units.turns(1)).value()});
+		common.testing.gunit.assert-equals(tuple {90}, tuple {units.degrees(units.gradians(100)).value()});
+		common.testing.gunit.assert-equals(tuple {60}, tuple {units.arcseconds(units.arcminutes(1)).value()});
+		common.testing.gunit.assert-equals(tuple {3600}, tuple {units.arcseconds(units.degrees(1)).value()});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {units.radians-per-second(units.revolutions-per-minute(60)).value().equal-to(pi.times(2))});
+		common.testing.gunit.assert-fails {units.hertz(units.radians-per-second(1))};
+		common.testing.gunit.assert-fails {units.hertz(units.becquerels(1))}
+	),
+
+	common.testing.gunit.test>> verify-force-and-pressure-anchors(): (
+		common.testing.gunit.assert-equals(tuple {9.80665(0)}, tuple {units.newtons(units.kilogram-forces(1)).value()});
+		common.testing.gunit.assert-equals(tuple {4.4482216152605(0)}, tuple {units.newtons(units.pound-forces(1)).value()});
+		common.testing.gunit.assert-equals(tuple {100000}, tuple {units.pascals(units.bars(1)).value()});
+		common.testing.gunit.assert-equals(tuple {101325}, tuple {units.pascals(units.standard-atmospheres(1)).value()});
+		common.testing.gunit.assert-equals(tuple {101325}, tuple {units.pascals(units.torrs(760)).value()});
+		common.testing.gunit.assert-equals(tuple {98066.5(0)}, tuple {units.pascals(units.kilogram-forces-per-square-centimeter(1)).value()});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {units.pound-forces(units.pounds-per-square-inch(1).times(units.square-inches(1))).value()})
+	),
+
+	common.testing.gunit.test>> verify-calorie-and-energy-conventions(): (
+		common.testing.gunit.assert-equals(tuple {4.184(0)}, tuple {units.joules(units.thermochemical-calories(1)).value()});
+		common.testing.gunit.assert-equals(tuple {4.1868(0)}, tuple {units.joules(units.international-table-calories(1)).value()});
+		common.testing.gunit.assert-equals(tuple {4184}, tuple {units.joules(units.thermochemical-kilocalories(1)).value()});
+		common.testing.gunit.assert-equals(tuple {3600000}, tuple {units.joules(units.kilowatt-hours(1)).value()});
+		common.testing.gunit.assert-equals(tuple {1055.05585262(0)}, tuple {units.joules(units.international-table-btus(1)).value()});
+		common.testing.gunit.assert-equals(tuple {0.0000000000000000001602176634(0)}, tuple {units.joules(units.electronvolts(1)).value()});
+		common.testing.gunit.assert-equals(tuple {no}, tuple {match(units.joules(units.electronvolts(1)).value(),float64?)})
+	),
+
+	common.testing.gunit.test>> verify-power-and-torque-conventions(): (
+		common.testing.gunit.assert-equals(tuple {745.69987158227022(0)}, tuple {units.watts(units.mechanical-horsepower(1)).value()});
+		common.testing.gunit.assert-equals(tuple {735.49875(0)}, tuple {units.watts(units.metric-horsepower(1)).value()});
+		common.testing.gunit.assert-equals(tuple {746}, tuple {units.watts(units.electrical-horsepower(1)).value()});
+		common.testing.gunit.assert-equals(tuple {1.3558179483314004(0)}, tuple {units.newton-meters(units.pound-force-feet(1)).value()});
+		common.testing.gunit.assert-fails {units.joules(units.newton-meters(1))};
+		common.testing.gunit.assert-equals(tuple {6}, tuple {units.joules(units.newtons(2).times(units.meters(3))).value()});
+		common.testing.gunit.assert-equals(tuple {6}, tuple {units.newton-meters(units.newtons(2).times(units.meters(3))).value()})
+	),
+
+	common.testing.gunit.test>> verify-fluid-and-density-anchors(): (
+		common.testing.gunit.assert-equals(tuple {1000}, tuple {units.kilograms-per-cubic-meter(units.grams-per-cubic-centimeter(1)).value()});
+		common.testing.gunit.assert-equals(tuple {0.1(0)}, tuple {units.pascal-seconds(units.poise(1)).value()});
+		common.testing.gunit.assert-equals(tuple {0.001(0)}, tuple {units.pascal-seconds(units.centipoise(1)).value()});
+		common.testing.gunit.assert-equals(tuple {0.000001(0)}, tuple {units.square-meters-per-second(units.centistokes(1)).value()});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {units.liters-per-second(units.liters-per-minute(60)).value()});
+		common.testing.gunit.assert-fails {units.kilograms-per-cubic-meter(units.kilograms-per-cubic-meter-concentration(1))}
+	),
+
+	common.testing.gunit.test>> verify-electrical-dimension-identities(): (
+		common.testing.gunit.assert-equals(tuple {6}, tuple {units.coulombs(units.amperes(2).times(units.seconds(3))).value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.volts(units.watts(6).over(units.amperes(3))).value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.ohms(units.volts(6).over(units.amperes(3))).value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.siemens(units.amperes(6).over(units.volts(3))).value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.farads(units.coulombs(6).over(units.volts(3))).value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.henries(units.webers(6).over(units.amperes(3))).value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.teslas(units.webers(6).over(units.square-meters(3))).value()});
+		common.testing.gunit.assert-equals(tuple {3600}, tuple {units.coulombs(units.ampere-hours(1)).value()})
+	),
+
+	common.testing.gunit.test>> verify-optical-and-magnetic-anchors(): (
+		common.testing.gunit.assert-equals(tuple {0.0001(0)}, tuple {units.teslas(units.gauss(1)).value()});
+		common.testing.gunit.assert-equals(tuple {0.00000001(0)}, tuple {units.webers(units.maxwells(1)).value()});
+		common.testing.gunit.assert-equals(tuple {79.577472(0)}, tuple {units.amperes-per-meter(units.oersteds(1)).value().round(6)});
+		common.testing.gunit.assert-equals(tuple {10.763910417(0)}, tuple {units.lux(units.foot-candles(1)).value().round(9)});
+		common.testing.gunit.assert-equals(tuple {6}, tuple {units.lumens(units.candelas(2).times(units.steradians(3))).value()});
+		common.testing.gunit.assert-fails {units.candelas-per-square-meter(units.lux(1))};
+		common.testing.gunit.assert-fails {units.watts(units.vars(1))}
+	),
+
+	common.testing.gunit.test>> verify-temperature-differences-and-thermal-dimensions(): (
+		common.testing.gunit.assert-equals(tuple {5}, tuple {units.kelvin-differences(units.fahrenheit-differences(9)).value()});
+		common.testing.gunit.assert-equals(tuple {5}, tuple {units.kelvin-differences(units.celsius-differences(5)).value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.joules-per-kelvin(units.joules(6).over(units.kelvin-differences(3))).value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.watts-per-meter-kelvin(units.watts(12).over(units.meters(2).times(units.kelvin-differences(3)))).value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.joules-per-kilogram-kelvin(units.joules(12).over(units.kilograms(2).times(units.kelvin-differences(3)))).value()})
+	),
+
+	common.testing.gunit.test>> verify-chemical-dimension-identities(): (
+		common.testing.gunit.assert-equals(tuple {1000}, tuple {units.moles-per-cubic-meter(units.moles-per-liter(1)).value()});
+		common.testing.gunit.assert-equals(tuple {0.001(0)}, tuple {units.kilograms-per-mole(units.grams-per-mole(1)).value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.katals(units.moles(6).over(units.seconds(3))).value()});
+		common.testing.gunit.assert-equals(tuple {2}, tuple {units.moles-per-kilogram(units.moles(6).over(units.kilograms(3))).value()});
+		common.testing.gunit.assert-fails {units.grays(units.joules-per-kilogram(1))}
+	),
+
+	common.testing.gunit.test>> verify-radiation-and-ratio-anchors(): (
+		common.testing.gunit.assert-equals(tuple {37000000000}, tuple {units.becquerels(units.curies(1)).value()});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {units.grays(units.rads(100)).value()});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {units.sieverts(units.rems(100)).value()});
+		common.testing.gunit.assert-equals(tuple {0.000258(0)}, tuple {units.coulombs-per-kilogram(units.roentgens(1)).value()});
+		common.testing.gunit.assert-equals(tuple {0.5(0)}, tuple {units.ratios(units.percentages(50)).value()});
+		common.testing.gunit.assert-equals(tuple {0.000001(0)}, tuple {units.ratios(units.parts-per-million(1)).value()});
+		common.testing.gunit.assert-fails {units.sieverts(units.grays(1))}
+	),
+
+	common.testing.gunit.test>> verify-measured-dalton-reference-and-tolerance(): (
+		common.testing.gunit.assert-equals(tuple {no, "CODATA 2022"}, tuple {units.daltons.exact, units.daltons.reference-edition});
+		common.testing.gunit.assert-equals(tuple {0.00000000000000000000000000000000000052(0)}, tuple {units.daltons.scale-uncertainty});
+		value$ = units.kilograms(units.daltons(1)).value();
+		reference$ = 0.000000000000000000000000001660539069(0);
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {value$.minus(reference$).abs().lte(0.00000000000000000000000000000000000052(0))});
+		common.testing.gunit.assert-equals(tuple {no}, tuple {match(value$,float64?)})
+	),
+
+	common.testing.gunit.test>> verify-catalogue-aliases-and-finite-inventory(): (
+		count$ = 0;
+		foreach {definition$ = units.catalogue.definition} {count$ := count$.plus(1)};
+		common.testing.gunit.assert-equals(tuple {290}, tuple {count$});
+		common.testing.gunit.assert-equals(tuple {"m", "ft", "s", "kg"}, tuple {units.meters.symbol,units.feet.symbol,units.seconds.symbol,units.kilograms.symbol})
+	)
+}

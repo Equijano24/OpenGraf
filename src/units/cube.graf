@@ -1,0 +1,18 @@
+import(units: graf {path: "."});
+
+function(factory$ = class?) {
+	"length"? >> factory$.kind;
+	factory$.require-linear();
+	yes? >> factory$.dimension.same-as(units.length.dimension);
+	common.math.gt(0)? >> factory$.scale;
+	scale$ = factory$.scale.exact-product(factory$.scale).exact-product(factory$.scale);
+	uncertainty$ = 3.exact-product(factory$.scale.exact-product(factory$.scale)).exact-product(factory$.scale-uncertainty);
+	definition$ = units.volume.definition("cubic-".conc(factory$.id), factory$.symbol.conc("³"), scale$,
+		no, factory$.exact, factory$.source);
+	heir(definition$) {
+		override>> prefix-name: factory$.prefix-name,
+		override>> prefix-system: factory$.prefix-system,
+		override>> scale-uncertainty: uncertainty$,
+		override>> reference-edition: factory$.reference-edition
+	}
+}

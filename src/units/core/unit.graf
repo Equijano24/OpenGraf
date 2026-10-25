@@ -14,6 +14,11 @@ class {
 	prefixable: default(bool?, no)?,
 	exact: default(bool?, yes)?,
 	source: default(string?, "user-defined")?,
+	binary-prefixable: default(bool?, no)?,
+	prefix-name: default(string?, "")?,
+	prefix-system: default(string?, "none")?,
+	scale-uncertainty: default(real?, 0)?,
+	reference-edition: default(string?, "")?,
 
 	self$(amount$ = number?): self$.quantity(amount$),
 
@@ -37,13 +42,13 @@ class {
 		),
 
 	self$.coherent-value-of(amount$ = number?): (
-		scaled$ = if(equals(self$.scale, 1)) {amount$, amount$.times(self$.scale)};
+		scaled$ = if(equals(self$.scale, 1)) {amount$, amount$.exact-product(self$.scale)};
 		if(equals(self$.offset, 0)) {scaled$, scaled$.plus(self$.offset)}
 	),
 
 	self$.display-value-of(amount$ = number?): (
 		shifted$ = if(equals(self$.offset, 0)) {amount$, amount$.minus(self$.offset)};
-		if(equals(self$.scale, 1)) {shifted$, shifted$.over(self$.scale)}
+		if(equals(self$.scale, 1)) {shifted$, shifted$.exact-quotient(self$.scale)}
 	),
 
 	self$.coherent-value(): self$.factory.coherent-value-of(self$.value()),

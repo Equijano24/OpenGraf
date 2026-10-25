@@ -1,0 +1,83 @@
+// Defining equations independently verify the new dimension vectors.
+import(units: graf {path: "../../src/units"});
+
+box {
+	self$.verify-identities(rows$ = ?): (
+		count$ = 0;
+		foreach {row$ = rows$.item} {
+			factory$ := row$.#0;
+			common.testing.gunit.assert-equals(tuple {1}, tuple {factory$(row$.#1).value()});
+			count$ := count$.plus(1)
+		};
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {count$.gt(0)})
+	),
+
+	common.testing.gunit.test>> self$.verify-mechanical-equations(): self$.verify-identities(box {
+		item: tuple {units.kilogram-meters-per-second, units.kilograms(1).times(units.meters(1)).over(units.seconds(1))},
+		item: tuple {units.kilogram-square-meters-per-second, units.kilogram-meters-per-second(1).times(units.meters(1))},
+		item: tuple {units.kilogram-square-meters, units.kilograms(1).times(units.meters(1).pow(2))},
+		item: tuple {units.meters-to-the-fourth, units.meters(1).pow(4)},
+		item: tuple {units.cubic-meters-section-modulus, units.meters(1).pow(3)},
+		item: tuple {units.kilograms-per-cubic-meter, units.kilograms(1).over(units.meters(1).pow(3))},
+		item: tuple {units.cubic-meters-per-kilogram, units.meters(1).pow(3).over(units.kilograms(1))},
+		item: tuple {units.kilograms-per-second, units.kilograms(1).over(units.seconds(1))},
+		item: tuple {units.cubic-meters-per-second, units.meters(1).pow(3).over(units.seconds(1))},
+		item: tuple {units.pascal-seconds, units.pascals(1).times(units.seconds(1))},
+		item: tuple {units.square-meters-per-second, units.meters(1).pow(2).over(units.seconds(1))},
+		item: tuple {units.newtons-per-meter, units.newtons(1).over(units.meters(1))},
+		item: tuple {units.reciprocal-meters, units.ratios(1).over(units.meters(1))},
+		item: tuple {units.meters-per-second-cubed, units.meters(1).over(units.seconds(1).pow(3))},
+		item: tuple {units.radians-per-second-squared, units.radians(1).over(units.seconds(1).pow(2))},
+		item: tuple {units.kilograms-per-meter, units.kilograms(1).over(units.meters(1))},
+		item: tuple {units.kilograms-per-square-meter, units.kilograms(1).over(units.meters(1).pow(2))}
+	}),
+
+	common.testing.gunit.test>> self$.verify-thermal-equations(): self$.verify-identities(box {
+		item: tuple {units.joules-per-kelvin, units.joules(1).over(units.kelvin-differences(1))},
+		item: tuple {units.joules-per-kilogram-kelvin, units.joules(1).over(units.kilograms(1).times(units.kelvin-differences(1)))},
+		item: tuple {units.watts-per-meter-kelvin, units.watts(1).over(units.meters(1).times(units.kelvin-differences(1)))},
+		item: tuple {units.watts-per-square-meter-kelvin, units.watts(1).over(units.meters(1).pow(2).times(units.kelvin-differences(1)))},
+		item: tuple {units.reciprocal-kelvins, units.ratios(1).over(units.kelvin-differences(1))},
+		item: tuple {units.watts-per-square-meter-heat, units.watts(1).over(units.meters(1).pow(2))},
+		item: tuple {units.joules-per-kilogram, units.joules(1).over(units.kilograms(1))}
+	}),
+
+	common.testing.gunit.test>> self$.verify-electromagnetic-equations(): self$.verify-identities(box {
+		item: tuple {units.ohm-meters, units.ohms(1).times(units.meters(1))},
+		item: tuple {units.siemens-per-meter, units.siemens(1).over(units.meters(1))},
+		item: tuple {units.volts-per-meter, units.volts(1).over(units.meters(1))},
+		item: tuple {units.farads-per-meter, units.farads(1).over(units.meters(1))},
+		item: tuple {units.henries-per-meter, units.henries(1).over(units.meters(1))},
+		item: tuple {units.reciprocal-henries, units.ratios(1).over(units.henries(1))},
+		item: tuple {units.henries-permeance, units.webers(1).over(units.amperes(1))},
+		item: tuple {units.ampere-turns, units.amperes(1).times(units.ratios(1))},
+		item: tuple {units.volt-amperes, units.volts(1).times(units.amperes(1))},
+		item: tuple {units.vars, units.volts(1).times(units.amperes(1))},
+		item: tuple {units.coulombs-per-cubic-meter, units.coulombs(1).over(units.meters(1).pow(3))},
+		item: tuple {units.amperes-per-square-meter, units.amperes(1).over(units.meters(1).pow(2))}
+	}),
+
+	common.testing.gunit.test>> self$.verify-photometric-and-radiometric-equations(): self$.verify-identities(box {
+		item: tuple {units.lumens, units.candelas(1).times(units.steradians(1))},
+		item: tuple {units.lux, units.lumens(1).over(units.meters(1).pow(2))},
+		item: tuple {units.candelas-per-square-meter, units.candelas(1).over(units.meters(1).pow(2))},
+		item: tuple {units.lumen-seconds, units.lumens(1).times(units.seconds(1))},
+		item: tuple {units.diopters, units.ratios(1).over(units.meters(1))},
+		item: tuple {units.watts-per-square-meter, units.watts(1).over(units.meters(1).pow(2))},
+		item: tuple {units.watts-per-square-meter-steradian, units.watts(1).over(units.meters(1).pow(2).times(units.steradians(1)))}
+	}),
+
+	common.testing.gunit.test>> self$.verify-chemical-radiation-and-information-equations(): self$.verify-identities(box {
+		item: tuple {units.kilograms-per-mole, units.kilograms(1).over(units.moles(1))},
+		item: tuple {units.moles-per-cubic-meter, units.moles(1).over(units.meters(1).pow(3))},
+		item: tuple {units.kilograms-per-cubic-meter-concentration, units.kilograms(1).over(units.meters(1).pow(3))},
+		item: tuple {units.moles-per-kilogram, units.moles(1).over(units.kilograms(1))},
+		item: tuple {units.katals, units.moles(1).over(units.seconds(1))},
+		item: tuple {units.joules-per-mole, units.joules(1).over(units.moles(1))},
+		item: tuple {units.joules-per-mole-kelvin, units.joules(1).over(units.moles(1).times(units.kelvin-differences(1)))},
+		item: tuple {units.coulombs-per-kilogram, units.coulombs(1).over(units.kilograms(1))},
+		item: tuple {units.grays, units.joules(1).over(units.kilograms(1))},
+		item: tuple {units.sieverts, units.joules(1).over(units.kilograms(1))},
+		item: tuple {units.bits-per-second, units.bits(1).over(units.seconds(1))}
+	})
+}

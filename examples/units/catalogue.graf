@@ -1,0 +1,16 @@
+// Save as examples/units/catalogue.graf, relative to the repository root.
+import(units: graf {path: "../../src/units"});
+
+quectograms$ = units.si-prefixes.quecto(units.grams);
+quebibytes$ = units.binary-prefixes.quebi(units.bytes);
+
+(units.meters(units.feet(3)).value(),
+ units.liters(units.us-liquid-gallons(1)).value(),
+ units.liters(units.imperial-gallons(1)).value(),
+ units.bytes(units.kilobytes(1)).value(),
+ units.bytes(units.kibibytes(1)).value(),
+ units.kilograms(quectograms$(1)).value(),
+ units.bits(quebibytes$(1)).value(),
+ units.cubic-meters(units.cube(units.centimeters)(1)).value())
+// => 0.9144 exactly, 3.785411784 exactly, 4.54609 exactly,
+//    1000, 1024, 1/10^33, 10141204801825835211973625643008, 1/1000000

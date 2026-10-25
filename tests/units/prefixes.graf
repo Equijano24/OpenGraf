@@ -1,0 +1,117 @@
+import(units: graf {path: "../../src/units"});
+
+box {
+	common.testing.gunit.test>> verify-decimal-and-binary-information-anchors(): (
+		common.testing.gunit.assert-equals(tuple {1000}, tuple {units.bytes(units.kilobytes(1)).value()});
+		common.testing.gunit.assert-equals(tuple {1024}, tuple {units.bytes(units.kibibytes(1)).value()});
+		common.testing.gunit.assert-equals(tuple {8000}, tuple {units.bits(units.kilobytes(1)).value()});
+		common.testing.gunit.assert-equals(tuple {8388608}, tuple {units.bits(units.mebibytes(1)).value()});
+		common.testing.gunit.assert-equals(tuple {8000000}, tuple {units.bits-per-second(units.si-prefixes.mega(units.bytes-per-second)(1)).value()})
+	),
+
+	common.testing.gunit.test>> verify-extreme-prefixes-preserve-exact-factors(): (
+		tiny$ = units.si-prefixes.quecto(units.grams);
+		huge$ = units.si-prefixes.quetta(units.meters);
+		common.testing.gunit.assert-equals(tuple {0.000000000000000000000000000000001(0)}, tuple {tiny$.scale});
+		common.testing.gunit.assert-equals(tuple {0.000000000000000000000000000000001(0)}, tuple {units.kilograms(tiny$(1)).value()});
+		common.testing.gunit.assert-equals(tuple {no}, tuple {match(tiny$.scale, float64?)});
+		common.testing.gunit.assert-equals(tuple {1000000000000000000000000000000}, tuple {units.meters(huge$(1)).value()});
+		common.testing.gunit.assert-equals(tuple {10141204801825835211973625643008}, tuple {units.bits(units.quebibytes(1)).value()})
+	),
+
+	common.testing.gunit.test>> verify-kilogram-prefixes-are-based-on-grams(): (
+		common.testing.gunit.assert-equals(tuple {1}, tuple {units.grams(units.milligrams(1000)).value()});
+		common.testing.gunit.assert-equals(tuple {0.000001(0)}, tuple {units.kilograms(units.milligrams(1)).value()});
+		common.testing.gunit.assert-fails {units.si-prefixes.milli(units.kilograms)};
+		common.testing.gunit.assert-equals(tuple {"kg", "kilo"}, tuple {units.kilograms.symbol, units.kilograms.prefix-name})
+	),
+
+	common.testing.gunit.test>> verify-prefixes-precede-area-and-volume-powers(): (
+		common.testing.gunit.assert-equals(tuple {0.0001(0)}, tuple {units.square-meters(units.square(units.centimeters)(1)).value()});
+		common.testing.gunit.assert-equals(tuple {0.000001(0)}, tuple {units.cubic-meters(units.cube(units.centimeters)(1)).value()});
+		common.testing.gunit.assert-equals(tuple {1000000}, tuple {units.square-meters(units.square(units.kilometers)(1)).value()});
+		common.testing.gunit.assert-equals(tuple {0.000000001(0)}, tuple {units.cubic-meters(units.cube(units.millimeters)(1)).value()});
+		common.testing.gunit.assert-fails {units.si-prefixes.centi(units.square-meters)};
+		common.testing.gunit.assert-fails {units.si-prefixes.milli(units.cubic-meters)}
+	),
+
+	common.testing.gunit.test>> verify-ineligible-prefix-targets-are-refused(): (
+		common.testing.gunit.assert-fails {units.si-prefixes.kilo(units.centimeters)};
+		common.testing.gunit.assert-fails {units.si-prefixes.mega(units.kilobytes)};
+		common.testing.gunit.assert-fails {units.si-prefixes.kilo(units.bytes(1))};
+		common.testing.gunit.assert-fails {units.si-prefixes.kilo(units.degrees)};
+		common.testing.gunit.assert-fails {units.si-prefixes.kilo(units.ratios)};
+		common.testing.gunit.assert-fails {units.binary-prefixes.kibi(units.meters)};
+		common.testing.gunit.assert-fails {units.binary-prefixes.kibi(units.kilobytes)};
+		common.testing.gunit.assert-fails {units.square(units.seconds)};
+		common.testing.gunit.assert-fails {units.cube(units.square-meters)}
+	),
+
+	common.testing.gunit.test>> verify-affine-and-temperature-point-prefixes-are-refused(): (
+		point$ = units.temperature-point.definition("point", "K", 1, yes, yes, "test");
+		shifted$ = heir(units.meters) {override>> offset: 2};
+		common.testing.gunit.assert-fails {units.si-prefixes.kilo(point$)};
+		common.testing.gunit.assert-fails {units.si-prefixes.kilo(shifted$)};
+		common.testing.gunit.assert-fails {units.square(shifted$)}
+	),
+
+	common.testing.gunit.test>> verify-prefix-symbol-case-and-immutability(): (
+		milli$ = units.si-prefixes.milli(units.amperes);
+		mega$ = units.si-prefixes.mega(units.amperes);
+		common.testing.gunit.assert-equals(tuple {"mA", "MA", "µA"}, tuple {milli$.symbol, mega$.symbol, units.si-prefixes.micro(units.amperes).symbol});
+		common.testing.gunit.assert-equals(tuple {"KiB", "kB"}, tuple {units.kibibytes.symbol, units.kilobytes.symbol});
+		common.testing.gunit.assert-fails {units.si-prefixes.milli.factor := 2};
+		common.testing.gunit.assert-fails {milli$.scale := 2};
+		common.testing.gunit.assert-fails {milli$(1).amount := 2}
+	),
+
+	common.testing.gunit.test>> verify-prefixes-preserve-custom-construction-and-kind(): (
+		parent$ = units.length.definition("custom-pixel", "px", 2, yes, yes, "local");
+		positive$ = heir(parent$) {
+			override>> self$.quantity(amount$ = number?): (
+				common.math.gte(0)? >> amount$;
+				composite>> new(self$) {amount: amount$, factory: self$}
+			),
+			self$.description(): self$.id
+		};
+		prefixed$ = units.si-prefixes.kilo(positive$);
+		common.testing.gunit.assert-equals(tuple {2000}, tuple {units.meters(prefixed$(1)).value()});
+		common.testing.gunit.assert-equals(tuple {"kilocustom-pixel"}, tuple {prefixed$(1).description()});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(prefixed$(1), units.length?)});
+		common.testing.gunit.assert-fails {prefixed$(-1)};
+		common.testing.gunit.assert-equals(tuple {2}, tuple {parent$.scale})
+	),
+
+	common.testing.gunit.test>> verify-binary-prefixes-check-semantic-kind-and-dimensions(): (
+		wrong$ = heir(units.meters) {override>> binary-prefixable: yes};
+		fake$ = units.unit.family("information", units.length.dimension).definition("fake", "x", 1);
+		flagged$ = heir(fake$) {override>> binary-prefixable: yes};
+		common.testing.gunit.assert-fails {units.binary-prefixes.kibi(wrong$)};
+		common.testing.gunit.assert-fails {units.binary-prefixes.kibi(flagged$)};
+		common.testing.gunit.assert-equals(tuple {8192}, tuple {units.bits-per-second(units.binary-prefixes.kibi(units.bytes-per-second)(1)).value()})
+	),
+
+	common.testing.gunit.test>> verify-measured-factor-provenance-survives-prefixes(): (
+		mega$ = units.si-prefixes.mega(units.daltons);
+		common.testing.gunit.assert-equals(tuple {no, "CODATA 2022"}, tuple {mega$.exact, mega$.reference-edition});
+		common.testing.gunit.assert-equals(tuple {0.00000000000000000000000000000052(0)}, tuple {mega$.scale-uncertainty});
+		common.testing.gunit.assert-equals(tuple {0.00000000000000000000166053906892(0)}, tuple {mega$.scale});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(mega$(1), units.unit?)})
+	),
+
+	common.testing.gunit.test>> verify-local-prefix-definitions-and-invalid-radices(): (
+		custom$ = units.prefix("local-double-", "d2", 2, 1, "local convention");
+		common.testing.gunit.assert-equals(tuple {16}, tuple {units.bits(custom$(units.bytes)(1)).value()});
+		common.testing.gunit.assert-fails {units.prefix("bad", "x", 3, 1, "test")};
+		common.testing.gunit.assert-fails {units.prefix("bad", "x", 10, 1.over(2), "test")};
+		common.testing.gunit.assert-fails {units.prefix("", "x", 10, 1, "test")};
+		common.testing.gunit.assert-fails {units.prefix("bad", "", 10, 1, "test")}
+	),
+
+	common.testing.gunit.test>> verify-power-factor-uncertainty-metadata(): (
+		parent$ = units.length.definition("measured-length", "u", 2, no, no, "local");
+		measured$ = heir(parent$) {override>> scale-uncertainty: 0.1(0)};
+		common.testing.gunit.assert-equals(tuple {0.4(0)}, tuple {units.square(measured$).scale-uncertainty});
+		common.testing.gunit.assert-equals(tuple {1.2(0)}, tuple {units.cube(measured$).scale-uncertainty})
+	)
+}

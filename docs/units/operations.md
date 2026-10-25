@@ -1,8 +1,8 @@
 # Conversion and arithmetic
 
 Step 6 adds operations to the [unit core](core.md). These examples define local
-factories explicitly. The reviewed catalogue and ready-made prefixes remain
-separate implementation steps.
+factories explicitly. Step 8 provides a reviewed [catalogue](catalogue.md) and
+[decimal/binary prefixes](prefixes.md) alongside these extension examples.
 
 ## Executable example
 
