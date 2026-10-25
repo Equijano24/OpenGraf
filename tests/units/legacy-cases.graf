@@ -1,0 +1,26 @@
+import(units: graf {path: "../../src/units"});
+
+// The four cases in tests/units-test.graf at 1397b974, rewritten for current Graf.
+box {
+	common.testing.gunit.test>> verify-distance-conversions(): (
+		common.testing.gunit.assert-equals(tuple {1000, 1}, tuple {
+			units.meters(units.kilometers(1)).value(), units.kilometers(units.meters(1000)).value()})
+	),
+	common.testing.gunit.test>> verify-distance-arithmetic(): (
+		common.testing.gunit.assert-equals(tuple {3, 3, 6, 4}, tuple {
+			units.kilometers(1).plus(units.meters(2000)).value(),
+			units.kilometers(5).minus(units.meters(2000)).value(),
+			units.kilometers(3).times(2).value(), units.kilometers(8).over(2).value()})
+	),
+	common.testing.gunit.test>> verify-temperature-conversions(): (
+		common.testing.gunit.assert-equals(tuple {0}, tuple {units.celsius(units.fahrenheit(32)).value()})
+	),
+	common.testing.gunit.test>> verify-closed-interval-comparison(): (
+		q$ = units.meters(2000);
+		common.testing.gunit.assert-equals(tuple {yes, yes, yes, no, no}, tuple {
+			q$.gte(units.kilometers(1)).and(q$.lte(units.kilometers(3))),
+			units.meters(1000).gte(units.kilometers(1)), units.meters(3000).lte(units.kilometers(3)),
+			units.meters(999).gte(units.kilometers(1)), units.meters(3001).lte(units.kilometers(3))});
+		common.testing.gunit.assert-fails {q$.gte(units.square-meters(1))}
+	)
+}

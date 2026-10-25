@@ -1,0 +1,266 @@
+{
+  "legacy_commit": "1397b974816c00fe8d535db8f566d90523d412bf",
+  "legacy_units": [
+    {
+      "legacy": "distance.kilometers",
+      "replacement": "kilometers",
+      "decision": "relocated",
+      "test": "tests/units/migration.graf::verify-historical-distance-factories",
+      "note": "Import the factory from units; its family is length."
+    },
+    {
+      "legacy": "distance.meters",
+      "replacement": "meters",
+      "decision": "relocated",
+      "test": "tests/units/migration.graf::verify-historical-distance-factories",
+      "note": "Import the factory from units; its family is length."
+    },
+    {
+      "legacy": "distance.centimeters",
+      "replacement": "centimeters",
+      "decision": "relocated",
+      "test": "tests/units/migration.graf::verify-historical-distance-factories",
+      "note": "Import the factory from units; its family is length."
+    },
+    {
+      "legacy": "distance.milimeters",
+      "replacement": "millimeters",
+      "decision": "renamed",
+      "test": "tests/units/migration.graf::verify-historical-distance-factories",
+      "note": "Correct the spelling."
+    },
+    {
+      "legacy": "distance.miles",
+      "replacement": "miles",
+      "decision": "relocated",
+      "test": "tests/units/migration.graf::verify-historical-distance-factories",
+      "note": "Import the factory from units; its family is length."
+    },
+    {
+      "legacy": "distance.yards",
+      "replacement": "yards",
+      "decision": "relocated",
+      "test": "tests/units/migration.graf::verify-historical-distance-factories",
+      "note": "Import the factory from units; its family is length."
+    },
+    {
+      "legacy": "distance.feet",
+      "replacement": "feet",
+      "decision": "relocated",
+      "test": "tests/units/migration.graf::verify-historical-distance-factories",
+      "note": "Import the factory from units; its family is length."
+    },
+    {
+      "legacy": "distance.inches",
+      "replacement": "inches",
+      "decision": "relocated",
+      "test": "tests/units/migration.graf::verify-historical-distance-factories",
+      "note": "Import the factory from units; its family is length."
+    },
+    {
+      "legacy": "distance.micrometers",
+      "replacement": "micrometers",
+      "decision": "relocated",
+      "test": "tests/units/migration.graf::verify-historical-distance-factories",
+      "note": "Import the factory from units; its family is length."
+    },
+    {
+      "legacy": "angle.radians",
+      "replacement": "radians",
+      "decision": "relocated",
+      "test": "tests/units/migration.graf::verify-corrected-angle-conversions",
+      "note": "A numeric call measures radians; converting degrees requires an explicit quantity."
+    },
+    {
+      "legacy": "angle.degrees",
+      "replacement": "degrees",
+      "decision": "corrected",
+      "test": "tests/units/migration.graf::verify-corrected-angle-conversions",
+      "note": "Degrees use the supplied value and symbolic pi; the historical delegate ignored its input."
+    },
+    {
+      "legacy": "weight.kilograms",
+      "replacement": "kilograms",
+      "decision": "relocated",
+      "test": "tests/units/migration.graf::verify-historical-mass-factories",
+      "note": "The family is mass, coherent kilograms. Ounces name the avoirdupois convention explicitly."
+    },
+    {
+      "legacy": "weight.grams",
+      "replacement": "grams",
+      "decision": "relocated",
+      "test": "tests/units/migration.graf::verify-historical-mass-factories",
+      "note": "The family is mass, coherent kilograms. Ounces name the avoirdupois convention explicitly."
+    },
+    {
+      "legacy": "weight.pounds",
+      "replacement": "pounds",
+      "decision": "relocated",
+      "test": "tests/units/migration.graf::verify-historical-mass-factories",
+      "note": "The family is mass, coherent kilograms. Ounces name the avoirdupois convention explicitly."
+    },
+    {
+      "legacy": "weight.ounces",
+      "replacement": "avoirdupois-ounces",
+      "decision": "renamed",
+      "test": "tests/units/migration.graf::verify-historical-mass-factories",
+      "note": "The family is mass, coherent kilograms. Ounces name the avoirdupois convention explicitly."
+    },
+    {
+      "legacy": "temperature.celsius",
+      "replacement": "celsius",
+      "decision": "specialized",
+      "test": "tests/units/migration.graf::verify-historical-temperature-factories",
+      "note": "These are points, with coherent kelvins. Differences use separate factories."
+    },
+    {
+      "legacy": "temperature.fahrenheit",
+      "replacement": "fahrenheit",
+      "decision": "specialized",
+      "test": "tests/units/migration.graf::verify-historical-temperature-factories",
+      "note": "These are points, with coherent kelvins. Differences use separate factories."
+    },
+    {
+      "legacy": "temperature.kelvin",
+      "replacement": "kelvins",
+      "decision": "renamed",
+      "test": "tests/units/migration.graf::verify-historical-temperature-factories",
+      "note": "These are points, with coherent kelvins. Differences use separate factories."
+    },
+    {
+      "legacy": "information-unit.bits",
+      "replacement": "bits",
+      "decision": "relocated",
+      "test": "tests/units/migration.graf::verify-historical-binary-information-intent",
+      "note": "The coherent coordinate is bits; byte conversion is explicit."
+    },
+    {
+      "legacy": "information-unit.bytes",
+      "replacement": "bytes",
+      "decision": "relocated",
+      "test": "tests/units/migration.graf::verify-historical-binary-information-intent",
+      "note": "The coherent coordinate is bits; byte conversion is explicit."
+    },
+    {
+      "legacy": "information-unit.kilobytes",
+      "replacement": "kibibytes",
+      "decision": "semantic-rename",
+      "test": "tests/units/migration.graf::verify-historical-binary-information-intent",
+      "note": "Preserve the old base-1024 magnitude; current SI byte names are decimal."
+    },
+    {
+      "legacy": "information-unit.megabytes",
+      "replacement": "mebibytes",
+      "decision": "semantic-rename",
+      "test": "tests/units/migration.graf::verify-historical-binary-information-intent",
+      "note": "Preserve the old base-1024 magnitude; current SI byte names are decimal."
+    },
+    {
+      "legacy": "information-unit.gigabytes",
+      "replacement": "gibibytes",
+      "decision": "semantic-rename",
+      "test": "tests/units/migration.graf::verify-historical-binary-information-intent",
+      "note": "Preserve the old base-1024 magnitude; current SI byte names are decimal."
+    },
+    {
+      "legacy": "information-unit.terabytes",
+      "replacement": "tebibytes",
+      "decision": "semantic-rename",
+      "test": "tests/units/migration.graf::verify-historical-binary-information-intent",
+      "note": "Preserve the old base-1024 magnitude; current SI byte names are decimal."
+    },
+    {
+      "legacy": "information-unit.petabytes",
+      "replacement": "pebibytes",
+      "decision": "semantic-rename",
+      "test": "tests/units/migration.graf::verify-historical-binary-information-intent",
+      "note": "Preserve the old base-1024 magnitude; current SI byte names are decimal."
+    },
+    {
+      "legacy": "information-unit.exabytes",
+      "replacement": "exbibytes",
+      "decision": "semantic-rename",
+      "test": "tests/units/migration.graf::verify-historical-binary-information-intent",
+      "note": "Preserve the old base-1024 magnitude; current SI byte names are decimal."
+    },
+    {
+      "legacy": "information-unit.zettabytes",
+      "replacement": "zebibytes",
+      "decision": "semantic-rename",
+      "test": "tests/units/migration.graf::verify-historical-binary-information-intent",
+      "note": "Preserve the old base-1024 magnitude; current SI byte names are decimal."
+    },
+    {
+      "legacy": "information-unit.yottabytes",
+      "replacement": "yobibytes",
+      "decision": "semantic-rename",
+      "test": "tests/units/migration.graf::verify-historical-binary-information-intent",
+      "note": "Preserve the old base-1024 magnitude; current SI byte names are decimal."
+    },
+    {
+      "legacy": "information-unit.brontobytes",
+      "replacement": "robibytes",
+      "decision": "semantic-rename",
+      "test": "tests/units/migration.graf::verify-historical-binary-information-intent",
+      "note": "Preserve the old base-1024 magnitude; current SI byte names are decimal."
+    },
+    {
+      "legacy": "information-unit.geopbytes",
+      "replacement": "quebibytes",
+      "decision": "semantic-rename",
+      "test": "tests/units/migration.graf::verify-historical-binary-information-intent",
+      "note": "Preserve the old base-1024 magnitude; current SI byte names are decimal."
+    },
+    {
+      "legacy": "information-unit.saganbytes",
+      "replacement": "local:legacy-saganbyte",
+      "decision": "local-definition",
+      "test": "tests/units/migration.graf::verify-historical-binary-information-intent",
+      "note": "Preserve the old base-1024 magnitude; current SI byte names are decimal."
+    }
+  ],
+  "legacy_tests": [
+    {
+      "legacy": "Distance Conversions",
+      "test": "tests/units/legacy-cases.graf::verify-distance-conversions"
+    },
+    {
+      "legacy": "Distance Arithmetic",
+      "test": "tests/units/legacy-cases.graf::verify-distance-arithmetic"
+    },
+    {
+      "legacy": "Temperature Conversions",
+      "test": "tests/units/legacy-cases.graf::verify-temperature-conversions"
+    },
+    {
+      "legacy": "Comparable",
+      "test": "tests/units/legacy-cases.graf::verify-closed-interval-comparison"
+    }
+  ],
+  "examples": [
+    {
+      "file": "examples/units/core.graf",
+      "document": "docs/units/core.md"
+    },
+    {
+      "file": "examples/units/operations.graf",
+      "document": "docs/units/operations.md"
+    },
+    {
+      "file": "examples/units/angles.graf",
+      "document": "docs/units/angles.md"
+    },
+    {
+      "file": "examples/units/catalogue.graf",
+      "document": "docs/units/prefixes.md"
+    },
+    {
+      "file": "examples/units/special.graf",
+      "document": "docs/units/special.md"
+    },
+    {
+      "file": "examples/units/migration.graf",
+      "document": "docs/units/migration.md"
+    }
+  ]
+}

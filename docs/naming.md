@@ -16,6 +16,10 @@ in the [eleven-step plan](plan-de-trabajo.md).
 
 ## Unit API migration
 
+The table below covers provisional names introduced during the rewrite's early
+steps. The [historical migration guide](units/migration.md) covers the original
+31-factory API, including its imports, coherent references and semantic changes.
+
 | Previous name | Current name | Result |
 | --- | --- | --- |
 | `make(number)` | `quantity(number)` | Immutable quantity; factory construction extension point |

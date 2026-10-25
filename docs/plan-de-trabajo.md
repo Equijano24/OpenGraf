@@ -2,7 +2,7 @@
 
 Actualizado: 25 de octubre de 2026.
 
-**Paso 9 completado; el siguiente es el 10.** Hay 9 pasos completos de 11.
+**Paso 10 completado; el siguiente es el 11.** Hay 10 pasos completos de 11.
 Units dispone de 302 fábricas con nombre, los 24 prefijos SI y 10 binarios,
 aritmética dimensional, trigonometría, temperaturas y conversiones especiales.
 Los contextos y modelos físicos se suministran explícitamente.
@@ -18,19 +18,20 @@ Los contextos y modelos físicos se suministran explícitamente.
 | 7 | Integrar `common.math`: trigonometría, conversiones con π y precisión explícita, conservando los tipos numéricos de Graf. | Completado |
 | 8 | Construir el catálogo y los prefijos decimales/binarios; verificar factores con BIPM, NIST y CODATA, usando Gieck como referencia de cobertura. | Completado |
 | 9 | Resolver temperaturas absolutas y diferencias, unidades logarítmicas y conversiones con referencias o modelos explícitos. | Completado |
-| 10 | Migrar la API antigua, actualizar ejemplos y probar cada unidad, operación, extensión y error con gunit y la suite completa de Graf. | **Siguiente** |
-| 11 | Completar documentación técnica, catálogo, fuentes y migración; verificar sitio web y PDF y publicar los cambios de ambos repositorios. | Parcial: referencias y sitio verificados; migración final y PDF pendientes |
+| 10 | Migrar la API antigua, actualizar ejemplos y probar cada unidad, operación, extensión y error con gunit y la suite completa de Graf. | Completado |
+| 11 | Completar documentación técnica, catálogo, fuentes y migración; verificar sitio web y PDF y publicar los cambios de ambos repositorios. | **Siguiente**: revisión documental final, sitio y PDF; migración de units completada |
 
 ## Último checkpoint verificado
 
 - Graf `develop`: **2076 pruebas correctas, 0 fallos y 2 omisiones existentes**.
   Se incorporaron antes del paso 9 los deferrevals nuevos hasta
   `7da35b5fba689dee011ea5e41667d8b6dbd14359`, incluidas sus pruebas de `expression.map`.
-- `graf test tests/units`: **489 correctas, 0 fallidas y 0 errores de carga**.
-  Son las 437 anteriores más 52 de construcción y reglas especiales.
+- `graf test tests/units`: **506 correctas, 0 fallidas y 0 errores de carga**.
+  Son las 489 anteriores más 17 casos de migración (4 originales y 13 grupos nuevos).
+- `graf test tests/units-test.graf`: **4 correctas**; ya incluidas en las 506.
 - `graf test tests/testing`: **11 correctas, 0 fallidas y 0 errores de carga**.
 - `python3 tools/units_catalogue.py --check`: **655 archivos generados verificados**.
-- Documentación: `mkdocs build --strict` y cinco ejemplos ejecutables verificados.
+- Documentación: `mkdocs build --strict` y seis ejemplos ejecutables verificados.
   La documentación sigue siendo una referencia técnica, con Markdown compartido
   para sitio y posterior PDF.
 
@@ -38,7 +39,7 @@ El [catálogo lineal](units/catalogue.md) conserva sus 290 entradas. Las 12
 [definiciones especiales](units/special.md) completan el inventario de 302.
 `catalogue.definition` enumera ambas partes; los contextos locales no se registran.
 
-## Paso 9
+## Paso 9 completado
 
 - Cuatro escalas de puntos térmicos y sus diferencias: límites en cero kelvin,
   conversiones exactas, punto menos punto y punto más/menos diferencia.
@@ -53,6 +54,19 @@ El [catálogo lineal](units/catalogue.md) conserva sus 290 entradas. Las 12
 
 Graf no requirió modificaciones del motor para implementar este paso. Se
 conservan sus reglas de promoción numérica y el uso de `try` en gunit.
+
+## Paso 10 completado
+
+Se migran las cuatro pruebas originales a gunit y se conserva su archivo de
+entrada. Las 31 fábricas históricas tienen reemplazo o decisión explícita:
+correcciones de nombres, prefijos binarios, puntos térmicos, grados y referencias
+coherentes. La [guía de migración](units/migration.md) cubre también datos
+almacenados, extensiones, formato y comparación sin dependencias de la API vieja.
+
+`tools/units_audit.py --legacy-source` verifica el inventario histórico contra
+el commit conservado, 302 casos de fábrica y seis ejemplos sincronizados con
+sus referencias. La [matriz de validación](units/validation.md) enlaza las suites
+de unidades, operaciones, extensiones y errores. Graf no requirió cambios propios.
 
 ## Alcance y decisiones vigentes
 

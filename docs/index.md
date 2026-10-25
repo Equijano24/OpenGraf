@@ -19,6 +19,7 @@ sections still target an older Graf version.
 - [Conversion and arithmetic](units/operations.md)
 - [Angles and trigonometry](units/angles.md)
 - [Temperature, logarithmic and contextual units](units/special.md)
+- [Migration from historical units](units/migration.md)
 - [Catalogue](units/catalogue.md)
 - [Decimal and binary prefixes](units/prefixes.md)
 - [Units design and API contract](units/design.md)
@@ -38,7 +39,7 @@ mkdocs build --strict
 sources, install Pandoc and a LaTeX PDF engine, then run:
 
 ```sh
-pandoc docs/index.md docs/testing.md docs/units/core.md docs/units/operations.md docs/units/angles.md docs/units/special.md docs/units/catalogue.md docs/units/prefixes.md docs/units/design.md docs/units/validation.md \
+pandoc docs/index.md docs/testing.md docs/units/core.md docs/units/operations.md docs/units/angles.md docs/units/special.md docs/units/migration.md docs/units/catalogue.md docs/units/prefixes.md docs/units/design.md docs/units/validation.md \
   docs/units/sources.md --standalone --toc -o open-graf-units.pdf
 ```
 

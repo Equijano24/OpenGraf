@@ -1,8 +1,11 @@
 # Working on OpenGraf
 
-Units under `src/units` target current `Graf/develop`. Other components and the
-old `tests/units-test.graf` still target an older Graf. Validate rewritten units
-with `graf test tests/units`; auxiliary gunit suites are in `tests/testing`.
+Units under `src/units` target current `Graf/develop`. Other components still
+target an older Graf. Validate rewritten units with `graf test tests/units`;
+auxiliary gunit suites are in `tests/testing`. The retained `tests/units-test.graf`
+now forwards to four migrated cases already included in `tests/units`.
+Check source/example correspondence with `python3 tools/units_audit.py`; add
+`--legacy-source` to verify the migration ledger against its pinned git sources.
 
 ## Naming
 

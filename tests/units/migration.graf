@@ -1,0 +1,114 @@
+import(units: graf {path: "../../src/units"});
+
+box {
+	common.testing.gunit.test>> verify-historical-distance-factories(): (
+		common.testing.gunit.assert-equals(tuple {
+			1000, 1, 0.01(0), 0.001(0), 1609.344(0), 0.9144(0), 0.3048(0), 0.0254(0), 0.000001(0)
+		}, tuple {
+			units.meters(units.kilometers(1)).value(), units.meters(1).value(),
+			units.meters(units.centimeters(1)).value(), units.meters(units.millimeters(1)).value(),
+			units.meters(units.miles(1)).value(), units.meters(units.yards(1)).value(),
+			units.meters(units.feet(1)).value(), units.meters(units.inches(1)).value(),
+			units.meters(units.micrometers(1)).value()})
+	),
+	common.testing.gunit.test>> verify-historical-mass-factories(): (
+		common.testing.gunit.assert-equals(tuple {1000, 1, 453.59237(0), 28.349523125(0)}, tuple {
+			units.grams(units.kilograms(1)).value(), units.grams(1).value(),
+			units.grams(units.pounds(1)).value(), units.grams(units.avoirdupois-ounces(1)).value()});
+		common.testing.gunit.assert-fails {units.newtons(units.pounds(1))}
+	),
+	common.testing.gunit.test>> verify-historical-binary-information-intent(): (
+		local$ = units.prefix("legacy-sagan", "legacy-SB", 2, 110, "legacy 2^110 byte scale; not an IEC prefix")(units.bytes);
+		common.testing.gunit.assert-equals(tuple {
+			1.over(8), 1, 1024, 1048576, 1073741824, 1099511627776,
+			1125899906842624, 1152921504606846976, 1180591620717411303424,
+			1208925819614629174706176, 1237940039285380274899124224,
+			1267650600228229401496703205376, 1298074214633706907132624082305024
+		}, tuple {
+			units.bytes(units.bits(1)).value(), units.bytes(1).value(),
+			units.bytes(units.kibibytes(1)).value(), units.bytes(units.mebibytes(1)).value(),
+			units.bytes(units.gibibytes(1)).value(), units.bytes(units.tebibytes(1)).value(),
+			units.bytes(units.pebibytes(1)).value(), units.bytes(units.exbibytes(1)).value(),
+			units.bytes(units.zebibytes(1)).value(), units.bytes(units.yobibytes(1)).value(),
+			units.bytes(units.robibytes(1)).value(), units.bytes(units.quebibytes(1)).value(),
+			units.bytes(local$(1)).value()});
+		common.testing.gunit.assert-equals(tuple {"legacy-saganbyte", no}, tuple {
+			local$.id, match(units.bytes(local$(1)).value(), float64?)})
+	),
+	common.testing.gunit.test>> verify-corrected-angle-conversions(): (
+		common.testing.gunit.assert-equals(tuple {0, yes, yes, 180, 20, 15}, tuple {
+			units.radians(units.degrees(0)).value(),
+			units.radians(units.degrees(90)).value().equal-to(pi.over(2)),
+			units.radians(units.degrees(180)).value().equal-to(pi),
+			units.degrees(units.radians(pi)).value(), units.radians(20).value(), units.degrees(15).value()})
+	),
+	common.testing.gunit.test>> verify-historical-temperature-factories(): (
+		common.testing.gunit.assert-equals(tuple {0, 0, 0, 32, 273.15(0)}, tuple {
+			units.celsius(0).value(), units.celsius(units.fahrenheit(32)).value(),
+			units.celsius(units.kelvins(273.15(0))).value(),
+			units.fahrenheit(units.celsius(0)).value(), units.kelvins(units.celsius(0)).value()})
+	),
+	common.testing.gunit.test>> verify-coherent-coordinates-replace-reference-values(): (
+		common.testing.gunit.assert-equals(tuple {1, 0.001(0), 8, 273.15(0)}, tuple {
+			units.meters(1).coherent-value(), units.grams(1).coherent-value(),
+			units.bytes(1).coherent-value(), units.celsius(0).coherent-value()});
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.label-not-found-exception, units.meters(1).reference-value}
+	),
+	common.testing.gunit.test>> verify-stored-reference-data-is-reconstructed-through-its-old-basis(): (
+		// These inputs are old reference-values, not current displayed amounts.
+		common.testing.gunit.assert-equals(tuple {1, 8, 273.15(0), 2000, 45}, tuple {
+			units.kilograms(units.grams(1000)).value(), units.bits(units.bytes(1)).value(),
+			units.kelvins(units.celsius(0)).value(), units.meters(units.meters(2000)).value(),
+			units.fahrenheit(45).value()});
+		common.testing.gunit.assert-equals(tuple {no, no, no}, tuple {
+			units.kilograms(1000).equal-to(units.grams(1000)),
+			units.bits(1).equal-to(units.bytes(1)), units.kelvins(0).equal-to(units.celsius(0))})
+	),
+	common.testing.gunit.test>> verify-definition-protocol-replaces-conversion-rate-constructor(): (
+		furlongs$ = units.length.definition("local-furlong", "fur", 201.168(0));
+		common.testing.gunit.assert-equals(tuple {402.336(0), 2, furlongs$}, tuple {
+			units.meters(furlongs$(2)).value(), furlongs$(2).value(), furlongs$(2).factory});
+		common.testing.gunit.assert-fails {units.length(201.168(0), "fur")}
+	),
+	common.testing.gunit.test>> verify-formatting-is-an-explicit-string-result(): (
+		q$ = units.meters(2.5);
+		formatted$ = "{0:.2f} {1}"(q$.value(), q$.symbol);
+		common.testing.gunit.assert-equals(tuple {"2.50 m", 2.5}, tuple {formatted$, q$.value()});
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.label-not-found-exception, q$.sufix};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.label-not-found-exception, q$.to(string)}
+	),
+	common.testing.gunit.test>> verify-decimal-information-names-have-decimal-meaning(): (
+		common.testing.gunit.assert-equals(tuple {1000, 1024, 1000000, 1048576, "kB", "KiB", "MB", "MiB"}, tuple {
+			units.bytes(units.kilobytes(1)).value(), units.bytes(units.kibibytes(1)).value(),
+			units.bytes(units.megabytes(1)).value(), units.bytes(units.mebibytes(1)).value(),
+			units.kilobytes.symbol, units.kibibytes.symbol, units.megabytes.symbol, units.mebibytes.symbol})
+	),
+	common.testing.gunit.test>> verify-retired-modules-and-spellings-are-not-aliases(): (
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.label-not-found-exception, units.distance};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.label-not-found-exception, units.weight};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.label-not-found-exception, units.information-unit};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.label-not-found-exception, units.temperature};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.label-not-found-exception, units.milimeters};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.label-not-found-exception, units.kelvin};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.label-not-found-exception, units.ounces};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.label-not-found-exception, units.brontobytes};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.label-not-found-exception, units.geopbytes};
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.label-not-found-exception, units.saganbytes}
+	),
+	common.testing.gunit.test>> verify-temperature-points-do-not-retain-old-linear-arithmetic(): (
+		common.testing.gunit.assert-equals(tuple {10, "temperature-difference", 30}, tuple {
+			units.celsius(20).minus(units.celsius(10)).value(),
+			units.celsius(20).minus(units.celsius(10)).kind,
+			units.celsius(20).plus(units.celsius-differences(10)).value()});
+		common.testing.gunit.assert-fails {units.celsius(20).plus(units.celsius(10))};
+		common.testing.gunit.assert-fails {units.celsius(20).times(2)};
+		common.testing.gunit.assert-fails {units.kelvins(-1)}
+	),
+	common.testing.gunit.test>> verify-payload-types-and-scalar-arithmetic-migration(): (
+		common.testing.gunit.assert-equals(tuple {yes, yes, yes, 1.over(6)}, tuple {
+			match(units.meters(0.1).value(), float64?), match(units.meters(0.1(0)).value(), rational?),
+			match(units.meters(pi).value(), irrational?), units.meters(1.over(3)).over(2).value()});
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, units.meters(1).over(0)};
+		common.testing.gunit.assert-fails {units.meters(1).plus(1)}
+	)
+}

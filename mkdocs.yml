@@ -12,6 +12,7 @@ nav:
       - Conversion and arithmetic: units/operations.md
       - Angles and trigonometry: units/angles.md
       - Temperature, logarithmic and contextual units: units/special.md
+      - Migration from historical units: units/migration.md
       - Catalogue: units/catalogue.md
       - Decimal and binary prefixes: units/prefixes.md
       - Design and API contract: units/design.md

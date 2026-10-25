@@ -1,0 +1,22 @@
+// Current replacements for the historical units API; no legacy setup is loaded.
+import(units: graf {path: "../../src/units"});
+
+length$ = units.kilometers(1).plus(units.meters(2000));
+interval$ = units.celsius(20).minus(units.celsius(10));
+furlongs$ = units.length.definition("local-furlong", "fur", 201.168(0));
+legacy-large$ = units.prefix("legacy-sagan", "legacy-SB", 2, 110,
+    "explicit legacy 2^110 byte convention, not an IEC prefix")(units.bytes);
+display$ = units.meters(2.5);
+formatted$ = "{0:.2f} {1}"(display$.value(), display$.symbol);
+inside$ = units.meters(2000).gte(units.kilometers(1)).and(units.meters(2000).lte(units.kilometers(3)));
+
+(length$.value(),
+ units.meters(units.millimeters(1)).value(),
+ units.grams(units.avoirdupois-ounces(1)).value(),
+ units.bytes(units.kibibytes(1)).value(), units.bytes(units.kilobytes(1)).value(),
+ units.bytes(legacy-large$(1)).value(),
+ units.degrees(units.radians(pi)).value(),
+ units.celsius(units.fahrenheit(32)).value(), interval$.value(),
+ units.meters(furlongs$(2)).value(), formatted$, inside$)
+// => 3, 0.001, 28.349523125, 1024, 1000, 1298074214633706907132624082305024,
+//    180, 0, 10, 402.336, "2.50 m", yes

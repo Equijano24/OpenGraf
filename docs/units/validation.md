@@ -6,13 +6,14 @@ Steps 5–9 implement the [core](core.md), [conversion/arithmetic](operations.md
 87 original families, 302 named factories, all 24 SI and 10 binary prefixes, immutable
 measurements and explicit local extension. Absolute temperatures, logarithmic
 units and reference/model conversions are implemented in step 9. The [plan](../plan-de-trabajo.md)
-records nine completed steps and step 10 next.
+records ten completed steps and step 11 next.
 
 ## Verified checkpoint
 
 | Check | Result |
 | --- | --- |
-| `graf test tests/units` | 489 passed, 0 failed, 0 load errors; exit 0 |
+| `graf test tests/units` | 506 passed, 0 failed, 0 load errors; exit 0 |
+| `graf test tests/units-test.graf` | 4 migrated original cases passed; already included in the directory total |
 | `graf test tests/testing` | 11 auxiliary gunit tests passed; exit 0 |
 | Complete Graf .NET suite on `develop` | 2076 passed, 0 failed, 2 existing printed-form skips |
 | Graf solution build | Successful; symbolic operands and explicit exact-factor arithmetic included |
@@ -22,6 +23,8 @@ records nine completed steps and step 10 next.
 | `graf run examples/units/catalogue.graf` | Exact international foot, U.S./Imperial gallons, decimal/binary byte, quecto gram, quebi byte and cubic centimeter anchors |
 | `python3 tools/units_catalogue.py --check` | Generated sources/reference/integration tests match reviewed data; no stale generated definitions |
 | `graf run examples/units/special.graf` | Temperature, logarithmic/reference, gauge, activity, hardness and radiation anchors |
+| `graf run examples/units/migration.graf` | Historical names, binary magnitude, new definitions/comparison and explicit formatting |
+| `python3 tools/units_audit.py --legacy-source` | 302 factory cases, 31 historical factories, 4 original tests and 6 matching documentation examples |
 | Host BigComplex payload check | Identity retained through construction, coherent mapping, conversion and replacement |
 | `mkdocs build --strict` | Successful |
 
@@ -64,8 +67,8 @@ non-information refusal, custom construction, immutable data, source/uncertainty
 metadata and all 34 standard factors. The native exact-factor API has 11
 additional regression cases.
 
-`tests/units` is the replacement test target. The old `tests/units-test.graf`,
-other tests and other library sections still target the obsolete API; they are
+`tests/units` is the replacement test target. The other legacy tests
+and other library sections still target the obsolete API; they are
 not evidence for or against the modern unit core. Importing the library root
 in an import regression reads only the unit labels it uses.
 
@@ -86,6 +89,44 @@ before implementation. Its full suite has **2076 passed, zero failed and two
 existing omissions**, including the newly added deferrevals and expression-map
 cases. Step 9 requires no engine change. The host BigComplex check listed above
 is the retained step 8 result, not a new host-backend test in this step.
+
+## Step 10 validation and contract coverage
+
+The four original unit cases now run through gunit in `legacy-cases.graf`.
+`tests/units-test.graf` forwards to that suite, preserving the file entry point.
+Thirteen migration groups check all historical factories, binary-name decisions,
+corrected degree behavior, implicit reference changes and stored-data reconstruction,
+explicit definitions/formatting, arithmetic boundaries and deliberately retired labels.
+These 17 cases bring the modern directory suite to **506 passed**.
+
+`tools/units_audit.py --legacy-source` checks its ledger against historical git
+sources at `1397b974816c00fe8d535db8f566d90523d412bf`: **31 factories and four
+original tests** are accounted for. Each of the **302 current factories** has
+one dedicated catalogue construction test. Six documented examples match their
+executable files. The audit checks correspondence, not executed code coverage.
+
+| Contract | Executable suites under `tests/units` |
+| --- | --- |
+| Every published factory | `catalogue/factories-01.graf` through `12`, plus `catalogue/special-factories.graf` |
+| Independent factors and dimensional equations | `catalogue-anchors.graf`, `catalogue-identities.graf` |
+| Number payloads, construction, dimensions, kinds and immutable metadata | `core.graf`, `definitions.graf`, `families.graf`, `imports.graf` |
+| Conversion and left-factory arithmetic | `conversion.graf`, `arithmetic.graf` |
+| Products/quotients, powers and roots | `compounds.graf`, `powers.graf` |
+| Local inheritance and overridden construction | `extensions.graf`, plus prefix/angle/special extension cases |
+| Angular conversion, forward/inverse math and precision | `angles.graf`, `trigonometry.graf`, `inverse-trigonometry.graf` |
+| All SI/binary prefix factors, eligibility and dimension powers | `prefix-tables.graf`, `prefixes.graf` |
+| Point/interval rules and boundaries | `temperature-points.graf` |
+| Logarithmic precision, domains and local conventions | `logarithmic.graf` |
+| Retained references and explicit physical models | `contextual.graf` |
+| Original cases and historical API/data decisions | `legacy-cases.graf`, `migration.graf` |
+
+Negative checks are kept with each contract: invalid types/definitions, wrong
+kinds or dimensions, zero division, invalid precision/root degrees, immutable
+slots, unsupported point/logarithmic arithmetic, nonpositive logarithmic inputs,
+reference conflicts and missing or invalid models. This is contract coverage;
+it is not a claim to execute every operator on every possible numeric backend
+or physical model. Core operations are shared, and numeric backend restrictions
+remain Graf's responsibility. Step 10 requires no engine behavior change.
 
 ## Graf prerequisites
 
@@ -121,8 +162,8 @@ The CLI's pass/fail/load/no-match/cancellation codes were verified in step 4.
 | Prefixes | All SI/binary factors, powers, double-prefix refusal and special-unit exclusions | Application-specific eligibility |
 | Special cases | Logarithmic domains, retained references, gauge pressure, pH activity, equivalent-basis hardness and explicit radiation weighting | Full speciation, uncertainty propagation and radiation-field aggregation are outside these APIs |
 | Extensibility | Local factories, overridden construction, custom ratio/activity/radiation models and explicit equivalent bases | More application-specific models |
-| Migration | Old unit implementation removed; new core reference and executable example | Full old-API migration guidance and replacement of old catalogue examples/tests |
-| Documentation | Technical Markdown, 302-factory inventory, special/prefix references, reviewed sources and site build | Full migration guidance and final PDF verification |
+| Migration | All 31 historical factories mapped, 4 original cases migrated, coherent-coordinate changes and semantic decisions documented | Unrelated legacy components remain outside scope |
+| Documentation | Technical Markdown, complete units migration, 302-factory inventory, special/prefix references, reviewed sources and site build | Final reference/site review and PDF verification in step 11 |
 
 Round trips alone cannot detect a shared wrong factor. The catalogue tests
 include independent anchors such as the exact international inch, liter
@@ -141,5 +182,5 @@ reference editions, uncertainty information and tolerance-based tests.
 | `temperature.graf` | `temperature-point.graf` and `temperature-difference.graf` |
 
 These names deliberately replace the obsolete unit API. The current checkpoint
-provides a stable foundation rather than claiming that the old catalogue now
-works with the modern interpreter.
+replaces the original unit catalogue through the explicit mappings in the
+[migration guide](migration.md). Other old library components are not migrated.

@@ -3,7 +3,7 @@
 A general purpose open source library for the Graf programming language.
 
 See the [11-step plan and current progress](docs/plan-de-trabajo.md), and the
-[naming conventions and API migration](docs/naming.md).
+[naming conventions](docs/naming.md) and the [historical units migration guide](docs/units/migration.md).
 
 ## Author
 
@@ -33,6 +33,10 @@ Run `graf test tests/units` to check this section, or
 `graf run examples/units/angles.graf` for angles, or
 `graf run examples/units/catalogue.graf` for catalogue units and prefixes, or
 `graf run examples/units/special.graf` for the special rules.
+`graf run examples/units/migration.graf` demonstrates the historical API replacements.
+`graf test tests/units-test.graf` runs the four migrated original unit cases.
+Use the modern CLI commands for units; the old setup and runner scripts belong
+to the unrelated legacy library. The directory suite already includes those four cases.
 
 ## Testing foundation
 

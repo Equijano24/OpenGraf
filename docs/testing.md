@@ -1,9 +1,10 @@
 # Testing with gunit
 
 Open Graf uses `common.testing.gunit` from the updated `Graf/develop` interpreter.
-The replacement units have 77 targeted tests, covering the core, conversion,
-arithmetic, dimensions and local extensions. Catalogue and special-unit coverage
-will follow in the next steps.
+The replacement units have 506 targeted tests covering all 302 named factories,
+the core, conversion/arithmetic, dimensions, local extensions and special rules.
+The [migration guide](units/migration.md) accounts for all 31 historical factories
+and the four original unit test cases.
 
 ## Command
 
@@ -124,7 +125,10 @@ Run `graf test tests/units` for the replacement core. Import the
 rewritten unit sources explicitly. Do not target the repository root or all of
 `tests`: unrelated legacy sources are not expected to load or pass on current
 Graf. `tests/testing` contains contemporary auxiliary gunit checks, not a
-migration of the legacy library. The replacement currently has 77 passing tests. New operation assertions
-collect their actual response in a tuple, so empty streams fail comparison
-instead of skipping an assertion. Catalogue and special-unit tests will be
-added with their implementation steps.
+migration of the legacy library. The retained `tests/units-test.graf` also works with current Graf: it forwards
+to four migrated cases already included in `tests/units`, so do not add those
+four to the directory total. The other old test files and the old setup/runner
+remain outside this target. Value assertions collect their actual response in
+a tuple, so empty streams fail comparison instead of skipping an assertion.
+`python3 tools/units_audit.py --legacy-source` checks inventory, migration and
+example correspondence; it does not replace execution of the tests.
