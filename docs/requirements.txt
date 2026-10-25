@@ -3,5 +3,5 @@ Markdown==3.11.2
 PyYAML==6.0.3
 weasyprint==66.0
 pydyf==0.13.0
-pypdf==6.10.0
+pypdf==6.21.2
 pdfplumber==0.11.9
