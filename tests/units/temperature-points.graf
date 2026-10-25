@@ -1,0 +1,83 @@
+import(units: graf {path: "../../src/units"});
+import(other: graf {path: "../../src/units"});
+
+box {
+	common.testing.gunit.test>> verify-point-conversions-and-fixed-anchors(): (
+		common.testing.gunit.assert-equals(tuple {273.15(0), 373.15(0), 32, 212, 0, 100},
+			tuple {units.kelvins(units.celsius(0)).value(), units.kelvins(units.celsius(100)).value(),
+			units.fahrenheit(units.celsius(0)).value(), units.fahrenheit(units.celsius(100)).value(),
+			units.celsius(units.fahrenheit(32)).value(), units.celsius(units.fahrenheit(212)).value()})
+	),
+	common.testing.gunit.test>> verify-absolute-zero-boundaries(): (
+		common.testing.gunit.assert-equals(tuple {0, 0, 0, 0}, tuple {
+			units.kelvins(0).coherent-value(), units.celsius(-273.15(0)).coherent-value(),
+			units.fahrenheit(-459.67(0)).coherent-value(), units.rankines(0).coherent-value()});
+		common.testing.gunit.assert-fails {units.kelvins(-1)};
+		common.testing.gunit.assert-fails {units.celsius(-273.1501(0))};
+		common.testing.gunit.assert-fails {units.fahrenheit(-459.6701(0))};
+		common.testing.gunit.assert-fails {units.rankines(-1)};
+		common.testing.gunit.assert-fails {units.kelvins.quantity(-1)};
+		common.testing.gunit.assert-fails {units.kelvins(0).quantity-with-value(-1)}
+	),
+	common.testing.gunit.test>> verify-point-minus-point-produces-left-difference(): (
+		d$ = units.fahrenheit(212).minus(units.celsius(0));
+		common.testing.gunit.assert-equals(tuple {180, units.fahrenheit-differences, 100},
+			tuple {d$.value(), d$.factory, units.kelvin-differences(d$).value()});
+		common.testing.gunit.assert-equals(tuple {-100}, tuple {units.celsius(0).minus(units.fahrenheit(212)).value()})
+	),
+	common.testing.gunit.test>> verify-point-plus-or-minus-difference-preserves-factory(): (
+		p$ = units.fahrenheit(32);
+		q$ = p$.plus(units.kelvin-differences(10));
+		common.testing.gunit.assert-equals(tuple {50, units.fahrenheit, 32, 14},
+			tuple {q$.value(), q$.factory, p$.value(), p$.minus(units.celsius-differences(10)).value()});
+		common.testing.gunit.assert-fails {units.kelvins(0).minus(units.kelvin-differences(1))}
+	),
+	common.testing.gunit.test>> verify-point-arithmetic-restrictions(): (
+		p$ = units.celsius(20);
+		common.testing.gunit.assert-fails {p$.plus(p$)};
+		common.testing.gunit.assert-fails {p$.plus(1)};
+		common.testing.gunit.assert-fails {p$.times(2)};
+		common.testing.gunit.assert-fails {p$.over(2)};
+		common.testing.gunit.assert-fails {p$.pow(1)};
+		common.testing.gunit.assert-fails {p$.root(1)};
+		common.testing.gunit.assert-fails {units.kelvin-differences(1).plus(p$)};
+		common.testing.gunit.assert-fails {units.celsius(units.kelvin-differences(1))};
+		common.testing.gunit.assert-fails {units.kelvin-differences(p$)};
+		common.testing.gunit.assert-fails {units.celsius(units.kelvin-differences(1).pow(1))};
+		common.testing.gunit.assert-fails {units.si-prefixes.milli(units.kelvins)}
+	),
+	common.testing.gunit.test>> verify-point-comparison-rounding-and-imports(): (
+		common.testing.gunit.assert-equals(tuple {yes, yes, 0, 20, units.celsius, units.kelvins},
+			tuple {units.celsius(0).equal-to(units.fahrenheit(32)), units.celsius(1).gt(units.kelvins(273.15(0))),
+			units.celsius(0).compared-to(units.kelvins(273.15(0))), units.celsius(20.1(0)).rounded(0).value(),
+			units.celsius(20).rounded(0).factory, other.kelvins});
+		common.testing.gunit.assert-fails {units.kelvins("hot")};
+	),
+	common.testing.gunit.test>> verify-custom-point-scale-retains-special-rules(): (
+		f$ = units.temperature-point.definition("double-kelvin", "2K", 2);
+		p$ = f$(3);
+		d$ = p$.minus(units.kelvins(2));
+		common.testing.gunit.assert-equals(tuple {6, 2, 4, 4}, tuple {
+			p$.coherent-value(), d$.value(), d$.coherent-value(), p$.plus(units.kelvin-differences(2)).value()});
+		common.testing.gunit.assert-fails {f$(-1)};
+		common.testing.gunit.assert-fails {units.temperature-point.point-definition("bad", "bad", 2, 0, units.kelvin-differences, "test")}
+	),
+	common.testing.gunit.test>> verify-rankine-interval-and-subzero-rounding(): (
+		d$ = units.rankines(18).minus(units.kelvins(0));
+		common.testing.gunit.assert-equals(tuple {18, 10, units.rankine-differences},
+			tuple {d$.value(), d$.coherent-value(), d$.factory});
+		common.testing.gunit.assert-fails {units.fahrenheit(-459.67(0)).rounded(0)};
+		common.testing.gunit.assert-fails {units.kelvins(0).amount := -1}
+	),
+	common.testing.gunit.test>> verify-point-results-use-custom-construction(): (
+		f$ = heir(units.celsius) {
+			override>> self$.quantity(amount$ = number?): (
+				common.math.gte(0)? >> amount$;
+				composite>> new(self$) {amount: amount$, factory: self$}
+			)
+		};
+		common.testing.gunit.assert-equals(tuple {20, f$}, tuple {f$(10).plus(units.kelvin-differences(10)).value(), f$(10).plus(units.kelvin-differences(10)).factory});
+		common.testing.gunit.assert-fails {f$(10).minus(units.kelvin-differences(11))};
+		common.testing.gunit.assert-fails {f$(units.celsius(-1))}
+	)
+}

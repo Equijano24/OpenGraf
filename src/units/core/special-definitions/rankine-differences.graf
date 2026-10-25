@@ -1,0 +1,4 @@
+import(units: graf {path: "../.."});
+
+units.temperature-difference.definition("rankine-differences", "°R", 5.exact-quotient(9),
+	no, yes, "NIST-SP811/B8")

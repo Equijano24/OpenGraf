@@ -56,7 +56,8 @@ Double prefixes, affine points, unfilled families and measurements are refused.
 The kilogram already contains a prefix. Prefix `grams`, never `kilograms`:
 `si-prefixes.milli(grams)` produces milligrams; `si-prefixes.milli(kilograms)`
 is refused. Temperature **differences** may be prefixed when eligible; absolute
-temperature factories and their rules are part of step 9.
+temperature factories, logarithmic values and gauge factories are ineligible;
+see [special-unit rules](special.md).
 
 A prefix on a length applies **before** its power. Use
 `square(si-prefixes.centi(meters))` or `square(centimeters)`, and similarly `cube`.

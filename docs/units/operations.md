@@ -130,10 +130,10 @@ addition, subtraction, multiplication, division, powers and roots require both
 `linear-arithmetic: no`, including coherent points whose offset is zero.
 Temperature differences retain linear arithmetic.
 
-Temperature point/difference operations, absolute-zero validation and other
-special-unit rules remain in step 9. This checkpoint refuses generic arithmetic
-on points instead of silently applying the linear rules to them. It does not
-claim complete temperature support merely because affine mapping is available.
+[Special units](special.md) implement point/difference arithmetic and absolute-zero
+validation. Point minus point produces a difference; point plus/minus difference
+retains the point factory. Logarithmic and referenced values keep their own
+conversion mappings and refuse generic linear arithmetic.
 
 ## Tests
 

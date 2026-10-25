@@ -1,0 +1,27 @@
+import(units: graf {path: ".."});
+
+// a = gamma * x / x0. The standard names the molality or concentration basis.
+class {
+	standard-concentration: all(units.quantity?)?,
+	coefficient: real?,
+	source: string?,
+	self$(standard$ = units.quantity?, coefficient$ = real?, source$ = string?): (
+		yes? >> equals(standard$.kind, "amount-concentration").or(equals(standard$.kind, "molality"));
+		if(equals(standard$.kind, "molality")) {
+			yes? >> standard$.dimension.same-as(units.molality.dimension),
+			yes? >> standard$.dimension.same-as(units.amount-concentration.dimension)
+		};
+		standard$.require-linear();
+		common.math.gt(0)? >> standard$.coherent-value();
+		common.math.gt(0)? >> coefficient$;
+		common.math.gt(0)? >> source$.length();
+		composite>> new(self$) {standard-concentration: standard$, coefficient: coefficient$, source: source$}
+	),
+	self$.activity(concentration$ = units.quantity?): (
+		concentration$.require-linear();
+		yes? >> concentration$.compatible-with(self$.standard-concentration);
+		common.math.gt(0)? >> concentration$.coherent-value();
+		concentration$.coherent-value().exact-quotient(self$.standard-concentration.coherent-value())
+			.exact-product(self$.coefficient)
+	)
+}

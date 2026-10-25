@@ -1,0 +1,46 @@
+import(open-graf-units-core: graf {path: "."});
+
+family$ = open-graf-units-core.unit.family("gauge-pressure",
+	open-graf-units-core.dimension(-1, 1, -2, 0, 0, 0, 0, 0));
+
+heir(family$) {
+	reference: all(open-graf-units-core.quantity?)?,
+	override>> linear-arithmetic: no,
+
+	self$(reference$ = open-graf-units-core.quantity?, display$ = class?): (
+		"pressure"? >> reference$.kind;
+		"pressure"? >> display$.kind;
+		reference$.require-linear();
+		display$.require-linear();
+		yes? >> self$.dimension.same-as(reference$.dimension);
+		yes? >> self$.dimension.same-as(display$.dimension);
+		common.math.gt(0)? >> display$.scale;
+		common.math.gte(0)? >> reference$.coherent-value();
+		definition$ = self$.definition(display$.id.conc("-gauge"), display$.symbol.conc(" (gauge)"),
+			display$.scale, no, display$.exact, display$.source);
+		heir(definition$) {override>> reference: reference$}
+	),
+
+	override>> self$.quantity(amount$ = number?): (
+		real? >> amount$;
+		common.math.gte(0)? >> self$.coherent-value-of(amount$);
+		composite>> new(self$) {amount: amount$, factory: self$}
+	),
+
+	override>> self$.is-convertible-from(source$ = open-graf-units-core.quantity?):
+		self$.dimension.same-as(source$.dimension)
+			.and(equals(source$.kind, "pressure").or(equals(source$.kind, "gauge-pressure"))),
+
+	override>> self$.coherent-value-of(amount$ = number?):
+		amount$.exact-product(self$.scale).plus(self$.reference.coherent-value()),
+
+	override>> self$.display-value-of(amount$ = number?):
+		amount$.minus(self$.reference.coherent-value()).exact-quotient(self$.scale),
+
+	self$.absolute-pressure(target$ = default(class?, open-graf-units-core.catalogue-definitions.pascals)?): (
+		"pressure"? >> target$.kind;
+		target$.require-linear();
+		yes? >> self$.dimension.same-as(target$.dimension);
+		target$.quantity(target$.display-value-of(self$.coherent-value()))
+	)
+}

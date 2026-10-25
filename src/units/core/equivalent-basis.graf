@@ -1,0 +1,45 @@
+import(units: graf {path: ".."});
+
+// The caller supplies the chemical equivalent mass and its provenance.
+class {
+	name: string?,
+	molar-mass: all(units.quantity?)?,
+	charge: integer?,
+	source: string?,
+	self$(name$ = string?, mass$ = units.quantity?, charge$ = integer?, source$ = string?): (
+		"molar-mass"? >> mass$.kind;
+		mass$.require-linear();
+		yes? >> mass$.dimension.same-as(units.molar-mass.dimension);
+		common.math.gt(0)? >> mass$.coherent-value();
+		common.math.gt(0)? >> charge$;
+		common.math.gt(0)? >> name$.length();
+		common.math.gt(0)? >> source$.length();
+		composite>> new(self$) {name: name$, molar-mass: mass$, charge: charge$, source: source$}
+	),
+
+	self$.equivalent-mass(): self$.molar-mass.coherent-value().exact-quotient(self$.charge),
+
+	self$.definition(id$ = string?, symbol$ = string?, scale$ = real?): (
+		definition$ = units.hardness.definition(id$, symbol$, scale$, no, no, self$.source);
+		basis$ = self$;
+		heir(definition$) {override>> basis: basis$}
+	),
+
+	self$.concentration(source$ = units.quantity?): (
+		"hardness"? >> source$.kind;
+		self$.concentration(source$, source$.basis)
+	),
+
+	self$.concentration(source$ = units.quantity?, basis$ = box?): (
+		yes? >> equals(source$.kind, "mass-concentration").or(equals(source$.kind, "hardness"));
+		yes? >> source$.dimension.same-as(units.mass-concentration.dimension);
+		if(equals(source$.kind, "hardness")) {yes? >> equals(source$.basis, basis$)};
+		source$.require-linear();
+		common.math.gte(0)? >> source$.coherent-value();
+		common.math.gt(0)? >> basis$.equivalent-mass();
+		amount$ = source$.coherent-value().exact-quotient(basis$.equivalent-mass())
+			.exact-product(self$.equivalent-mass());
+		self$.definition(self$.name.conc("-kilograms-per-cubic-meter"),
+			"kg/m³ as ".conc(self$.name), 1).quantity(amount$)
+	)
+}

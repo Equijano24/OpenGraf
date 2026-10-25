@@ -1,0 +1,63 @@
+import(units: graf {path: ".."});
+
+// All physical assumptions travel as arguments; none are global defaults.
+namespace {
+	power-level(level$ = units.quantity?, model$ = box?, target$ = class?,
+		precision$ = default(integer?, 15)?): (
+		"amplitude-level"? >> level$.kind;
+		"power-level"? >> target$.kind;
+		yes? >> level$.dimension.same-as(units.ratio.dimension);
+		yes? >> target$.dimension.same-as(units.ratio.dimension);
+		ratio$ = model$.power-ratio(level$.linear-ratio(precision$), precision$);
+		target$.level(ratio$, precision$)
+	),
+
+	amplitude-level(level$ = units.quantity?, model$ = box?, target$ = class?,
+		precision$ = default(integer?, 15)?): (
+		"power-level"? >> level$.kind;
+		"amplitude-level"? >> target$.kind;
+		yes? >> level$.dimension.same-as(units.ratio.dimension);
+		yes? >> target$.dimension.same-as(units.ratio.dimension);
+		ratio$ = model$.amplitude-ratio(level$.linear-ratio(precision$), precision$);
+		target$.level(ratio$, precision$)
+	),
+
+	referenced-level(value$ = units.quantity?, reference$ = units.quantity?,
+		target$ = class?, precision$ = default(integer?, 15)?):
+		units.logarithmic-reference(reference$, target$).level(value$, precision$),
+
+	referenced-quantity(level$ = units.quantity?, reference$ = units.quantity?,
+		precision$ = default(integer?, 15)?): (
+		reference$.require-linear();
+		common.math.gt(0)? >> reference$.coherent-value();
+		if(equals(level$.kind, "referenced-power-level").or(equals(level$.kind, "referenced-amplitude-level"))) {
+			(
+				yes? >> reference$.compatible-with(level$.reference);
+				yes? >> reference$.equal-to(level$.reference)
+			),
+			yes? >> equals(level$.kind, "power-level").or(equals(level$.kind, "amplitude-level"))
+		};
+		amount$ = reference$.value().exact-product(level$.linear-ratio(precision$));
+		reference$.factory.quantity(amount$)
+	),
+
+	acidity(concentration$ = units.quantity?, model$ = box?,
+		precision$ = default(integer?, 15)?): (
+		yes? >> equals(concentration$.kind, "amount-concentration").or(equals(concentration$.kind, "molality"));
+		concentration$.require-linear();
+		common.math.gt(0)? >> concentration$.coherent-value();
+		activity$ = model$.activity(concentration$);
+		units.ph.level(activity$, precision$)
+	),
+
+	equivalent-dose(absorbed$ = units.quantity?, model$ = box?): (
+		"absorbed-dose"? >> absorbed$.kind;
+		yes? >> absorbed$.dimension.same-as(units.absorbed-dose.dimension);
+		absorbed$.require-linear();
+		common.math.gte(0)? >> absorbed$.coherent-value();
+		factor$ = model$.radiation-weight(absorbed$);
+		real? >> factor$;
+		common.math.gt(0)? >> factor$;
+		units.sieverts(absorbed$.coherent-value().exact-product(factor$))
+	)
+}

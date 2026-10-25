@@ -104,7 +104,8 @@ box {
 		factory$ = units.temperature-point.definition("test-temperature-point", "u", 1);
 		q$ = factory$(7);
 		common.testing.gunit.assert(match(q$, units.temperature-point?));
-		common.testing.gunit.assert(match(q$, units.unit?));
+		// Special rules override base methods; match the measurement protocol.
+		common.testing.gunit.assert(match(q$, all(units.quantity?)?));
 		common.testing.gunit.assert-equals("temperature-point", q$.kind);
 		common.testing.gunit.assert-equals(tuple { 0, 0, 0, 0, 1, 0, 0, 0 },
 			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });

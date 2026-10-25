@@ -1,0 +1,64 @@
+import(open-graf-units-core: graf {path: "."});
+
+family$ = open-graf-units-core.unit.family("logarithmic-ratio",
+	open-graf-units-core.dimension(0, 0, 0, 0, 0, 0, 0, 0));
+
+// The logarithm is a mapping, never a linear scale factor.
+heir(family$) {
+	logarithm: default(string?, "decimal")?,
+	coefficient: default(real?, 1)?,
+	override>> scale: 1,
+	override>> linear-arithmetic: no,
+
+	override>> self$.quantity(amount$ = number?): (
+		real? >> amount$;
+		composite>> new(self$) {amount: amount$, factory: self$}
+	),
+
+	override>> self$.is-convertible-from(source$ = open-graf-units-core.quantity?):
+		self$.compatible-with(source$),
+
+	self$.logarithmic-definition(id$ = string?, symbol$ = string?, kind$ = string?,
+		logarithm$ = string?, coefficient$ = real?, source$ = string?): (
+		yes? >> equals(logarithm$, "decimal").or(equals(logarithm$, "natural"));
+		no? >> coefficient$.equal-to(0);
+		common.math.gt(0)? >> kind$.length();
+		definition$ = self$.definition(id$, symbol$, 1, no, yes, source$);
+		heir(definition$) {
+			override>> kind: kind$,
+			override>> logarithm: logarithm$,
+			override>> coefficient: coefficient$
+		}
+	),
+
+	self$.ratio-value(amount$ = real?, precision$ = integer?): (
+		exponent$ = amount$.exact-quotient(self$.coefficient);
+		ratio$ = if(equals(self$.logarithm, "decimal")) {
+			10.pow(exponent$, precision$), common.math.exp(exponent$, precision$)
+		};
+		common.math.gt(0)? >> ratio$;
+		ratio$
+	),
+
+	self$.level-value(ratio$ = real?, precision$ = integer?): (
+		common.math.gt(0)? >> ratio$;
+		log$ = if(equals(self$.logarithm, "decimal")) {
+			common.math.log10(ratio$, precision$), common.math.ln(ratio$, precision$)
+		};
+		log$.exact-product(self$.coefficient)
+	),
+
+	self$.linear-ratio(precision$ = default(integer?, 15)?):
+		self$.factory.ratio-value(self$.value(), precision$),
+
+	self$.level(ratio$ = real?, precision$ = default(integer?, 15)?):
+		self$.quantity(self$.level-value(ratio$, precision$)),
+
+	self$(source$ = open-graf-units-core.quantity?, precision$ = integer?): (
+		yes? >> self$.compatible-with(source$);
+		self$.level(source$.linear-ratio(precision$), precision$)
+	),
+
+	override>> self$.coherent-value-of(amount$ = number?): self$.ratio-value(amount$, 15),
+	override>> self$.display-value-of(amount$ = number?): self$.level-value(amount$, 15)
+}

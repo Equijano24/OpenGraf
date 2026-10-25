@@ -290,5 +290,17 @@ box {
 	definition: units.ratios,
 	definition: units.percentages,
 	definition: units.per-milles,
-	definition: units.parts-per-million
+	definition: units.parts-per-million,
+	definition: units.kelvins,
+	definition: units.celsius,
+	definition: units.fahrenheit,
+	definition: units.rankines,
+	definition: units.rankine-differences,
+	definition: units.power-decibels,
+	definition: units.power-bels,
+	definition: units.power-nepers,
+	definition: units.amplitude-decibels,
+	definition: units.amplitude-bels,
+	definition: units.amplitude-nepers,
+	definition: units.ph
 }

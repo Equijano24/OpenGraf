@@ -1,0 +1,21 @@
+import(open-graf-units-core: graf {path: "."});
+
+family$ = open-graf-units-core.unit.family("hardness",
+	open-graf-units-core.dimension(-3, 1, 0, 0, 0, 0, 0, 0));
+
+heir(family$) {
+	basis: box?,
+	override>> self$.quantity(amount$ = number?): (
+		real? >> amount$;
+		common.math.gte(0)? >> amount$;
+		composite>> new(self$) {amount: amount$, factory: self$}
+	),
+	override>> self$.compatible-with(other$ = box {kind: string?, dimension: all(open-graf-units-core.dimension?)?}?): (
+		if(equals(other$.kind, "hardness")) {
+			self$.dimension.same-as(other$.dimension).and(equals(self$.basis, other$.basis)),
+			no
+		}
+	),
+	override>> self$.is-convertible-from(source$ = open-graf-units-core.quantity?):
+		self$.compatible-with(source$)
+}

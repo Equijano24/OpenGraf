@@ -1,0 +1,95 @@
+import(units: graf {path: "../../src/units"});
+import(other: graf {path: "../../src"});
+
+box {
+	common.testing.gunit.test>> verify-decimal-ratios-and-inverses(): (
+		common.testing.gunit.assert-equals(tuple {1, 100, 10, 0.1(0), 20, 20}, tuple {
+			units.power-decibels(0).linear-ratio(), units.power-decibels(20).linear-ratio(),
+			units.amplitude-decibels(20).linear-ratio(), units.amplitude-decibels(-20).linear-ratio(),
+			units.power-decibels.level(100).value(), units.amplitude-decibels.level(10).value()})
+	),
+	common.testing.gunit.test>> verify-bels-and-decibels-share-only-their-own-kind(): (
+		common.testing.gunit.assert-equals(tuple {20, 2, 2, 20}, tuple {
+			units.power-decibels(units.power-bels(2)).value(), units.power-bels(units.power-decibels(20)).value(),
+			units.amplitude-bels(units.amplitude-decibels(20)).value(), units.amplitude-decibels(units.amplitude-bels(2)).value()});
+		common.testing.gunit.assert-fails {units.power-decibels(units.amplitude-decibels(20))};
+		common.testing.gunit.assert-fails {units.amplitude-decibels(units.power-decibels(20))};
+		common.testing.gunit.assert-fails {units.power-decibels(units.ratios(10))};
+		common.testing.gunit.assert-fails {units.power-decibels(units.ratios(10).pow(1))}
+	),
+	common.testing.gunit.test>> verify-nepers-use-the-power-or-amplitude-convention(): (
+		common.testing.gunit.assert-equals(tuple {yes, yes, 0, 0}, tuple {
+			units.amplitude-nepers(1).linear-ratio().equal-to(1.exp(15)),
+			units.power-nepers(1).linear-ratio().equal-to(2.exp(15)),
+			units.amplitude-nepers.level(1).value(), units.power-nepers.level(1).value()})
+	),
+	common.testing.gunit.test>> verify-acidity-uses-activity-and-allows-values-outside-zero-to-fourteen(): (
+		common.testing.gunit.assert-equals(tuple {7, 0.0000001(0), -1, 15, 10}, tuple {
+			units.ph.level(0.0000001(0)).value(), units.ph(7).linear-ratio(),
+			units.ph.level(10).value(), units.ph.level(0.000000000000001(0)).value(), units.ph(-1).linear-ratio()});
+		common.testing.gunit.assert-fails {units.ph(units.moles-per-liter(1))};
+		common.testing.gunit.assert-fails {units.ph(units.power-decibels(1))}
+	),
+	common.testing.gunit.test>> verify-positive-ratio-domains(): (
+		common.testing.gunit.assert-fails {units.power-decibels.level(0)};
+		common.testing.gunit.assert-fails {units.amplitude-decibels.level(-1)};
+		common.testing.gunit.assert-fails {units.ph.level(0)};
+		common.testing.gunit.assert-fails {units.power-decibels("loud")};
+		common.testing.gunit.assert-fails {units.power-decibels.level(units.watts(1))}
+	),
+	common.testing.gunit.test>> verify-logarithmic-values-refuse-generic-linear-arithmetic(): (
+		q$ = units.power-decibels(3);
+		common.testing.gunit.assert-fails {q$.plus(q$)};
+		common.testing.gunit.assert-fails {q$.minus(q$)};
+		common.testing.gunit.assert-fails {q$.times(2)};
+		common.testing.gunit.assert-fails {q$.over(2)};
+		common.testing.gunit.assert-fails {q$.pow(1)};
+		common.testing.gunit.assert-fails {q$.root(1)};
+		common.testing.gunit.assert-fails {units.ratios(1).times(q$)};
+		common.testing.gunit.assert-fails {units.si-prefixes.milli(units.power-bels)}
+	),
+	common.testing.gunit.test>> verify-explicit-logarithmic-precision(): (
+		common.testing.gunit.assert-equals(tuple {3.0103(0), 3.01029995664(0)}, tuple {
+			units.power-decibels.level(2, 5).value().round(5), units.power-decibels.level(2, 12).value().round(11)});
+		common.testing.gunit.assert-equals(tuple {1.258925(0)}, tuple {units.power-decibels(1).linear-ratio(6)});
+		common.testing.gunit.assert-equals(tuple {20}, tuple {units.power-decibels(units.power-bels(2), 20).value()});
+		common.testing.gunit.assert-fails {units.power-decibels.level(2, -1)};
+		common.testing.gunit.assert-fails {units.power-decibels(1).linear-ratio(-1)}
+	),
+	common.testing.gunit.test>> verify-level-comparison-rounding-and-factory-identity(): (
+		q$ = units.power-decibels(20.1(0));
+		common.testing.gunit.assert-equals(tuple {yes, yes, 20, units.power-decibels, units.ph}, tuple {
+			units.power-decibels(20).equal-to(units.power-bels(2)), q$.gt(units.power-bels(2)),
+			q$.rounded(0).value(), q$.rounded(0).factory, other.units.ph});
+		common.testing.gunit.assert-fails {q$.amount := 2}
+	),
+	common.testing.gunit.test>> verify-local-logarithmic-definition-and-invalid-metadata(): (
+		f$ = units.logarithmic-unit.logarithmic-definition("local", "L", "local-log", "decimal", 5, "test");
+		common.testing.gunit.assert-equals(tuple {10, 5, f$}, tuple {f$(5).linear-ratio(), f$.level(10).value(), f$(5).factory});
+		common.testing.gunit.assert-fails {units.logarithmic-unit.logarithmic-definition("bad", "b", "bad", "decimal", 0, "test")};
+		common.testing.gunit.assert-fails {units.logarithmic-unit.logarithmic-definition("bad", "b", "bad", "unknown", 1, "test")}
+	),
+	common.testing.gunit.test>> verify-new-sequence-deferrevals-on-unit-results(): (
+		values$ = box {item: units.power-decibels(0), item: units.power-decibels(10), item: units.power-decibels(20)};
+		last$ = (units.power-decibels(0), units.power-decibels(10), units.power-decibels(20)) <<last;
+		common.testing.gunit.assert-equals(tuple {3, yes, 20}, tuple {
+			(values$.item <<count), (values$.item <<every(q$ = ?) {q$.linear-ratio().gt(0)}),
+			last$.value()});
+		common.testing.gunit.assert-equals(tuple {100}, tuple {(units.power-decibels(20).linear-ratio() <<single)});
+		common.testing.gunit.assert-fails {() <<single}
+	),
+	common.testing.gunit.test>> verify-nonexact-neper-conversion-with-explicit-tolerance(): (
+		q$ = units.amplitude-nepers(units.amplitude-decibels(20), 12);
+		common.testing.gunit.assert-equals(tuple {2.302585092994(0)}, tuple {q$.value()});
+		back$ = units.amplitude-decibels(q$, 12);
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {back$.value().minus(20).abs().lt(0.000000001(0))})
+	),
+	common.testing.gunit.test>> verify-special-catalogue-has-no-empty-or-multiple-definitions(): (
+		common.testing.gunit.assert-equals(tuple {302}, tuple {units.catalogue.definition <<count});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {
+			units.catalogue.definition <<every(f$ = ?) {match(f$, class?)}
+		});
+		common.testing.gunit.assert-equals(tuple {units.power-nepers, units.amplitude-bels, units.rankine-differences},
+			tuple {other.units.power-nepers, other.units.amplitude-bels, other.units.rankine-differences})
+	)
+}

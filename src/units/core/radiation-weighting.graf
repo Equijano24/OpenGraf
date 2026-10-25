@@ -1,0 +1,16 @@
+import(units: graf {path: ".."});
+
+// A single-component weighting supplied by the caller; no radiation table is assumed.
+class {
+	factor: real?,
+	source: string?,
+	self$(factor$ = real?, source$ = string?): (
+		common.math.gt(0)? >> factor$;
+		common.math.gt(0)? >> source$.length();
+		composite>> new(self$) {factor: factor$, source: source$}
+	),
+	self$.radiation-weight(absorbed$ = units.quantity?): (
+		"absorbed-dose"? >> absorbed$.kind;
+		self$.factor
+	)
+}

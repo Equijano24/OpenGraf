@@ -5,7 +5,8 @@ local unit definitions, integral dimensions, and immutable measurements.
 [Conversion and arithmetic](operations.md) are implemented in step 6.
 [Angles and trigonometry](angles.md) add the concrete `radians` and `degrees`
 factories in step 7. Step 8 adds the [catalogue](catalogue.md) and [prefix API](prefixes.md); the
-complete target is in the [design contract](design.md).
+[special-unit reference](special.md) documents the completed step 9. The
+complete contract is in the [design reference](design.md).
 
 ## Import and construct
 
@@ -35,7 +36,10 @@ The numeric constructor accepts `number?` and stores the supplied value without
 rounding, promotion, conversion to floating point, or numeric decoration.
 Integer, arbitrary-size integer, float64, rational and symbolic pi payloads are
 covered by the executable tests. A number supplied by a host uses the same
-`number?` protocol; the core adds no restrictions on numeric backends.
+`number?` protocol; the base core adds no restrictions on numeric backends.
+Specialized domains can restrict the payload: temperature points and logarithmic
+values require real numbers, and their construction protocols enforce the
+[documented domains](special.md).
 
 ## Definitions and measurements
 

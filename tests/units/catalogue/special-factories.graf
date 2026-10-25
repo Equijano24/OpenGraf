@@ -1,0 +1,76 @@
+// Generated construction checks; special rules have independent hand-written tests.
+import(units: graf {path: "../../../src/units"});
+box {
+	common.testing.gunit.test>> verify-kelvins(): (
+		q$ = units.kelvins(2);
+		common.testing.gunit.assert-equals(tuple {2, units.kelvins, yes},
+			tuple {q$.value(), q$.factory, match(q$, all(units.quantity?)?)});
+		common.testing.gunit.assert-fails {q$.amount := 3}
+	),
+	common.testing.gunit.test>> verify-celsius(): (
+		q$ = units.celsius(2);
+		common.testing.gunit.assert-equals(tuple {2, units.celsius, yes},
+			tuple {q$.value(), q$.factory, match(q$, all(units.quantity?)?)});
+		common.testing.gunit.assert-fails {q$.amount := 3}
+	),
+	common.testing.gunit.test>> verify-fahrenheit(): (
+		q$ = units.fahrenheit(2);
+		common.testing.gunit.assert-equals(tuple {2, units.fahrenheit, yes},
+			tuple {q$.value(), q$.factory, match(q$, all(units.quantity?)?)});
+		common.testing.gunit.assert-fails {q$.amount := 3}
+	),
+	common.testing.gunit.test>> verify-rankines(): (
+		q$ = units.rankines(2);
+		common.testing.gunit.assert-equals(tuple {2, units.rankines, yes},
+			tuple {q$.value(), q$.factory, match(q$, all(units.quantity?)?)});
+		common.testing.gunit.assert-fails {q$.amount := 3}
+	),
+	common.testing.gunit.test>> verify-rankine-differences(): (
+		q$ = units.rankine-differences(2);
+		common.testing.gunit.assert-equals(tuple {2, units.rankine-differences, yes},
+			tuple {q$.value(), q$.factory, match(q$, all(units.quantity?)?)});
+		common.testing.gunit.assert-fails {q$.amount := 3}
+	),
+	common.testing.gunit.test>> verify-power-decibels(): (
+		q$ = units.power-decibels(2);
+		common.testing.gunit.assert-equals(tuple {2, units.power-decibels, yes},
+			tuple {q$.value(), q$.factory, match(q$, all(units.quantity?)?)});
+		common.testing.gunit.assert-fails {q$.amount := 3}
+	),
+	common.testing.gunit.test>> verify-power-bels(): (
+		q$ = units.power-bels(2);
+		common.testing.gunit.assert-equals(tuple {2, units.power-bels, yes},
+			tuple {q$.value(), q$.factory, match(q$, all(units.quantity?)?)});
+		common.testing.gunit.assert-fails {q$.amount := 3}
+	),
+	common.testing.gunit.test>> verify-power-nepers(): (
+		q$ = units.power-nepers(2);
+		common.testing.gunit.assert-equals(tuple {2, units.power-nepers, yes},
+			tuple {q$.value(), q$.factory, match(q$, all(units.quantity?)?)});
+		common.testing.gunit.assert-fails {q$.amount := 3}
+	),
+	common.testing.gunit.test>> verify-amplitude-decibels(): (
+		q$ = units.amplitude-decibels(2);
+		common.testing.gunit.assert-equals(tuple {2, units.amplitude-decibels, yes},
+			tuple {q$.value(), q$.factory, match(q$, all(units.quantity?)?)});
+		common.testing.gunit.assert-fails {q$.amount := 3}
+	),
+	common.testing.gunit.test>> verify-amplitude-bels(): (
+		q$ = units.amplitude-bels(2);
+		common.testing.gunit.assert-equals(tuple {2, units.amplitude-bels, yes},
+			tuple {q$.value(), q$.factory, match(q$, all(units.quantity?)?)});
+		common.testing.gunit.assert-fails {q$.amount := 3}
+	),
+	common.testing.gunit.test>> verify-amplitude-nepers(): (
+		q$ = units.amplitude-nepers(2);
+		common.testing.gunit.assert-equals(tuple {2, units.amplitude-nepers, yes},
+			tuple {q$.value(), q$.factory, match(q$, all(units.quantity?)?)});
+		common.testing.gunit.assert-fails {q$.amount := 3}
+	),
+	common.testing.gunit.test>> verify-ph(): (
+		q$ = units.ph(2);
+		common.testing.gunit.assert-equals(tuple {2, units.ph, yes},
+			tuple {q$.value(), q$.factory, match(q$, all(units.quantity?)?)});
+		common.testing.gunit.assert-fails {q$.amount := 3}
+	)
+}

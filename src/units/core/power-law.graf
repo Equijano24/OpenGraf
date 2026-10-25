@@ -1,0 +1,18 @@
+// An explicitly chosen relation between positive amplitude and power ratios.
+class {
+	exponent: real?,
+	source: string?,
+	self$(exponent$ = real?, source$ = string?): (
+		common.math.gt(0)? >> exponent$;
+		common.math.gt(0)? >> source$.length();
+		composite>> new(self$) {exponent: exponent$, source: source$}
+	),
+	self$.power-ratio(ratio$ = real?, precision$ = default(integer?, 15)?): (
+		common.math.gt(0)? >> ratio$;
+		ratio$.pow(self$.exponent, precision$)
+	),
+	self$.amplitude-ratio(ratio$ = real?, precision$ = default(integer?, 15)?): (
+		common.math.gt(0)? >> ratio$;
+		ratio$.pow(1.exact-quotient(self$.exponent), precision$)
+	)
+}

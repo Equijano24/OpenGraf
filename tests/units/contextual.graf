@@ -1,0 +1,189 @@
+import(units: graf {path: "../../src/units"});
+import(other: graf {path: "../../src/units"});
+
+box {
+	common.testing.gunit.test>> verify-gauge-pressure-has-an-explicit-reference(): (
+		g$ = units.gauge-pressure(units.pascals(101325), units.bars);
+		q$ = g$(1);
+		common.testing.gunit.assert-equals(tuple {1, 201325, 2.01325(0), g$, 101325}, tuple {
+			q$.value(), q$.absolute-pressure().value(), q$.absolute-pressure(units.bars).value(),
+			q$.factory, g$(0).coherent-value()});
+		common.testing.gunit.assert-equals(tuple {1}, tuple {g$(units.pascals(201325)).value()});
+		common.testing.gunit.assert-fails {units.pascals(q$)}
+	),
+	common.testing.gunit.test>> verify-gauge-references-can-be-changed-explicitly(): (
+		a$ = units.gauge-pressure(units.pascals(100000), units.pascals);
+		b$ = units.gauge-pressure(units.pascals(90000), units.bars);
+		common.testing.gunit.assert-equals(tuple {0.15(0), yes, 95000}, tuple {
+			b$(a$(5000)).value(), a$(5000).equal-to(b$(0.15(0))), a$(-5000).absolute-pressure().value()});
+		common.testing.gunit.assert-equals(tuple {0}, tuple {a$(-100000).absolute-pressure().value()});
+		common.testing.gunit.assert-fails {a$(-100001)};
+		common.testing.gunit.assert-fails {a$(units.pascals(-1))}
+	),
+	common.testing.gunit.test>> verify-gauge-input-domains-and-arithmetic(): (
+		g$ = units.gauge-pressure(units.pascals(100000), units.pascals);
+		common.testing.gunit.assert-fails {units.gauge-pressure(units.meters(1), units.pascals)};
+		common.testing.gunit.assert-fails {units.gauge-pressure(units.pascals(1), units.meters)};
+		common.testing.gunit.assert-fails {units.gauge-pressure(units.pascals(-1), units.pascals)};
+		common.testing.gunit.assert-fails {g$(0).plus(g$(0))};
+		common.testing.gunit.assert-fails {g$(0).times(2)};
+		common.testing.gunit.assert-fails {g$(0).absolute-pressure(units.meters)};
+		common.testing.gunit.assert-fails {units.si-prefixes.kilo(g$)}
+	),
+	common.testing.gunit.test>> verify-referenced-logarithmic-power(): (
+		milliwatt$ = units.si-prefixes.milli(units.watts);
+		dbm$ = units.logarithmic-reference(milliwatt$(1), units.power-decibels);
+		dbw$ = units.logarithmic-reference(units.watts(1), units.power-decibels);
+		common.testing.gunit.assert-equals(tuple {30, 0, 1000, 1}, tuple {
+			dbm$.level(units.watts(1)).value(), dbw$.level(units.watts(1)).value(),
+			dbm$(30).linear-quantity().value(), dbw$(0).linear-quantity().value()});
+		common.testing.gunit.assert-equals(tuple {dbm$}, tuple {dbm$.level(units.watts(1)).factory});
+		common.testing.gunit.assert-fails {dbm$(units.amplitude-decibels(30))}
+	),
+	common.testing.gunit.test>> verify-reference-kind-dimension-and-positive-domain(): (
+		db$ = units.logarithmic-reference(units.watts(1), units.power-decibels);
+		common.testing.gunit.assert-fails {db$.level(units.volts(1))};
+		common.testing.gunit.assert-fails {db$.level(units.watts(0))};
+		common.testing.gunit.assert-fails {db$.level(units.watts(-1))};
+		common.testing.gunit.assert-fails {units.logarithmic-reference(units.watts(0), units.power-decibels)};
+		common.testing.gunit.assert-fails {units.logarithmic-reference(units.watts(1), units.ph)};
+		common.testing.gunit.assert-fails {units.contextual.referenced-level(units.joules(1), units.newton-meters(1), units.power-decibels)}
+	),
+	common.testing.gunit.test>> verify-amplitude-power-relation-requires-a-model(): (
+		model$ = units.power-law(2, "equal-impedance test model");
+		common.testing.gunit.assert-equals(tuple {20, 20, 100, 10}, tuple {
+			units.contextual.power-level(units.amplitude-decibels(20), model$, units.power-decibels).value(),
+			units.contextual.amplitude-level(units.power-decibels(20), model$, units.amplitude-decibels).value(),
+			model$.power-ratio(10), model$.amplitude-ratio(100)});
+		common.testing.gunit.assert-fails {units.power-law(0, "bad")};
+		common.testing.gunit.assert-fails {model$.power-ratio(0)};
+		common.testing.gunit.assert-fails {units.contextual.power-level(units.amplitude-decibels(20), box {}, units.power-decibels)}
+	),
+	common.testing.gunit.test>> verify-custom-physical-model-is-used(): (
+		model$ = box {
+			power-ratio(ratio$ = real?, precision$ = integer?): ratio$.pow(2, precision$).exact-product(4)
+		};
+		q$ = units.contextual.power-level(units.amplitude-decibels(20), model$, units.power-decibels, 8);
+		common.testing.gunit.assert-equals(tuple {400}, tuple {q$.linear-ratio(5).round(0)});
+		common.testing.gunit.assert-fails {units.contextual.power-level(units.ph(1), model$, units.power-decibels)};
+		common.testing.gunit.assert-fails {units.contextual.power-level(units.amplitude-decibels(20), model$, units.amplitude-decibels)}
+	),
+	common.testing.gunit.test>> verify-activity-model-normalizes-concentration(): (
+		ideal$ = units.activity-model(units.moles-per-liter(1), 1, "explicit ideal-solution approximation");
+		nonideal$ = units.activity-model(units.moles-per-liter(1), 0.1(0), "test coefficient");
+		c$ = units.moles-per-cubic-meter(0.0001(0));
+		common.testing.gunit.assert-equals(tuple {0.0000001(0), 7, 8}, tuple {
+			ideal$.activity(c$), units.contextual.acidity(c$, ideal$).value(), units.contextual.acidity(c$, nonideal$).value()});
+		common.testing.gunit.assert-fails {units.contextual.acidity(units.milligrams-per-liter(1), ideal$)};
+		common.testing.gunit.assert-fails {units.activity-model(units.moles-per-liter(0), 1, "bad")};
+		common.testing.gunit.assert-fails {units.activity-model(units.moles-per-liter(1), 0, "bad")};
+		common.testing.gunit.assert-fails {units.contextual.acidity(units.moles-per-liter(0), ideal$)}
+	),
+	common.testing.gunit.test>> verify-radiation-weighting-preserves-the-kind-boundary(): (
+		model$ = units.radiation-weighting(20, "single-component test weighting");
+		q$ = units.contextual.equivalent-dose(units.grays(0.001(0)), model$);
+		common.testing.gunit.assert-equals(tuple {0.02(0), 20, units.sieverts}, tuple {
+			q$.value(), units.millisieverts(q$).value(), q$.factory});
+		common.testing.gunit.assert-fails {units.sieverts(units.grays(1))};
+		common.testing.gunit.assert-fails {units.contextual.equivalent-dose(units.sieverts(1), model$)};
+		common.testing.gunit.assert-fails {units.contextual.equivalent-dose(units.grays(-1), model$)};
+		common.testing.gunit.assert-fails {units.radiation-weighting(0, "bad")};
+		common.testing.gunit.assert-fails {units.contextual.equivalent-dose(units.grays(1), box {radiation-weight(value$ = ?): -1})}
+	),
+	common.testing.gunit.test>> verify-hardness-needs-an-equivalent-basis(): (
+		// Synthetic molar masses keep this an exact equation test, not an atomic-weight table.
+		ca$ = units.equivalent-basis("test-Ca", units.grams-per-mole(40), 2, "synthetic anchor");
+		carbonate$ = units.equivalent-basis("test-CaCO3", units.grams-per-mole(100), 2, "synthetic anchor");
+		mg$ = carbonate$.definition("test-mg-per-liter-as-CaCO3", "mg/L as CaCO3", 0.001(0));
+		q$ = carbonate$.concentration(units.milligrams-per-liter(40), ca$);
+		common.testing.gunit.assert-equals(tuple {100, 0.1(0), carbonate$, no}, tuple {
+			mg$(q$).value(), q$.coherent-value(), q$.basis, q$.exact});
+		common.testing.gunit.assert-fails {units.milligrams-per-liter(q$)};
+		common.testing.gunit.assert-fails {mg$(units.milligrams-per-liter(100))};
+		common.testing.gunit.assert-fails {carbonate$.concentration(units.milligrams-per-liter(40))}
+	),
+	common.testing.gunit.test>> verify-hardness-basis-change-is-explicit-and-reversible(): (
+		a$ = units.equivalent-basis("a", units.grams-per-mole(100), 2, "test");
+		b$ = units.equivalent-basis("b", units.grams-per-mole(40), 2, "test");
+		fa$ = a$.definition("a-unit", "a", 1);
+		fb$ = b$.definition("b-unit", "b", 1);
+		q$ = fa$(10);
+		common.testing.gunit.assert-equals(tuple {4, 10, yes}, tuple {
+			fb$(b$.concentration(q$)).value(), fa$(a$.concentration(b$.concentration(q$))).value(), fa$(1).compatible-with(fa$(2))});
+		common.testing.gunit.assert-fails {fa$(fb$(4))};
+		common.testing.gunit.assert-fails {q$.plus(fb$(4))};
+		common.testing.gunit.assert-fails {fa$(-1)};
+		common.testing.gunit.assert-fails {a$.concentration(q$, b$)}
+	),
+	common.testing.gunit.test>> verify-invalid-equivalent-bases-and-context-imports(): (
+		common.testing.gunit.assert-fails {units.equivalent-basis("bad", units.grams-per-mole(0), 2, "test")};
+		common.testing.gunit.assert-fails {units.equivalent-basis("bad", units.grams-per-mole(40), 0, "test")};
+		common.testing.gunit.assert-fails {units.equivalent-basis("bad", units.grams(40), 2, "test")};
+		common.testing.gunit.assert-equals(tuple {units.gauge-pressure, units.equivalent-basis, units.power-law},
+			tuple {other.gauge-pressure, other.equivalent-basis, other.power-law})
+	),
+	common.testing.gunit.test>> verify-molality-activity-basis-is-explicit(): (
+		model$ = units.activity-model(units.moles-per-kilogram(1), 1, "explicit molality standard");
+		common.testing.gunit.assert-equals(tuple {7}, tuple {units.contextual.acidity(units.moles-per-kilogram(0.0000001(0)), model$).value()});
+		common.testing.gunit.assert-fails {model$.activity(units.moles-per-liter(0.0000001(0)))};
+		common.testing.gunit.assert-fails {units.contextual.acidity(units.moles-per-kilogram(1), box {activity(value$ = ?): 0})}
+	),
+	common.testing.gunit.test>> verify-contexts-and-models-are-immutable(): (
+		model$ = units.radiation-weighting(2, "test");
+		g$ = units.gauge-pressure(units.bars(1), units.bars);
+		common.testing.gunit.assert-equals(tuple {200000}, tuple {g$(1).absolute-pressure().value()});
+		common.testing.gunit.assert-fails {model$.factor := 3};
+		common.testing.gunit.assert-fails {g$.reference := units.pascals(0)};
+		common.testing.gunit.assert-fails {g$(1).amount := 0};
+		common.testing.gunit.assert-fails {units.contextual.equivalent-dose(units.grays(1), box {})}
+	),
+	common.testing.gunit.test>> verify-dose-model-observes-the-input-and-dimensions(): (
+		model$ = box {radiation-weight(value$ = units.quantity?): if(value$.coherent-value().lte(1)) {2, 3}};
+		common.testing.gunit.assert-equals(tuple {2, 6}, tuple {
+			units.contextual.equivalent-dose(units.grays(1), model$).value(),
+			units.contextual.equivalent-dose(units.grays(2), model$).value()});
+		wrong$ = units.unit.family("absorbed-dose", units.length.dimension).definition("bad", "bad", 1)(1);
+		common.testing.gunit.assert-fails {units.contextual.equivalent-dose(wrong$, model$)}
+	),
+	common.testing.gunit.test>> verify-hardness-arithmetic-keeps-the-basis(): (
+		basis$ = units.equivalent-basis("test", units.grams-per-mole(100), 2, "test");
+		f$ = basis$.definition("mg-per-liter", "mg/L as test", 0.001(0));
+		q$ = f$(2).plus(f$(3));
+		common.testing.gunit.assert-equals(tuple {5, basis$, f$, 10},
+			tuple {q$.value(), q$.basis, q$.factory, q$.times(2).value()});
+		common.testing.gunit.assert-fails {q$.minus(f$(6))};
+		common.testing.gunit.assert-fails {basis$.concentration(units.milligrams-per-liter(-1), basis$)}
+	),
+	common.testing.gunit.test>> verify-referenced-levels-retain-and-convert-their-references(): (
+		mw$ = units.si-prefixes.milli(units.watts);
+		dbm$ = units.logarithmic-reference(mw$(1), units.power-decibels);
+		dbw$ = units.logarithmic-reference(units.watts(1), units.power-decibels);
+		q$ = dbm$(30);
+		common.testing.gunit.assert-equals(tuple {30, 0, 0, 1, 1, mw$, dbm$, "referenced-power-level"}, tuple {
+			q$.value(), dbw$(q$).value(), dbw$(q$, 20).value(), dbm$(units.watts(1)).reference.value(),
+			units.watts(q$.linear-quantity()).value(), q$.reference.factory, q$.factory, q$.kind});
+		common.testing.gunit.assert-equals(tuple {yes, yes}, tuple {q$.equal-to(dbw$(0)), q$.gt(dbw$(-1))});
+		common.testing.gunit.assert-fails {dbm$(units.power-decibels(30))};
+		common.testing.gunit.assert-fails {units.watts(q$)}
+	),
+	common.testing.gunit.test>> verify-referenced-level-kind-and-domain-boundaries(): (
+		power$ = units.logarithmic-reference(units.watts(1), units.power-decibels);
+		voltage$ = units.logarithmic-reference(units.volts(1), units.amplitude-decibels);
+		common.testing.gunit.assert-equals(tuple {10, 20}, tuple {voltage$(20).linear-quantity().value(), voltage$.level(units.volts(10)).value()});
+		common.testing.gunit.assert-fails {power$(voltage$(0))};
+		common.testing.gunit.assert-fails {power$(units.watts(0))};
+		common.testing.gunit.assert-fails {power$(units.watts(-1))};
+		common.testing.gunit.assert-fails {units.si-prefixes.milli(power$)};
+		common.testing.gunit.assert-fails {power$(0).plus(power$(0))};
+		common.testing.gunit.assert-fails {power$(0).reference := units.watts(2)}
+	),
+	common.testing.gunit.test>> verify-contextual-functions-preserve-or-check-the-reference(): (
+		mw$ = units.si-prefixes.milli(units.watts);
+		q$ = units.contextual.referenced-level(units.watts(1), mw$(1), units.power-decibels);
+		common.testing.gunit.assert-equals(tuple {30, 1, 1000}, tuple {
+			q$.value(), q$.reference.value(), units.contextual.referenced-quantity(q$, mw$(1)).value()});
+		common.testing.gunit.assert-fails {units.contextual.referenced-quantity(q$, units.watts(1))};
+		common.testing.gunit.assert-equals(tuple {100}, tuple {
+			units.contextual.referenced-quantity(units.power-decibels(20), units.watts(1)).value()})
+	)
+}

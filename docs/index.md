@@ -8,8 +8,9 @@ local definitions, immutable measurements, conversion, arithmetic, dimensions,
 powers, roots, comparisons, `radians`, `degrees` and circular/inverse
 trigonometry with explicit precision. The [catalogue](units/catalogue.md) contains 290 factories and the
 [prefix API](units/prefixes.md) implements all 24 SI and 10 binary prefixes.
-Special-unit rules remain in step 9. Other library sections still target an
-older Graf version.
+[Special units](units/special.md) add 12 named factories, for 302 in total,
+plus locally constructed reference/model-dependent quantities. Other library
+sections still target an older Graf version.
 
 - [Plan de trabajo y avance](plan-de-trabajo.md)
 - [Testing with gunit](testing.md)
@@ -17,6 +18,7 @@ older Graf version.
 - [Unit core API and executable example](units/core.md)
 - [Conversion and arithmetic](units/operations.md)
 - [Angles and trigonometry](units/angles.md)
+- [Temperature, logarithmic and contextual units](units/special.md)
 - [Catalogue](units/catalogue.md)
 - [Decimal and binary prefixes](units/prefixes.md)
 - [Units design and API contract](units/design.md)
@@ -36,7 +38,7 @@ mkdocs build --strict
 sources, install Pandoc and a LaTeX PDF engine, then run:
 
 ```sh
-pandoc docs/index.md docs/testing.md docs/units/core.md docs/units/operations.md docs/units/angles.md docs/units/catalogue.md docs/units/prefixes.md docs/units/design.md docs/units/validation.md \
+pandoc docs/index.md docs/testing.md docs/units/core.md docs/units/operations.md docs/units/angles.md docs/units/special.md docs/units/catalogue.md docs/units/prefixes.md docs/units/design.md docs/units/validation.md \
   docs/units/sources.md --standalone --toc -o open-graf-units.pdf
 ```
 

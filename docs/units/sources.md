@@ -85,10 +85,10 @@ or measured vacuum constant is substituted.
 | --- | --- |
 | Space, angle and time | Metric/international geometry, square/cubic factories, angles, fixed durations, angular rates and acceleration. |
 | Mechanics and fluids | Mass/force, energy/torque, pressure, momentum/inertia, density, flow and viscosities retain separate kinds. |
-| Heat | Temperature differences, heat capacity, conductivity, expansion and heat flux. Absolute points and boundaries are step 9. |
+| Heat | Temperature differences, heat capacity, conductivity, expansion and heat flux. Absolute points and boundaries are implemented in the special-unit API. |
 | Electricity and magnetism | SI named units and coherent electrical/magnetic engineering units, including distinct active/apparent/reactive power kinds. |
 | Light and optics | Photometric/radiometric kinds, luminance versus illuminance, optical power. |
-| Chemistry, radiation and information | Linear chemical/radiation units and decimal/binary information units; reference/model-dependent conversions remain step 9. |
+| Chemistry, radiation and information | Linear chemical/radiation units and decimal/binary information units; reference/model-dependent conversions are explicit in the special-unit API. |
 | Historical SI definitions in A1–A2 | Use the modern constant-based SI, not the prototype kilogram or older kelvin/ampere definitions. |
 | Prefix table A3 | Expand the older coverage to all 24 current SI prefixes and 10 binary prefixes. |
 | Rounded pound, gravity, mile and horsepower factors in A6–A9 | Use exact defining relations; printed rounded equalities do not define the catalogue values. |
@@ -98,8 +98,8 @@ or measured vacuum constant is substituted.
 The catalogue is a finite reviewed set with extensible factories. Derived units
 are unlimited; the implementation does not claim that every possible unit or
 every handbook formula is a named catalogue entry. Absolute-temperature,
-logarithmic, gauge/reference, chemical-hardness and dose-weighting models remain
-in step 9. Documentation and code are organized independently from the handbook.
+logarithmic, gauge/reference, chemical-hardness and dose-weighting rules are
+implemented in the [special-unit API](special.md). Documentation and code are organized independently from the handbook.
 
 ## Review rules
 
@@ -113,3 +113,23 @@ in step 9. Documentation and code are organized independently from the handbook.
   historical rather than presenting them as current.
 - Keep regional liquid measures, calorie conventions, standard gravity and
   measured physical constants explicit.
+
+## Special-unit sources
+
+Reviewed on 25 October 2026. These sources establish definitions; the application
+still supplies any physical model and its provenance.
+
+| Reference | Use in Open Graf |
+| --- | --- |
+| [BIPM, SI Brochure, 9th edition v4.01](https://www.bipm.org/documents/20126/41483022/SI-Brochure-9-EN.pdf), kelvin/Celsius discussion | Exact Celsius offset and equality of kelvin/Celsius interval magnitudes. |
+| [NIST SP 811, Appendix B.8](https://www.nist.gov/pml/special-publication-811/nist-guide-si-appendix-b-conversion-factors/nist-guide-si-appendix-b8) | Fahrenheit/Rankine conversion conventions; point offsets are distinguished from interval factors. |
+| [NIST SP 811, section 8.7](https://www.nist.gov/pml/special-publication-811/nist-guide-si-chapter-8) | Logarithmic power/field quantities, bel/decibel/neper conventions, explicit references. It supplies no application-specific amplitude-to-power model. |
+| [IUPAC Gold Book, pH, 5th edition, 2025](https://doi.org/10.1351/goldbook.P04524) | Hydrogen-ion activity definition and molality standard. A concentration-based activity calculation is separately supplied and identified as a model. |
+| [NBS Circular 309, Gas-Measuring Instruments](https://nvlpubs.nist.gov/nistpubs/Legacy/circ/nbscircular309.pdf) | Distinction between absolute pressure and pressure relative to a reference. The API requires the reference explicitly. |
+| [USGS, Hardness of Water](https://www.usgs.gov/water-science-school/science/hardness-water) and [Health Canada, Operational Parameters, hardness](https://www.canada.ca/en/health-canada/programs/guidelines-canadian-drinking-water-quality-operational-parameters.html) | Hardness reporting as a chemical equivalent, commonly as calcium carbonate. No unstated chemical basis or rounded atomic mass is installed. |
+| [ICRP, Absorbed, Equivalent, and Effective Dose](https://icrpaedia.org/Absorbed%2C_Equivalent%2C_and_Effective_Dose) | Absorbed dose and radiation-weighted equivalent dose are different quantities. The caller supplies a weighting model; the unit library does not choose a clinical or protection model. |
+
+The hardness examples/tests use explicitly synthetic molar masses to check the
+equivalent-mass equation independently. They are not physical constants. The
+radiation and activity examples likewise identify their supplied assumptions.
+The special-unit API is documented in [its technical reference](special.md).

@@ -1,11 +1,13 @@
 # Units: design contract
 
-Status: steps 5–8 implement the [unit core](core.md),
+Status: steps 5–9 implement the [unit core](core.md),
 [conversion/arithmetic](operations.md) and [angles/trigonometry](angles.md),
 including local extensions, explicit compound classification, `radians`, and
 `degrees`, the [290-factory catalogue](catalogue.md), 87 families and
-[decimal/binary prefixes](prefixes.md). Special-unit rules remain in step 9;
-this document specifies the complete target API.
+[decimal/binary prefixes](prefixes.md). [Special-unit rules](special.md) add
+12 named definitions, retained reference metadata, and explicit physical models.
+This document specifies the implemented unit contract; migration and final
+PDF verification remain in steps 10–11.
 
 ## Object model
 
@@ -98,7 +100,8 @@ Conversion and arithmetic below are implemented with explicitly defined local
 factories, as shown in the [operation reference](operations.md). Ready-made
 `radians`/`degrees` and their trigonometric methods are also implemented.
 The [catalogue reference](catalogue.md) lists the concrete factories now available.
-Absolute-temperature, logarithmic and contextual factories remain in step 9.
+The [special-unit reference](special.md) specifies absolute temperatures,
+logarithmic and referenced factories, and contextual models.
 
 ```graf
 meters(2).plus(centimeters(30)).value()     // 23/10, in meters

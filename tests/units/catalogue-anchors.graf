@@ -159,7 +159,7 @@ box {
 	common.testing.gunit.test>> verify-catalogue-aliases-and-finite-inventory(): (
 		count$ = 0;
 		foreach {definition$ = units.catalogue.definition} {count$ := count$.plus(1)};
-		common.testing.gunit.assert-equals(tuple {290}, tuple {count$});
+		common.testing.gunit.assert-equals(tuple {302}, tuple {count$});
 		common.testing.gunit.assert-equals(tuple {"m", "ft", "s", "kg"}, tuple {units.meters.symbol,units.feet.symbol,units.seconds.symbol,units.kilograms.symbol})
 	)
 }

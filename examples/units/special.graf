@@ -1,0 +1,25 @@
+import(units: graf {path: "../../src/units"});
+
+milliwatts$ = units.si-prefixes.milli(units.watts);
+dbm$ = units.logarithmic-reference(milliwatts$(1), units.power-decibels);
+dbw$ = units.logarithmic-reference(units.watts(1), units.power-decibels);
+level$ = dbm$.level(units.watts(1));
+gauge$ = units.gauge-pressure(units.pascals(101325), units.bars);
+activity$ = units.activity-model(units.moles-per-kilogram(1), 1, "explicit ideal molality model");
+weighting$ = units.radiation-weighting(20, "single-component demonstration model");
+// Synthetic molar masses illustrate the equation, not a physical constants table.
+calcium$ = units.equivalent-basis("test-Ca", units.grams-per-mole(40), 2, "synthetic example");
+carbonate$ = units.equivalent-basis("test-CaCO3", units.grams-per-mole(100), 2, "synthetic example");
+hardness$ = carbonate$.definition("mg-per-liter-as-test-CaCO3", "mg/L as test-CaCO3", 0.001(0));
+
+(units.kelvins(units.celsius(0)).value(),
+ units.fahrenheit(212).minus(units.celsius(0)).value(),
+ units.fahrenheit(32).plus(units.kelvin-differences(10)).value(),
+ units.power-decibels(20).linear-ratio(),
+ units.ph.level(0.0000001(0)).value(),
+ level$.value(), dbw$(level$).value(), units.watts(level$.linear-quantity()).value(),
+ gauge$(1).absolute-pressure().value(),
+ units.contextual.acidity(units.moles-per-kilogram(0.0000001(0)), activity$).value(),
+ units.contextual.equivalent-dose(units.grays(0.001(0)), weighting$).value(),
+ hardness$(carbonate$.concentration(units.milligrams-per-liter(40), calcium$)).value())
+// => 273.15, 180, 50, 100, 7, 30, 0, 1, 201325, 7, 0.02, 100

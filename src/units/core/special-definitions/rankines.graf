@@ -1,0 +1,4 @@
+import(units: graf {path: "../.."});
+
+units.temperature-point.point-definition("rankines", "°R", 5.exact-quotient(9),
+	0, units.rankine-differences, "BIPM-SI-9-v4.01; NIST-SP811/B8")

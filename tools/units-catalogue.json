@@ -4045,5 +4045,55 @@
       "prefixable": false,
       "exact": true
     }
+  ],
+  "special_units": [
+    {
+      "name": "kelvins",
+      "category": "temperature point"
+    },
+    {
+      "name": "celsius",
+      "category": "temperature point"
+    },
+    {
+      "name": "fahrenheit",
+      "category": "temperature point"
+    },
+    {
+      "name": "rankines",
+      "category": "temperature point"
+    },
+    {
+      "name": "rankine-differences",
+      "category": "temperature difference"
+    },
+    {
+      "name": "power-decibels",
+      "category": "power level"
+    },
+    {
+      "name": "power-bels",
+      "category": "power level"
+    },
+    {
+      "name": "power-nepers",
+      "category": "power level"
+    },
+    {
+      "name": "amplitude-decibels",
+      "category": "amplitude level"
+    },
+    {
+      "name": "amplitude-bels",
+      "category": "amplitude level"
+    },
+    {
+      "name": "amplitude-nepers",
+      "category": "amplitude level"
+    },
+    {
+      "name": "ph",
+      "category": "hydrogen-ion acidity"
+    }
   ]
 }

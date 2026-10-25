@@ -1,0 +1,4 @@
+import(units: graf {path: "../.."});
+
+units.temperature-point.point-definition("celsius", "°C", 1,
+	273.15(0), units.celsius-differences, "BIPM-SI-9-v4.01; NIST-SP811/B8")

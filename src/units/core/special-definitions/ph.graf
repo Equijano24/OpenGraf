@@ -1,0 +1,4 @@
+import(units: graf {path: "../.."});
+
+units.logarithmic-unit.logarithmic-definition("ph", "pH", "hydrogen-ion-acidity",
+	"decimal", -1, "IUPAC-Gold-Book/P04524 (2025)")

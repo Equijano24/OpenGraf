@@ -1,6 +1,6 @@
 # Unit catalogue
 
-The catalogue contains **290 public factories**. Each factory is
+This table contains **290 linear/angular factories**. Each factory is
 available as `units.<name>` and in `src/units/<name>.graf`. Import `src/units`
 as shown in [the core API](core.md). [Prefixes](prefixes.md) also construct
 local factories without registration. Symbols are metadata, not alternate labels.
@@ -8,8 +8,10 @@ local factories without registration. Symbols are metadata, not alternate labels
 Factors are relative to the coherent unit of the named family. All rational
 factors are exact unless the row is marked **measured**. Symbolic pi remains
 symbolic. See [sources and reviewed conventions](sources.md) for reference IDs.
-Absolute temperatures, logarithmic scales and contextual conversions are step 9;
-this linear catalogue includes temperature **differences**.
+The separate [special-unit reference](special.md) documents temperature points,
+logarithmic scales and contextual conversions. This linear catalogue includes
+temperature **differences**. The `catalogue.definition` relation enumerates all
+302 named factories, including the 12 special definitions.
 
 | Factory | Family | Symbol | Coherent factor | Source |
 | --- | --- | --- | --- | --- |

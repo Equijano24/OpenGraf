@@ -1,0 +1,65 @@
+import(open-graf-units-core: graf {path: "."});
+
+family$ = open-graf-units-core.unit.family("temperature-point",
+	open-graf-units-core.dimension(0, 0, 0, 0, 1, 0, 0, 0));
+
+// A point is an affine coordinate. Only differences support linear arithmetic.
+heir(family$) {
+	override>> linear-arithmetic: no,
+	paired-difference: default(class?, class)?,
+
+	override>> self$.quantity(amount$ = number?): (
+		real? >> amount$;
+		common.math.gte(0)? >> self$.coherent-value-of(amount$);
+		composite>> new(self$) {amount: amount$, factory: self$}
+	),
+
+	override>> self$.is-convertible-from(source$ = open-graf-units-core.quantity?):
+		self$.compatible-with(source$),
+
+	self$.difference-factory(): if(equals(self$.paired-difference, class)) {
+		(
+			family$ = open-graf-units-core.unit.family("temperature-difference", self$.dimension);
+			family$.definition(self$.id.conc("-differences"), self$.symbol, self$.scale,
+				no, self$.exact, self$.source)
+		),
+		self$.paired-difference
+	},
+
+	self$.point-definition(id$ = string?, symbol$ = string?, scale$ = real?,
+		offset$ = real?, difference$ = class?, source$ = string?): (
+		difference$.require-linear();
+		"temperature-difference"? >> difference$.kind;
+		yes? >> self$.dimension.same-as(difference$.dimension);
+		yes? >> scale$.equal-to(difference$.scale);
+		definition$ = self$.definition(id$, symbol$, scale$, no, yes, source$);
+		heir(definition$) {
+			override>> offset: offset$,
+			override>> paired-difference: difference$
+		}
+	),
+
+	self$.difference-value(other$ = open-graf-units-core.quantity?): (
+		"temperature-difference"? >> other$.kind;
+		yes? >> self$.dimension.same-as(other$.dimension);
+		other$.require-linear();
+		other$.coherent-value().exact-quotient(self$.scale)
+	),
+
+	override>> self$.plus(other$ = open-graf-units-core.quantity?): (
+		amount$ = self$.value().plus(self$.difference-value(other$));
+		self$.quantity-with-value(amount$)
+	),
+
+	override>> self$.minus(other$ = open-graf-units-core.quantity?):
+		if(equals(other$.kind, "temperature-point")) {
+			(
+				amount$ = self$.value().minus(self$.value-in-self(other$));
+				self$.factory.difference-factory().quantity(amount$)
+			),
+			(
+				amount$ = self$.value().minus(self$.difference-value(other$));
+				self$.quantity-with-value(amount$)
+			)
+		}
+}

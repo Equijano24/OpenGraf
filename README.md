@@ -24,11 +24,15 @@ compound dimensions, powers, roots, comparisons and local extensions.
 symbolic conversion, circular/inverse functions and precision parameters.
 The reviewed [catalogue](docs/units/catalogue.md) has 290 factories, including
 meters, kilometers, feet and SI/engineering units. The [prefix API](docs/units/prefixes.md)
-provides all 24 SI and 10 binary prefixes. Special-unit rules remain in step 9.
+provides all 24 SI and 10 binary prefixes. [Special units](docs/units/special.md)
+add temperature points, logarithmic ratios, retained references, gauge pressure
+and explicit activity, chemical-equivalent and radiation models. There are
+302 named factories in the complete catalogue.
 Run `graf test tests/units` to check this section, or
 `graf run examples/units/operations.graf` to run the arithmetic example, or
 `graf run examples/units/angles.graf` for angles, or
-`graf run examples/units/catalogue.graf` for catalogue units and prefixes.
+`graf run examples/units/catalogue.graf` for catalogue units and prefixes, or
+`graf run examples/units/special.graf` for the special rules.
 
 ## Testing foundation
 

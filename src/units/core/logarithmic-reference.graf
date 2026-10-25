@@ -1,0 +1,67 @@
+import(open-graf-units-core: graf {path: "."});
+
+// A referenced level is a unit instance that retains both the reference and convention.
+heir(open-graf-units-core.logarithmic-unit) {
+	reference: all(open-graf-units-core.quantity?)?,
+	convention: class?,
+
+	override>> self$(amount$ = number?): self$.quantity(amount$),
+
+	self$(source$ = open-graf-units-core.quantity?): self$.level-from(source$, 15),
+
+	self$(reference$ = open-graf-units-core.quantity?, convention$ = class?): (
+		reference$.require-linear();
+		common.math.gt(0)? >> reference$.coherent-value();
+		yes? >> equals(convention$.kind, "power-level").or(equals(convention$.kind, "amplitude-level"));
+		definition$ = self$.definition(convention$.id.conc("-referenced"), convention$.symbol,
+			1, no, yes, convention$.source);
+		heir(definition$) {
+			override>> reference: reference$,
+			override>> convention: convention$,
+			override>> kind: "referenced-".conc(convention$.kind),
+			override>> logarithm: convention$.logarithm,
+			override>> coefficient: convention$.coefficient
+		}
+	),
+
+	override>> self$.compatible-with(other$ = box {kind: string?, dimension: all(open-graf-units-core.dimension?)?}?):
+		if(equals(self$.kind, other$.kind).and(self$.dimension.same-as(other$.dimension))) {
+			self$.reference.compatible-with(other$.reference), no
+		},
+
+	override>> self$.is-convertible-from(source$ = open-graf-units-core.quantity?): (
+		if(equals(source$.kind, self$.kind)) {
+			self$.compatible-with(source$), self$.reference.compatible-with(source$)
+		}
+	),
+
+	override>> self$.coherent-value-of(amount$ = number?):
+		self$.ratio-value(amount$, 15).exact-product(self$.reference.coherent-value()),
+
+	override>> self$.display-value-of(amount$ = number?):
+		self$.level-value(amount$.exact-quotient(self$.reference.coherent-value()), 15),
+
+	self$.physical-value(precision$ = default(integer?, 15)?):
+		self$.linear-ratio(precision$).exact-product(self$.reference.coherent-value()),
+
+	self$.linear-quantity(precision$ = default(integer?, 15)?): (
+		amount$ = self$.reference.value().exact-product(self$.linear-ratio(precision$));
+		self$.reference.factory.quantity(amount$)
+	),
+
+	self$.level(value$ = open-graf-units-core.quantity?, precision$ = default(integer?, 15)?): (
+		value$.require-linear();
+		yes? >> self$.reference.compatible-with(value$);
+		ratio$ = value$.coherent-value().exact-quotient(self$.reference.coherent-value());
+		self$.quantity(self$.level-value(ratio$, precision$))
+	),
+
+	self$(source$ = open-graf-units-core.quantity?, precision$ = integer?): self$.level-from(source$, precision$),
+
+	self$.level-from(source$ = open-graf-units-core.quantity?, precision$ = integer?): (
+		yes? >> self$.is-convertible-from(source$);
+		value$ = if(equals(source$.kind, self$.kind)) {source$.physical-value(precision$), source$.coherent-value()};
+		ratio$ = value$.exact-quotient(self$.reference.coherent-value());
+		self$.quantity(self$.level-value(ratio$, precision$))
+	)
+}

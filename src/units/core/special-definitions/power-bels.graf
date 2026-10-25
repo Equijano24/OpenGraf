@@ -1,0 +1,4 @@
+import(units: graf {path: "../.."});
+
+units.logarithmic-unit.logarithmic-definition("power-bels", "B", "power-level",
+	"decimal", 1, "NIST-SP811/8.7")

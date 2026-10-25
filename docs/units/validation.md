@@ -1,25 +1,27 @@
 # Validation and implementation status
 
-Steps 5–8 implement the [core](core.md), [conversion/arithmetic](operations.md),
-[angles](angles.md), [catalogue](catalogue.md) and [prefixes](prefixes.md):
-87 families, 290 named factories, all 24 SI and 10 binary prefixes, immutable
+Steps 5–9 implement the [core](core.md), [conversion/arithmetic](operations.md),
+[angles](angles.md), [catalogue](catalogue.md), [prefixes](prefixes.md) and
+[special units](special.md):
+87 original families, 302 named factories, all 24 SI and 10 binary prefixes, immutable
 measurements and explicit local extension. Absolute temperatures, logarithmic
-units and reference/model conversions remain step 9. The [plan](../plan-de-trabajo.md)
-records eight completed steps and step 9 next.
+units and reference/model conversions are implemented in step 9. The [plan](../plan-de-trabajo.md)
+records nine completed steps and step 10 next.
 
 ## Verified checkpoint
 
 | Check | Result |
 | --- | --- |
-| `graf test tests/units` | 437 passed, 0 failed, 0 load errors; exit 0 |
+| `graf test tests/units` | 489 passed, 0 failed, 0 load errors; exit 0 |
 | `graf test tests/testing` | 11 auxiliary gunit tests passed; exit 0 |
-| Complete Graf .NET suite on `develop` | 1991 passed, 0 failed, 2 existing printed-form skips |
+| Complete Graf .NET suite on `develop` | 2076 passed, 0 failed, 2 existing printed-form skips |
 | Graf solution build | Successful; symbolic operands and explicit exact-factor arithmetic included |
 | `graf run examples/units/core.graf` | Original 1/3, replacement 2, symbol m, length exponent 1, compatible yes |
 | `graf run examples/units/operations.graf` | 23/10, 200, 25/18, 5, 3, yes |
 | `graf run examples/units/angles.graf` | Constructor, symbolic pi/6, 180, mixed sum, sine, exact 1/2, inverse 30 and atan2 135 |
 | `graf run examples/units/catalogue.graf` | Exact international foot, U.S./Imperial gallons, decimal/binary byte, quecto gram, quebi byte and cubic centimeter anchors |
 | `python3 tools/units_catalogue.py --check` | Generated sources/reference/integration tests match reviewed data; no stale generated definitions |
+| `graf run examples/units/special.graf` | Temperature, logarithmic/reference, gauge, activity, hardness and radiation anchors |
 | Host BigComplex payload check | Identity retained through construction, coherent mapping, conversion and replacement |
 | `mkdocs build --strict` | Successful |
 
@@ -67,6 +69,24 @@ other tests and other library sections still target the obsolete API; they are
 not evidence for or against the modern unit core. Importing the library root
 in an import regression reads only the unit labels it uses.
 
+## Step 9 validation
+
+The 52 additional checks cover 12 special-factory construction/immutability cases,
+nine temperature groups, 12 logarithmic groups and 19 contextual/model groups.
+They check fixed temperature anchors and boundaries, left difference factories,
+real domains, nonexact log precision/tolerance, all six power/amplitude conventions,
+pH activity outside 0–14, reference retention and changes, gauge pressure,
+explicit activity standards, basis-preserving hardness and custom radiation models.
+Negative tests reject missing models, wrong kinds/dimensions, conflicting references,
+nonpositive ratios/standards/weights and mutation. Assertions check response
+cardinality. Current sequence deferrevals are exercised on unit results.
+
+Graf was synchronized to `develop` commit `7da35b5fba689dee011ea5e41667d8b6dbd14359`
+before implementation. Its full suite has **2076 passed, zero failed and two
+existing omissions**, including the newly added deferrevals and expression-map
+cases. Step 9 requires no engine change. The host BigComplex check listed above
+is the retained step 8 result, not a new host-backend test in this step.
+
 ## Graf prerequisites
 
 Use `T-and-Q/Graf` on `develop`. The completed testing foundation ensures:
@@ -92,20 +112,20 @@ The CLI's pass/fail/load/no-match/cancellation codes were verified in step 4.
 
 | Concern | Implemented now | Still required |
 | --- | --- | --- |
-| Construction | Core numeric constructor, payload preservation, family lineage, immutable instance behavior | Absolute-temperature/logarithmic/contextual construction |
+| Construction | Core and special constructors, payload/domain validation, retained references and immutable values | Further application-specific factories |
 | Dimensions and kinds | Eight integral fields; 87 family vectors; products, quotients, powers and integral roots | Application-specific extensions |
-| Conversion | Coherent/affine mappings, anchors, round trips, kind/dimension checks, compound classification | Special-unit/model anchors |
-| Arithmetic | Mixed addition/subtraction, scalars, compounds, powers, roots, comparisons and rounding | Special-unit operations |
+| Conversion | Linear, affine, logarithmic and reference mappings; independent model anchors; kind/dimension checks | Further application models |
+| Arithmetic | Linear operations, special point/difference rules, reference-aware comparisons and rounding | Further application-specific rules |
 | Angles | Radians/degrees, symbolic conversion, circular/inverse methods, precision, domains and extension | Further catalogue angles; native large-rational promotion decision |
-| Temperature | Distinct kinds; generic arithmetic on points/offset values refused | Absolute-zero boundary and specialized point/delta arithmetic |
-| Prefixes | All 24 SI and 10 binary factors, byte/bit rates, square/cube scaling, eligibility and double-prefix refusal | Special-unit/model eligibility in step 9 |
-| Special cases | Distinct dose and radioactivity kinds | Logarithmic domains, pH activity, explicit reference/model conversions |
-| Extensibility | Local factories/families, conversion/arithmetic, overridden `quantity`, provenance and metadata overrides | Prefix/model-specific extensions |
+| Temperature | Four point scales, four difference scales, exact offsets, absolute-zero boundaries and point/difference operations | Population-inversion models are outside the ordinary point API |
+| Prefixes | All SI/binary factors, powers, double-prefix refusal and special-unit exclusions | Application-specific eligibility |
+| Special cases | Logarithmic domains, retained references, gauge pressure, pH activity, equivalent-basis hardness and explicit radiation weighting | Full speciation, uncertainty propagation and radiation-field aggregation are outside these APIs |
+| Extensibility | Local factories, overridden construction, custom ratio/activity/radiation models and explicit equivalent bases | More application-specific models |
 | Migration | Old unit implementation removed; new core reference and executable example | Full old-API migration guidance and replacement of old catalogue examples/tests |
-| Documentation | Technical Markdown, 290-factory catalogue, prefix reference, reviewed source/correction notes and site build | Special-unit reference, full migration guidance and final PDF verification |
+| Documentation | Technical Markdown, 302-factory inventory, special/prefix references, reviewed sources and site build | Full migration guidance and final PDF verification |
 
-Round trips alone cannot detect a shared wrong factor. Later catalogue tests
-must include independent anchors such as the exact international inch, liter
+Round trips alone cannot detect a shared wrong factor. The catalogue tests
+include independent anchors such as the exact international inch, liter
 and separately named U.S./Imperial gallons. Measured constants require documented
 reference editions, uncertainty information and tolerance-based tests.
 
