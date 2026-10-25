@@ -40,12 +40,21 @@ ordinary absolute temperature, not population-inversion negative-temperature mod
 | `fahrenheit(212).minus(celsius(0))` | 180 Fahrenheit differences |
 | `fahrenheit(32).plus(kelvin-differences(10))` | 50 °F point |
 | `kelvins(0).minus(kelvin-differences(1))` | Failure: below absolute zero |
-| `celsius(20).plus(celsius(10))` | Failure: point plus point |
-| `celsius(20).times(2)` | Failure: point is not a linear quantity |
+| `celsius(20).plus(celsius(10))` | 30 °C point |
+| `celsius(20).plus(fahrenheit(50))` | 30 °C point |
+| `celsius(20).times(2)` | 40 °C point |
+
+Point plus point adds displayed readings in the left scale. The right point is
+converted to that scale first; the result retains the left factory. Thus
+`fahrenheit(68).plus(celsius(10))` returns 118 °F: 10 °C converts to 50 °F.
+This is coordinate arithmetic in the chosen display scale. Scalar multiplication
+and division also operate on the displayed reading and retain its factory.
+All results pass through the factory's validation, including the absolute-zero
+boundary and any custom construction rules.
 
 Point minus point returns a difference in the left point's paired difference
 factory. Point plus/minus difference retains the left point's factory. Difference
-plus point is refused; write point plus difference. Comparisons convert points
+plus point also returns a point in that point's factory. Comparisons convert points
 through kelvins. Points and differences do not convert directly to each other,
 and a compound cannot be classified as a point.
 
@@ -91,9 +100,14 @@ A rounded inverse power that becomes zero is refused, not silently accepted as
 a valid positive ratio. The [ordinary numeric promotion boundary](angles.md#precision-boundary)
 still applies to later generic arithmetic.
 
-Generic plus/minus, multiplication, division, powers and roots on logarithmic
-quantities are refused. To combine signals, work on the appropriate linear
-quantities using an explicit physical model. `.rounded(places)` explicitly rounds
+Plus/minus combines compatible displayed levels after converting the right level
+to the left convention. Scalar multiplication/division scales the displayed level.
+For example, `power-decibels(20).plus(power-bels(1))` returns 30 dB and
+`ph(2).plus(ph(3))` returns pH 5. Same-factory arithmetic uses the numbers directly,
+without evaluating their linear ratios. These operations calculate level readings;
+signal-power addition or chemical mixing uses an explicit physical model on the
+linear quantities. Dimensional products, quotients, powers and roots of logarithmic
+quantities remain unavailable. `.rounded(places)` explicitly rounds
 the displayed level and retains its factory. Comparison within a kind compares
 level coordinates; for pH, increasing the coordinate decreases activity.
 
@@ -135,8 +149,11 @@ conversion from a logarithmic quantity.
 Referenced levels are dimensionless; their reference retains the underlying
 physical dimensions. Their internal coherent conversion coordinate is the
 physical SI value, also available as `.physical-value(precision)`. This mapping
-supports reference changes and comparisons, and is not permission to perform
-linear dimensional arithmetic on a level.
+supports reference changes, comparisons and conversion of the right operand in
+reading arithmetic. A sum, difference or scalar result retains the left reference
+and convention. With the definitions above, `dbm$(20).plus(dbw$(0))` returns
+50 dBm because 0 dBW converts to 30 dBm. Dimensional products of levels remain
+unavailable.
 
 `contextual.referenced-level(value, reference, convention, precision)` constructs
 the same referenced measurement. `contextual.referenced-quantity(level, reference,
@@ -171,9 +188,12 @@ Conversion between gauge factories changes the reference explicitly and comparis
 uses absolute pressure. Direct `pascals(gaugeQuantity)` is refused; use
 `.absolute-pressure()`.
 
-Gauge values retain the reference and their factory. Generic arithmetic and
-prefixing are refused; supply the desired linear display factory when constructing
-the gauge factory. No ambient atmospheric pressure is read.
+Gauge sums and differences convert the right gauge reading to the left scale and
+reference before operating. Scalar multiplication/division scales the displayed
+reading. Results retain the left reference and factory, and still reject negative
+absolute pressure. Dimensional products and prefixing remain unavailable; supply
+the desired linear display factory when constructing the gauge factory.
+No ambient atmospheric pressure is read.
 
 ## Activity and pH models
 

@@ -27,12 +27,12 @@ Los contextos y modelos físicos se suministran explícitamente.
 - Graf `develop`: **2076 pruebas correctas, 0 fallos y 2 omisiones existentes**.
   Se incorporaron antes del paso 9 los deferrevals nuevos hasta
   `7da35b5fba689dee011ea5e41667d8b6dbd14359`, incluidas sus pruebas de `expression.map`.
-- `graf test tests/units`: **506 correctas, 0 fallidas y 0 errores de carga**.
-  Son las 489 anteriores más 17 casos de migración (4 originales y 13 grupos nuevos).
-- `graf test tests/units-test.graf`: **4 correctas**; ya incluidas en las 506.
+- `graf test tests/units`: **515 correctas, 0 fallidas y 0 errores de carga**.
+  Son las 506 del paso 11 más 9 grupos de revisión de aritmética de lecturas.
+- `graf test tests/units-test.graf`: **4 correctas**; ya incluidas en las 515.
 - `graf test tests/testing`: **11 correctas, 0 fallidas y 0 errores de carga**.
 - `python3 tools/units_catalogue.py --check`: **655 archivos generados verificados**.
-- Documentación: `mkdocs build --strict` y siete ejemplos ejecutables verificados (incluido el quickstart).
+- Documentación: `mkdocs build --strict` y ocho ejemplos ejecutables verificados (incluido el quickstart).
   La documentación sigue siendo una referencia técnica, con Markdown compartido
   para sitio y PDF. El [PDF descargable](downloads/open-graf-units.pdf) incluye
   índice, destinos internos, referencias y tablas con encabezados repetidos.
@@ -40,6 +40,20 @@ Los contextos y modelos físicos se suministran explícitamente.
 El [catálogo lineal](units/catalogue.md) conserva sus 290 entradas. Las 12
 [definiciones especiales](units/special.md) completan el inventario de 302.
 `catalogue.definition` enumera ambas partes; los contextos locales no se registran.
+
+## Revisión posterior: aritmética de lecturas
+
+- `celsius(20).plus(celsius(10))` devuelve 30 °C. Las escalas mixtas se convierten
+  a la unidad izquierda antes de sumar. También se permite escalar una lectura
+  térmica con un número y sumar incremento más temperatura.
+- La misma regla de suma/resta y escalado se aplica a decibelios, pH, presión
+  manométrica y definiciones locales con origen desplazado. Los resultados
+  conservan su fábrica y referencias; cada fábrica valida los nuevos valores.
+- Una prueba recorre las 302 fábricas del catálogo. Ocho grupos adicionales
+  cubren escalas mixtas, límites, extensiones y referencias. Las diferencias
+  térmicas y los modelos físicos siguen disponibles explícitamente.
+- La documentación compartida, el ejemplo ejecutable de lecturas y el PDF
+  reflejan estas reglas.
 
 ## Paso 9 completado
 

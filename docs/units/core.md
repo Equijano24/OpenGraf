@@ -86,7 +86,7 @@ See [conversion and arithmetic](operations.md).
 | `dimension` | Integral dimension value |
 | `scale` | Positive real factor relative to the family's coherent unit |
 | `offset` | Zero by default; explicit affine mappings can override it |
-| `linear-arithmetic` | Boolean capability, `yes` for ordinary families and `no` for temperature points |
+| `linear-arithmetic` | Capability for dimensional products, quotients, powers and roots; independent of reading sums and scalar scaling |
 | `prefixable` | SI-prefix eligibility, default `no`; see [prefixes](prefixes.md) |
 | `exact` | Definition author's exactness claim, default `yes` |
 | `binary-prefixable` | Binary-prefix eligibility; default `no` |
@@ -145,7 +145,7 @@ The fields, in constructor order, are:
 | `absorbed-dose`, `equivalent-dose` | L^2*T^-2; two distinct kinds |
 
 Temperature and dose families establish distinct kinds. Temperature points
-refuse generic linear arithmetic and enforce their specialized point/difference
+support reading sums and scalar scaling, and enforce their point/difference
 rules and absolute-zero boundary. Explicit radiation-weighting models and other
 contextual conversions are documented in [special units](special.md). Concrete
 factories are listed in the [catalogue](catalogue.md) and special-unit reference.

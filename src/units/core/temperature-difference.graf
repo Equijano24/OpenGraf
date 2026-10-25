@@ -1,0 +1,15 @@
+import(open-graf-units-core: graf {path: "."});
+
+family$ = open-graf-units-core.unit.family("temperature-difference",
+	open-graf-units-core.dimension(0, 0, 0, 0, 1, 0, 0, 0));
+
+heir(family$) {
+	override>> self$.plus(other$ = open-graf-units-core.quantity?):
+		if(equals(other$.kind, "temperature-point")) {
+			other$.plus(self$),
+			(
+				amount$ = self$.value().plus(self$.value-in-self(other$));
+				self$.quantity-with-value(amount$)
+			)
+		}
+}

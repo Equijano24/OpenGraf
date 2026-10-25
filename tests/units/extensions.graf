@@ -64,17 +64,18 @@ box {
 		}
 	),
 
-	common.testing.gunit.test>> verify-affine-mapping-converts-but-generic-arithmetic-is-refused(): (
+	common.testing.gunit.test>> verify-affine-readings-support-coordinate-arithmetic(): (
 		base$ = units.unit.family("custom-coordinate", units.dimension(1, 0, 0, 0, 0, 0, 0, 0)).definition("base", "u", 1);
 		shifted$ = heir(base$) {override>> id: "shifted", override>> scale: 2, override>> offset: 10};
 		q$ = shifted$(3);
 		common.testing.gunit.assert-equals(tuple {16}, tuple {q$.coherent-value()});
 		common.testing.gunit.assert-equals(tuple {16}, tuple {base$(q$).value()});
 		common.testing.gunit.assert-equals(tuple {3}, tuple {shifted$(base$(16)).value()});
-		common.testing.gunit.assert-fails {q$.plus(q$)};
-		common.testing.gunit.assert-fails {q$.minus(q$)};
-		common.testing.gunit.assert-fails {q$.times(2)};
-		common.testing.gunit.assert-fails {q$.over(2)};
+		common.testing.gunit.assert-equals(tuple {6, 0, 6, 1.5(0), shifted$, 6}, tuple {
+			q$.plus(q$).value(), q$.minus(q$).value(), q$.times(2).value(), q$.over(2).value(),
+			q$.times(2).factory, q$.plus(base$(16)).value()});
+		common.testing.gunit.assert-fails {q$.times(q$)};
+		common.testing.gunit.assert-fails {q$.over(q$)};
 		common.testing.gunit.assert-fails {q$.pow(2)};
 		common.testing.gunit.assert-fails {q$.root(1)};
 		common.testing.gunit.assert-fails {base$(2).times(q$)}
@@ -83,11 +84,10 @@ box {
 	common.testing.gunit.test>> verify-temperature-points-use-special-operations(): (
 		point$ = units.temperature-point.definition("test-point", "K", 1)(2);
 		delta$ = units.temperature-difference.definition("test-delta", "K", 1)(2);
-		common.testing.gunit.assert-fails {point$.plus(point$)};
+		common.testing.gunit.assert-equals(tuple {4, 4, 1}, tuple {
+			point$.plus(point$).value(), point$.times(2).value(), point$.over(2).value()});
 		common.testing.gunit.assert-equals(tuple {0, "temperature-difference"}, tuple {
 			point$.minus(point$).value(), point$.minus(point$).kind});
-		common.testing.gunit.assert-fails {point$.times(2)};
-		common.testing.gunit.assert-fails {point$.over(2)};
 		common.testing.gunit.assert-fails {point$.times(delta$)};
 		common.testing.gunit.assert-equals(tuple {4}, tuple {delta$.plus(delta$).value()})
 	)

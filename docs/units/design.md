@@ -52,8 +52,10 @@ dimensionless ratios, not dimensionful values.
 
 - Temperature points and temperature differences are separate kinds. Point minus
   point produces a difference; point plus/minus difference produces a point.
-  Point plus point and multiplication of affine points are refused. Absolute
-  temperatures below zero kelvin are rejected.
+  Point plus point adds readings in the left scale and returns a point. Scalar
+  multiplication/division scales displayed readings. Dimensional products of
+  points require explicit differences. Absolute temperatures below zero kelvin
+  are rejected.
 - Decimal SI prefixes and binary information prefixes are separate APIs. A
   prefixed definition cannot be prefixed again. Prefix grams for kilogram units.
 - Power and amplitude decibels use explicit linear-ratio conversions. Their

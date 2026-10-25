@@ -3,7 +3,7 @@ import(open-graf-units-core: graf {path: "."});
 family$ = open-graf-units-core.unit.family("temperature-point",
 	open-graf-units-core.dimension(0, 0, 0, 0, 1, 0, 0, 0));
 
-// A point is an affine coordinate. Only differences support linear arithmetic.
+// Readings support coordinate arithmetic; dimensional products require differences.
 heir(family$) {
 	override>> linear-arithmetic: no,
 	paired-difference: default(class?, class)?,
@@ -19,7 +19,7 @@ heir(family$) {
 
 	self$.difference-factory(): if(equals(self$.paired-difference, class)) {
 		(
-			family$ = open-graf-units-core.unit.family("temperature-difference", self$.dimension);
+			family$ = open-graf-units-core.temperature-difference.family("temperature-difference", self$.dimension);
 			family$.definition(self$.id.conc("-differences"), self$.symbol, self$.scale,
 				no, self$.exact, self$.source)
 		),
@@ -47,7 +47,10 @@ heir(family$) {
 	),
 
 	override>> self$.plus(other$ = open-graf-units-core.quantity?): (
-		amount$ = self$.value().plus(self$.difference-value(other$));
+		other-value$ = if(equals(other$.kind, "temperature-point")) {
+			self$.value-in-self(other$), self$.difference-value(other$)
+		};
+		amount$ = self$.value().plus(other-value$);
 		self$.quantity-with-value(amount$)
 	),
 

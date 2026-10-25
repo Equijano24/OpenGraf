@@ -95,13 +95,13 @@ box {
 		common.testing.gunit.assert-fails {common.evaluation.error-handling.label-not-found-exception, units.geopbytes};
 		common.testing.gunit.assert-fails {common.evaluation.error-handling.label-not-found-exception, units.saganbytes}
 	),
-	common.testing.gunit.test>> verify-temperature-points-do-not-retain-old-linear-arithmetic(): (
+	common.testing.gunit.test>> verify-temperature-readings-retain-coordinate-arithmetic(): (
 		common.testing.gunit.assert-equals(tuple {10, "temperature-difference", 30}, tuple {
 			units.celsius(20).minus(units.celsius(10)).value(),
 			units.celsius(20).minus(units.celsius(10)).kind,
 			units.celsius(20).plus(units.celsius-differences(10)).value()});
-		common.testing.gunit.assert-fails {units.celsius(20).plus(units.celsius(10))};
-		common.testing.gunit.assert-fails {units.celsius(20).times(2)};
+		common.testing.gunit.assert-equals(tuple {30, 40}, tuple {
+			units.celsius(20).plus(units.celsius(10)).value(), units.celsius(20).times(2).value()});
 		common.testing.gunit.assert-fails {units.kelvins(-1)}
 	),
 	common.testing.gunit.test>> verify-payload-types-and-scalar-arithmetic-migration(): (

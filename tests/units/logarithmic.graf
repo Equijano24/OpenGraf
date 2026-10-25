@@ -37,16 +37,29 @@ box {
 		common.testing.gunit.assert-fails {units.power-decibels("loud")};
 		common.testing.gunit.assert-fails {units.power-decibels.level(units.watts(1))}
 	),
-	common.testing.gunit.test>> verify-logarithmic-values-refuse-generic-linear-arithmetic(): (
+	common.testing.gunit.test>> verify-logarithmic-readings-support-coordinate-arithmetic(): (
 		q$ = units.power-decibels(3);
-		common.testing.gunit.assert-fails {q$.plus(q$)};
-		common.testing.gunit.assert-fails {q$.minus(q$)};
-		common.testing.gunit.assert-fails {q$.times(2)};
-		common.testing.gunit.assert-fails {q$.over(2)};
+		common.testing.gunit.assert-equals(tuple {6, 0, 6, 1.5(0), units.power-decibels}, tuple {
+			q$.plus(q$).value(), q$.minus(q$).value(), q$.times(2).value(), q$.over(2).value(), q$.times(2).factory});
+		common.testing.gunit.assert-fails {q$.times(q$)};
+		common.testing.gunit.assert-fails {q$.over(q$)};
+		common.testing.gunit.assert-fails {q$.over(0)};
 		common.testing.gunit.assert-fails {q$.pow(1)};
 		common.testing.gunit.assert-fails {q$.root(1)};
 		common.testing.gunit.assert-fails {units.ratios(1).times(q$)};
 		common.testing.gunit.assert-fails {units.si-prefixes.milli(units.power-bels)}
+	),
+	common.testing.gunit.test>> verify-logarithmic-sums-convert-compatible-conventions(): (
+		common.testing.gunit.assert-equals(tuple {30, 3, 10, 5, 5, -1, 0, 200, 3}, tuple {
+			units.power-decibels(20).plus(units.power-bels(1)).value(),
+			units.power-bels(2).plus(units.power-decibels(10)).value(),
+			units.power-decibels(20).minus(units.power-bels(1)).value(),
+			units.amplitude-nepers(2).plus(units.amplitude-nepers(3)).value(),
+			units.ph(2).plus(units.ph(3)).value(), units.ph(2).minus(units.ph(3)).value(),
+			units.ph(4).times(0).value(), units.ph(100).plus(units.ph(100)).value(),
+			units.power-decibels(1).plus(units.power-decibels(2)).value()});
+		common.testing.gunit.assert-fails {units.power-decibels(2).plus(units.amplitude-decibels(3))};
+		common.testing.gunit.assert-fails {units.ph(2).plus(units.power-decibels(3))}
 	),
 	common.testing.gunit.test>> verify-explicit-logarithmic-precision(): (
 		common.testing.gunit.assert-equals(tuple {3.0103(0), 3.01029995664(0)}, tuple {

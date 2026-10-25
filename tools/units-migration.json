@@ -265,6 +265,10 @@
     {
       "file": "examples/units/quickstart.graf",
       "document": "docs/index.md"
+    },
+    {
+      "file": "examples/units/reading-arithmetic.graf",
+      "document": "docs/units/operations.md"
     }
   ]
 }

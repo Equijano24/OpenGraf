@@ -25,8 +25,7 @@ box {
 		common.testing.gunit.assert-fails {units.gauge-pressure(units.meters(1), units.pascals)};
 		common.testing.gunit.assert-fails {units.gauge-pressure(units.pascals(1), units.meters)};
 		common.testing.gunit.assert-fails {units.gauge-pressure(units.pascals(-1), units.pascals)};
-		common.testing.gunit.assert-fails {g$(0).plus(g$(0))};
-		common.testing.gunit.assert-fails {g$(0).times(2)};
+		common.testing.gunit.assert-equals(tuple {0, 0}, tuple {g$(0).plus(g$(0)).value(), g$(0).times(2).value()});
 		common.testing.gunit.assert-fails {g$(0).absolute-pressure(units.meters)};
 		common.testing.gunit.assert-fails {units.si-prefixes.kilo(g$)}
 	),
@@ -174,7 +173,7 @@ box {
 		common.testing.gunit.assert-fails {power$(units.watts(0))};
 		common.testing.gunit.assert-fails {power$(units.watts(-1))};
 		common.testing.gunit.assert-fails {units.si-prefixes.milli(power$)};
-		common.testing.gunit.assert-fails {power$(0).plus(power$(0))};
+		common.testing.gunit.assert-equals(tuple {0}, tuple {power$(0).plus(power$(0)).value()});
 		common.testing.gunit.assert-fails {power$(0).reference := units.watts(2)}
 	),
 	common.testing.gunit.test>> verify-contextual-functions-preserve-or-check-the-reference(): (

@@ -1,0 +1,15 @@
+import(units: graf {path: "../../src/units"});
+
+mw$ = units.si-prefixes.milli(units.watts);
+dbm$ = units.logarithmic-reference(mw$(1), units.power-decibels);
+dbw$ = units.logarithmic-reference(units.watts(1), units.power-decibels);
+gauge$ = units.gauge-pressure(units.pascals(100000), units.bars);
+
+(units.celsius(20).plus(units.celsius(10)).value(),
+ units.celsius(20).plus(units.fahrenheit(50)).value(),
+ units.celsius(20).times(2).value(),
+ units.celsius-differences(10).plus(units.fahrenheit(32)).value(),
+ units.power-decibels(20).plus(units.power-bels(1)).value(),
+ units.ph(2).plus(units.ph(3)).value(),
+ gauge$(1).plus(gauge$(1)).value(), dbm$(20).plus(dbw$(0)).value())
+// => 30, 30, 40, 50, 30, 5, 2, 50

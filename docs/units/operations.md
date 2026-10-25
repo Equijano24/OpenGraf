@@ -124,16 +124,47 @@ same-dimension check used by addition and comparisons.
 
 ## Affine values and temperature
 
-The generic conversion mapping supports explicit nonzero offsets. Generic
-addition, subtraction, multiplication, division, powers and roots require both
-`linear-arithmetic: yes` and offset zero. Temperature point families set
-`linear-arithmetic: no`, including coherent points whose offset is zero.
-Temperature differences retain linear arithmetic.
+Addition/subtraction operates on displayed readings after converting the right
+operand to the left unit. Scalar multiplication/division operates on the displayed
+number. These operations also support offset, logarithmic and referenced units.
+When factories are identical, the right number is used directly, avoiding needless
+conversion and logarithmic rounding. The factory's `quantity` protocol validates
+each result and preserves its metadata.
+
+Dimensional quantity products/quotients, powers and roots require both
+`linear-arithmetic: yes` and offset zero. Temperature points, logarithmic levels
+and gauge readings set `linear-arithmetic: no`. Temperature differences retain
+linear dimensional arithmetic.
 
 [Special units](special.md) implement point/difference arithmetic and absolute-zero
-validation. Point minus point produces a difference; point plus/minus difference
-retains the point factory. Logarithmic and referenced values keep their own
-conversion mappings and refuse generic linear arithmetic.
+validation. Point plus point retains the left point factory; point minus point
+produces a difference. Point plus/minus difference retains the point factory.
+Reading arithmetic is distinct from a physical model: adding levels does not
+automatically calculate combined signal power, and adding temperatures does not
+calculate the equilibrium temperature of a mixture.
+
+## Reading arithmetic example
+
+Save as `examples/units/reading-arithmetic.graf` and run
+`graf run examples/units/reading-arithmetic.graf`:
+
+```graf
+import(units: graf {path: "../../src/units"});
+
+mw$ = units.si-prefixes.milli(units.watts);
+dbm$ = units.logarithmic-reference(mw$(1), units.power-decibels);
+dbw$ = units.logarithmic-reference(units.watts(1), units.power-decibels);
+gauge$ = units.gauge-pressure(units.pascals(100000), units.bars);
+
+(units.celsius(20).plus(units.celsius(10)).value(),
+ units.celsius(20).plus(units.fahrenheit(50)).value(),
+ units.celsius(20).times(2).value(),
+ units.celsius-differences(10).plus(units.fahrenheit(32)).value(),
+ units.power-decibels(20).plus(units.power-bels(1)).value(),
+ units.ph(2).plus(units.ph(3)).value(),
+ gauge$(1).plus(gauge$(1)).value(), dbm$(20).plus(dbw$(0)).value())
+// => 30, 30, 40, 50, 30, 5, 2, 50
+```
 
 ## Tests
 

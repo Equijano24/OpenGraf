@@ -61,33 +61,31 @@ class {
 
 	self$.value-in-self(other$ = open-graf-units-core.quantity?): (
 		yes? >> self$.compatible-with(other$);
-		self$.factory.display-value-of(other$.coherent-value())
+		if(equals(self$.factory, other$.factory)) {
+			other$.value(), self$.factory.display-value-of(other$.coherent-value())
+		}
 	),
 
 	self$.plus(other$ = open-graf-units-core.quantity?): (
-		self$.require-linear();
-		other$.require-linear();
 		other-value$ = self$.value-in-self(other$);
 		amount$ = self$.value().plus(other-value$);
 		self$.quantity-with-value(amount$)
 	),
 
 	self$.minus(other$ = open-graf-units-core.quantity?): (
-		self$.require-linear();
-		other$.require-linear();
 		other-value$ = self$.value-in-self(other$);
 		amount$ = self$.value().minus(other-value$);
 		self$.quantity-with-value(amount$)
 	),
 
 	self$.times(other$ = any(number?, open-graf-units-core.quantity?)?): (
-		self$.require-linear();
 		if(match(other$, number?)) {
 			(
 				amount$ = self$.value().times(other$);
 				self$.quantity-with-value(amount$)
 			),
 			(
+				self$.require-linear();
 				other$.require-linear();
 				amount$ = self$.coherent-value().times(other$.coherent-value());
 				dimension$ = self$.dimension.times(other$.dimension);
@@ -97,13 +95,13 @@ class {
 	),
 
 	self$.over(other$ = any(number?, open-graf-units-core.quantity?)?): (
-		self$.require-linear();
 		if(match(other$, number?)) {
 			(
 				amount$ = self$.value().over(other$);
 				self$.quantity-with-value(amount$)
 			),
 			(
+				self$.require-linear();
 				other$.require-linear();
 				amount$ = self$.coherent-value().over(other$.coherent-value());
 				dimension$ = self$.dimension.over(other$.dimension);

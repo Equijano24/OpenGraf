@@ -155,7 +155,7 @@ pi approximation. Those results are not reproduced by the replacement.
 
 ## Arithmetic and error changes
 
-Mixed plus/minus for linear units retains the left factory. Scalar times/over
+Mixed plus/minus for compatible readings retains the left factory. Scalar times/over
 also retains it. Quantity times/over now produces a coherent compound with
 composed dimensions; a named factory classifies that compound explicitly.
 Kinds with equal dimensions can still be incompatible (energy/torque, for example).
@@ -163,10 +163,12 @@ A bare number cannot be added to a measurement. Division by zero remains a Graf
 numeric error, and unsupported backend operations propagate their Graf failure.
 
 Temperature conversion uses points, with a lower boundary at zero kelvin.
-Point minus point yields an interval. Point plus/minus interval yields a point;
-point plus point and point multiplication/division are refused. Replace an old
-linear Celsius calculation only after deciding whether its operands are points
-or intervals. Logarithmic, gauge, chemical-equivalent and dose-weighted conversions
+Point minus point yields an interval. Point plus/minus interval yields a point.
+Point plus point adds displayed readings in the left scale: `celsius(20).plus(celsius(10))`
+returns 30 °C. Scalar times/over also retains the temperature factory. Explicit
+intervals remain available for temperature changes independent of the scale origin.
+Logarithmic and gauge readings support the same compatible plus/minus and scalar
+operations, retaining their convention/reference. Chemical-equivalent and dose-weighted conversions
 need the explicit references/models documented in [special units](special.md).
 
 Measurements are immutable instances. Replace an amount through

@@ -116,7 +116,7 @@ box {
 		factory$ = units.temperature-difference.definition("test-temperature-difference", "u", 1);
 		q$ = factory$(7);
 		common.testing.gunit.assert(match(q$, units.temperature-difference?));
-		common.testing.gunit.assert(match(q$, units.unit?));
+		common.testing.gunit.assert(match(q$, all(units.quantity?)?));
 		common.testing.gunit.assert-equals("temperature-difference", q$.kind);
 		common.testing.gunit.assert-equals(tuple { 0, 0, 0, 0, 1, 0, 0, 0 },
 			tuple { q$.dimension.length, q$.dimension.mass, q$.dimension.duration, q$.dimension.current, q$.dimension.temperature, q$.dimension.amount-of-substance, q$.dimension.luminous-intensity, q$.dimension.information });

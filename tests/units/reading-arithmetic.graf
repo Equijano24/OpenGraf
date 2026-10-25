@@ -1,0 +1,46 @@
+import(units: graf {path: "../../src/units"});
+
+box {
+	common.testing.gunit.test>> verify-reading-arithmetic-across-all-named-factories(): (
+		common.testing.gunit.assert-equals(tuple {302}, tuple {units.catalogue.definition <<count});
+		foreach {factory$ = units.catalogue.definition} {
+			q$ := factory$(4);
+			sum$ := q$.plus(factory$(3));
+			difference$ := q$.minus(factory$(3));
+			common.testing.gunit.assert-equals(tuple {7, 1, 12, 2, 4}, tuple {
+				sum$.value(), difference$.value(), q$.times(3).value(), q$.over(2).value(), q$.value()});
+			common.testing.gunit.assert-equals(tuple {factory$, factory$, factory$}, tuple {
+				sum$.factory, q$.times(3).factory, q$.over(2).factory})
+		}
+	),
+	common.testing.gunit.test>> verify-gauge-reading-arithmetic-retains-the-left-reference(): (
+		a$ = units.gauge-pressure(units.pascals(100000), units.bars);
+		b$ = units.gauge-pressure(units.pascals(90000), units.pascals);
+		q$ = a$(1);
+		sum$ = q$.plus(b$(20000));
+		common.testing.gunit.assert-equals(tuple {2, 1.1(0), 0.9(0), 2, 0.5(0), 210000, a$, 100000, 1}, tuple {
+			q$.plus(a$(1)).value(), sum$.value(), q$.minus(b$(20000)).value(),
+			q$.times(2).value(), q$.over(2).value(), sum$.absolute-pressure().value(),
+			sum$.factory, sum$.reference.value(), q$.value()});
+		common.testing.gunit.assert-fails {a$(-0.6(0)).plus(a$(-0.5(0)))};
+		common.testing.gunit.assert-fails {a$(-0.6(0)).times(2)};
+		common.testing.gunit.assert-fails {q$.plus(units.meters(1))};
+		common.testing.gunit.assert-fails {q$.times(q$)};
+		common.testing.gunit.assert-fails {q$.over(0)}
+	),
+	common.testing.gunit.test>> verify-referenced-level-arithmetic-retains-the-left-reference(): (
+		mw$ = units.si-prefixes.milli(units.watts);
+		dbm$ = units.logarithmic-reference(mw$(1), units.power-decibels);
+		dbw$ = units.logarithmic-reference(units.watts(1), units.power-decibels);
+		q$ = dbm$(20);
+		sum$ = q$.plus(dbw$(0));
+		common.testing.gunit.assert-equals(tuple {50, -10, 40, 10, dbm$, mw$, 1, 20, 0}, tuple {
+			sum$.value(), q$.minus(dbw$(0)).value(), q$.times(2).value(), q$.over(2).value(),
+			sum$.factory, sum$.reference.factory, sum$.reference.value(), q$.value(),
+			dbw$(0).plus(dbm$(30)).value()});
+		voltage$ = units.logarithmic-reference(units.volts(1), units.amplitude-decibels);
+		common.testing.gunit.assert-fails {q$.plus(voltage$(1))};
+		common.testing.gunit.assert-fails {q$.plus(units.power-decibels(1))};
+		common.testing.gunit.assert-fails {q$.times(q$)}
+	)
+}

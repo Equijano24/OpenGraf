@@ -12,10 +12,10 @@ records all eleven steps completed.
 
 | Check | Result |
 | --- | --- |
-| `graf test tests/units` | 506 passed, 0 failed, 0 load errors; exit 0 |
+| `graf test tests/units` | 515 passed, 0 failed, 0 load errors; exit 0 |
 | `graf test tests/units-test.graf` | 4 migrated original cases passed; already included in the directory total |
 | `graf test tests/testing` | 11 auxiliary gunit tests passed; exit 0 |
-| Complete Graf .NET suite on `develop` | 2076 passed, 0 failed, 2 existing printed-form skips |
+| Complete Graf .NET suite on `develop` (step 11; engine unchanged) | 2076 passed, 0 failed, 2 existing printed-form skips |
 | Graf solution build | Successful; symbolic operands and explicit exact-factor arithmetic included |
 | `graf run examples/units/core.graf` | Original 1/3, replacement 2, symbol m, length exponent 1, compatible yes |
 | `graf run examples/units/operations.graf` | 23/10, 200, 25/18, 5, 3, yes |
@@ -24,11 +24,11 @@ records all eleven steps completed.
 | `python3 tools/units_catalogue.py --check` | Generated sources/reference/integration tests match reviewed data; no stale generated definitions |
 | `graf run examples/units/special.graf` | Temperature, logarithmic/reference, gauge, activity, hardness and radiation anchors |
 | `graf run examples/units/migration.graf` | Historical names, binary magnitude, new definitions/comparison and explicit formatting |
-| `python3 tools/units_audit.py --legacy-source` | 302 factory cases, 31 historical factories, 4 original tests and 6 matching documentation examples |
+| `python3 tools/units_audit.py --legacy-source` | 302 factory cases, 31 historical factories, 4 original tests and 8 matching documentation examples |
 | Host BigComplex payload check | Identity retained through construction, coherent mapping, conversion and replacement |
 | `mkdocs build --strict` | Successful |
 | `python3 tools/docs_build.py --check` | Published PDF fingerprint/hash and site links/assets/anchors verified |
-| Website browser check | All 15 source pages at desktop/mobile widths, PDF download and no JavaScript errors |
+| Website browser check (step 11) | All 15 source pages at desktop/mobile widths, PDF download and no JavaScript errors |
 | PDF visual/layout check | All pages rendered with Poppler; no text outside safety margins; catalogue headings repeat |
 
 The unit suites cover each family with an independent expected dimension
@@ -114,6 +114,7 @@ executable files. The audit checks correspondence, not executed code coverage.
 | Independent factors and dimensional equations | `catalogue-anchors.graf`, `catalogue-identities.graf` |
 | Number payloads, construction, dimensions, kinds and immutable metadata | `core.graf`, `definitions.graf`, `families.graf`, `imports.graf` |
 | Conversion and left-factory arithmetic | `conversion.graf`, `arithmetic.graf` |
+| Reading arithmetic across all 302 named factories and retained gauge/level references | `reading-arithmetic.graf` |
 | Products/quotients, powers and roots | `compounds.graf`, `powers.graf` |
 | Local inheritance and overridden construction | `extensions.graf`, plus prefix/angle/special extension cases |
 | Angular conversion, forward/inverse math and precision | `angles.graf`, `trigonometry.graf`, `inverse-trigonometry.graf` |
@@ -125,11 +126,30 @@ executable files. The audit checks correspondence, not executed code coverage.
 
 Negative checks are kept with each contract: invalid types/definitions, wrong
 kinds or dimensions, zero division, invalid precision/root degrees, immutable
-slots, unsupported point/logarithmic arithmetic, nonpositive logarithmic inputs,
+slots, unsupported dimensional products of points/levels, nonpositive logarithmic inputs,
 reference conflicts and missing or invalid models. This is contract coverage;
 it is not a claim to execute every operator on every possible numeric backend
 or physical model. Core operations are shared, and numeric backend restrictions
 remain Graf's responsibility. Step 10 requires no engine behavior change.
+
+## Reading arithmetic review
+
+Nine new groups bring the directory suite from 506 to **515 cases**. One group
+executes addition, subtraction, scalar multiplication/division and factory
+retention for every one of the **302 named factories**, including all logarithmic
+and temperature definitions. Five groups cover same-scale and mixed-scale
+temperatures, exact decimals, negative readings, absolute-zero results, custom
+affine factories and increments in either operand position. One group covers
+mixed logarithmic conventions, pH, exact same-factory readings and incompatible
+kinds. Two groups cover gauge and logarithmic reference changes during arithmetic,
+retained references, immutable operands and invalid results.
+
+Existing offset, temperature, logarithmic and contextual cases now exercise
+reading arithmetic instead of rejecting it. Dimensional products retain their
+linear-unit requirements; invalid domains, missing models and incompatible kinds
+remain covered. The eighth executable documentation example is
+`examples/units/reading-arithmetic.graf` in the [operation reference](operations.md).
+This review changes the Open Graf library without changing Graf's engine.
 
 ## Step 11 documentation publication
 
@@ -151,7 +171,7 @@ The seventh executable example is `examples/units/quickstart.graf`. The
 [build manifest](../downloads/build.json) records the source fingerprint, PDF
 page count, file hash and navigation counts for this exact publication.
 The host BigComplex observation is retained from step 8; it is not a newly run
-host-backend test in this documentation step. The current Graf suite, 506 unit
+host-backend test in this documentation step. The step 11 Graf suite, 506 unit
 cases and 11 auxiliary gunit cases were rerun without changing the engine.
 
 ## Graf prerequisites
