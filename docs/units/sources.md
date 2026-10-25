@@ -32,8 +32,8 @@ The radian is the coherent SI unit of plane angle. One degree is exactly
 rounded decimal factor. NIST SP 330 (2019) independently confirms that relation:
 <https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.330-2019.pdf>.
 
-These angular definitions remain unchanged. Step 8 implements the prefix
-eligibility flags (radian yes, degree no) and the reviewed catalogue below.
+Prefix eligibility is explicit: radians allow prefixes and degrees do not.
+The reviewed catalogue uses these same angular definitions.
 
 ## Secondary coverage reference
 
@@ -47,7 +47,7 @@ Open Graf's architecture and technical documentation are independently
 organized. The handbook is not a specification of the library, and its wording,
 tables or chapter organization are not copied into the implementation.
 
-## Step 8 review and source identifiers
+## Reviewed catalogue and source identifiers
 
 Reviewed on 2026-10-24. The [catalogue](catalogue.md) records a source ID on each
 factory; `tools/units-catalogue.json` holds the reviewed data and source map.

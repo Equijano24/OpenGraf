@@ -7,6 +7,11 @@ now forwards to four migrated cases already included in `tests/units`.
 Check source/example correspondence with `python3 tools/units_audit.py`; add
 `--legacy-source` to verify the migration ledger against its pinned git sources.
 
+Documentation pages in `mkdocs.yml` generate both the site and PDF. After changing
+those pages, styles or render tools, run `python3 tools/docs_build.py` and inspect
+the PDF pages; `--check` validates the committed artifact and generated site.
+Commit `docs/downloads/open-graf-units.pdf` and its build manifest together.
+
 ## Naming
 
 - Classes use nouns or adjective+noun phrases that state what they are.

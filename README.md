@@ -15,7 +15,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Units replacement
 
-The new core in `src/units` provides `unit`, dimensions, 87 quantity families,
+The new core in `src/units` provides `unit`, dimensions, 87 base/engineering families,
 local definitions and immutable measurements for current Graf. See the
 [core API](docs/units/core.md) and [technical documentation](docs/index.md).
 [Conversion and arithmetic](docs/units/operations.md) are implemented, including
@@ -37,6 +37,14 @@ Run `graf test tests/units` to check this section, or
 `graf test tests/units-test.graf` runs the four migrated original unit cases.
 Use the modern CLI commands for units; the old setup and runner scripts belong
 to the unrelated legacy library. The directory suite already includes those four cases.
+
+## Website and PDF
+
+The [technical reference](docs/index.md) and [downloadable PDF](docs/downloads/open-graf-units.pdf)
+share their Markdown sources. Build and validate both formats with
+`python3 tools/docs_build.py`; check an existing publication with
+`python3 tools/docs_build.py --check`. See [documentation builds](docs/build.md)
+for dependencies and visual verification. The static site is generated in `site/`.
 
 ## Testing foundation
 

@@ -1,0 +1,10 @@
+/* The same technical tables must remain usable at narrow screen widths. */
+main, .col-md-9 { min-width: 0; }
+pre { max-width: 100%; overflow-x: auto; }
+table { display: block; max-width: 100%; overflow-x: auto; }
+td, th { min-width: 7rem; vertical-align: top; }
+td code, th code { white-space: normal; overflow-wrap: anywhere; }
+#unit-catalogue ~ table:first-of-type td:first-child,
+#unit-catalogue ~ table:first-of-type th:first-child { min-width: 13rem; }
+.col-md-9 > p, .col-md-9 > li { overflow-wrap: anywhere; }
+@media (max-width: 767px) { .col-md-9 { max-width: 100%; } }

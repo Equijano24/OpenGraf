@@ -1,12 +1,11 @@
 # Unit core API
 
-The core is implemented for current Graf on `develop`. It provides 87 families,
-local unit definitions, integral dimensions, and immutable measurements.
-[Conversion and arithmetic](operations.md) are implemented in step 6.
-[Angles and trigonometry](angles.md) add the concrete `radians` and `degrees`
-factories in step 7. Step 8 adds the [catalogue](catalogue.md) and [prefix API](prefixes.md); the
-[special-unit reference](special.md) documents the completed step 9. The
-complete contract is in the [design reference](design.md).
+The core targets current `Graf/develop`. It provides base/engineering families,
+local unit definitions, integral dimensions and immutable measurements.
+[Conversion and arithmetic](operations.md), [angles and trigonometry](angles.md),
+the [catalogue](catalogue.md), [prefixes](prefixes.md) and
+[special units](special.md) build on the same protocols. The
+[design reference](design.md) records the complete object model.
 
 ## Import and construct
 
@@ -145,10 +144,11 @@ The fields, in constructor order, are:
 | `power` | L^2*M*T^-3 |
 | `absorbed-dose`, `equivalent-dose` | L^2*T^-2; two distinct kinds |
 
-Temperature and dose families establish distinct types here. Temperature points
-refuse generic linear arithmetic. Their domain rules, point/difference arithmetic,
-weighting models and other special conversions are still pending. These family declarations are not a
-completed catalogue of concrete physical units.
+Temperature and dose families establish distinct kinds. Temperature points
+refuse generic linear arithmetic and enforce their specialized point/difference
+rules and absolute-zero boundary. Explicit radiation-weighting models and other
+contextual conversions are documented in [special units](special.md). Concrete
+factories are listed in the [catalogue](catalogue.md) and special-unit reference.
 
 ## Local extension
 
@@ -178,7 +178,7 @@ examples or tests.
 
 ## Validation
 
-Run `graf test tests/units` from the repository root. The suites cover the 87 families and 290 catalogue factories, payload preservation, immutable instances, exact factor metadata,
+Run `graf test tests/units` from the repository root. The suites cover the 87 original families and 302 named factories, payload preservation, immutable instances, exact factor metadata,
 local extension, compatibility, provenance and invalid input. See the
 [validation status](validation.md) for the verified counts and remaining work.
 

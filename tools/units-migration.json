@@ -261,6 +261,10 @@
     {
       "file": "examples/units/migration.graf",
       "document": "docs/units/migration.md"
+    },
+    {
+      "file": "examples/units/quickstart.graf",
+      "document": "docs/index.md"
     }
   ]
 }

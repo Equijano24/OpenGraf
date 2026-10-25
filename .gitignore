@@ -2,6 +2,8 @@
 # Generated documentation
 site/
 open-graf-units.pdf
+!docs/downloads/open-graf-units.pdf
+output/
 
 # Python maintainer tools
 __pycache__/

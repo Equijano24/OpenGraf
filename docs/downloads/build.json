@@ -1,0 +1,12 @@
+{
+  "reference_date": "2026-10-25",
+  "source_sha256": "4eda1a15d17a8b4d6cfafee1473e402d5fb152301696df1766a5b0dc4601ee2c",
+  "source_documents": 15,
+  "pdf": {
+    "pages": 68,
+    "bytes": 248455,
+    "sha256": "2fa4c2ab04f698528d1159970bbc0591741e3051124226f63a9ab68c4b6ce4e7",
+    "destinations": 114,
+    "catalogue_factories": 302
+  }
+}

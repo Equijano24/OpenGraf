@@ -1,0 +1,6 @@
+import(units: graf {path: "../../src/units"});
+
+(units.meters(2).plus(units.centimeters(30)).value(),
+ units.radians(units.degrees(30)).value(),
+ units.radians(2.5).sin())
+// => 23/10, symbolic pi/6, approximately 0.598472144103956

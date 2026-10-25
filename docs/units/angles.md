@@ -1,6 +1,6 @@
 # Angles and trigonometry
 
-Step 7 provides the public factories `radians` and `degrees`, conversions with
+The public `radians` and `degrees` factories provide conversions with
 symbolic pi, six circular functions and seven inverse functions. These use the
 shared `angle` family and Graf's `common.math` implementation.
 

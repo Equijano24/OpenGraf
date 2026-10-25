@@ -1,6 +1,6 @@
 # Temperature, logarithmic and contextual units
 
-Step 9 implements these rules in Graf. Public modules are in `src/units`;
+These rules are implemented in Graf. Public modules are in `src/units`;
 shared implementations are in `src/units/core`. The finite
 `catalogue.definition` relation now includes **302 named factories**: the
 290 entries in the [linear catalogue](catalogue.md) and these 12 definitions.

@@ -2,7 +2,8 @@
 
 Actualizado: 25 de octubre de 2026.
 
-**Paso 10 completado; el siguiente es el 11.** Hay 10 pasos completos de 11.
+**Los 11 pasos están completados.** Units y su documentación técnica están
+validados; el sitio estático y el PDF se generan desde las mismas fuentes.
 Units dispone de 302 fábricas con nombre, los 24 prefijos SI y 10 binarios,
 aritmética dimensional, trigonometría, temperaturas y conversiones especiales.
 Los contextos y modelos físicos se suministran explícitamente.
@@ -19,7 +20,7 @@ Los contextos y modelos físicos se suministran explícitamente.
 | 8 | Construir el catálogo y los prefijos decimales/binarios; verificar factores con BIPM, NIST y CODATA, usando Gieck como referencia de cobertura. | Completado |
 | 9 | Resolver temperaturas absolutas y diferencias, unidades logarítmicas y conversiones con referencias o modelos explícitos. | Completado |
 | 10 | Migrar la API antigua, actualizar ejemplos y probar cada unidad, operación, extensión y error con gunit y la suite completa de Graf. | Completado |
-| 11 | Completar documentación técnica, catálogo, fuentes y migración; verificar sitio web y PDF y publicar los cambios de ambos repositorios. | **Siguiente**: revisión documental final, sitio y PDF; migración de units completada |
+| 11 | Completar documentación técnica, catálogo, fuentes y migración; verificar sitio web y PDF y publicar los cambios de ambos repositorios. | Completado: fuentes, sitio estático y PDF verificados; cambios publicados |
 
 ## Último checkpoint verificado
 
@@ -31,9 +32,10 @@ Los contextos y modelos físicos se suministran explícitamente.
 - `graf test tests/units-test.graf`: **4 correctas**; ya incluidas en las 506.
 - `graf test tests/testing`: **11 correctas, 0 fallidas y 0 errores de carga**.
 - `python3 tools/units_catalogue.py --check`: **655 archivos generados verificados**.
-- Documentación: `mkdocs build --strict` y seis ejemplos ejecutables verificados.
+- Documentación: `mkdocs build --strict` y siete ejemplos ejecutables verificados (incluido el quickstart).
   La documentación sigue siendo una referencia técnica, con Markdown compartido
-  para sitio y posterior PDF.
+  para sitio y PDF. El [PDF descargable](downloads/open-graf-units.pdf) incluye
+  índice, destinos internos, referencias y tablas con encabezados repetidos.
 
 El [catálogo lineal](units/catalogue.md) conserva sus 290 entradas. Las 12
 [definiciones especiales](units/special.md) completan el inventario de 302.
@@ -67,6 +69,24 @@ almacenados, extensiones, formato y comparación sin dependencias de la API viej
 el commit conservado, 302 casos de fábrica y seis ejemplos sincronizados con
 sus referencias. La [matriz de validación](units/validation.md) enlaza las suites
 de unidades, operaciones, extensiones y errores. Graf no requirió cambios propios.
+
+## Paso 11 completado
+
+La [referencia técnica](index.md) reúne API, catálogo, prefijos, reglas especiales,
+migración, fuentes y validación. Se revisaron las declaraciones de estado y se
+añadió un quickstart ejecutable. La navegación de MkDocs determina también el
+orden del PDF; no hay un manuscrito separado ni una adaptación del libro de Gieck.
+
+`tools/docs_build.py` produce los dos formatos. `--check` detecta PDF desactualizado,
+hash incorrecto, enlaces/recursos locales ausentes y anclas HTML rotas. La generación
+comprueba los 302 nombres de fábricas en el PDF, sus destinos internos y los
+márgenes de texto. El sitio se verificó en escritorio y móvil; el PDF se renderizó
+con Poppler para revisión visual. El [manifiesto](downloads/build.json) registra
+la huella de las fuentes y las medidas del artefacto publicado.
+
+El sitio queda listo para desplegar en un alojamiento estático; este trabajo no
+configura un servicio de hosting. Graf no requirió cambios propios en los pasos
+9–11; su rama `develop` y la publicación de OpenGraf están verificadas.
 
 ## Alcance y decisiones vigentes
 

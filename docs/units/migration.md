@@ -178,7 +178,7 @@ instance, or alter a definition's scale after using it.
 `python3 tools/units_audit.py --legacy-source` verifies that the ledger covers all
 factories and tests in the pinned historical sources, all 302 published factories
 have a dedicated catalogue test, every referenced migration case exists, and all
-six documentation examples match their executable source. It needs that commit
+seven documentation examples match their executable source. It needs that commit
 in local git history. Without `--legacy-source`, the same current-tree checks run
 without accessing historical git objects. This is a correspondence check, not
 execution or a proof of numerical correctness.

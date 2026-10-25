@@ -6,7 +6,7 @@ Steps 5–9 implement the [core](core.md), [conversion/arithmetic](operations.md
 87 original families, 302 named factories, all 24 SI and 10 binary prefixes, immutable
 measurements and explicit local extension. Absolute temperatures, logarithmic
 units and reference/model conversions are implemented in step 9. The [plan](../plan-de-trabajo.md)
-records ten completed steps and step 11 next.
+records all eleven steps completed.
 
 ## Verified checkpoint
 
@@ -27,6 +27,9 @@ records ten completed steps and step 11 next.
 | `python3 tools/units_audit.py --legacy-source` | 302 factory cases, 31 historical factories, 4 original tests and 6 matching documentation examples |
 | Host BigComplex payload check | Identity retained through construction, coherent mapping, conversion and replacement |
 | `mkdocs build --strict` | Successful |
+| `python3 tools/docs_build.py --check` | Published PDF fingerprint/hash and site links/assets/anchors verified |
+| Website browser check | All 15 source pages at desktop/mobile widths, PDF download and no JavaScript errors |
+| PDF visual/layout check | All pages rendered with Poppler; no text outside safety margins; catalogue headings repeat |
 
 The unit suites cover each family with an independent expected dimension
 vector, numeric payload kinds, explicit factory references, composite equality,
@@ -128,6 +131,29 @@ it is not a claim to execute every operator on every possible numeric backend
 or physical model. Core operations are shared, and numeric backend restrictions
 remain Graf's responsibility. Step 10 requires no engine behavior change.
 
+## Step 11 documentation publication
+
+The [website/PDF build reference](../build.md) describes the pinned dependencies,
+commands and outputs. All **15 Markdown pages** in the navigation are included in
+the technical PDF; there is one shared source set. The catalogue uses landscape
+pages and repeated table headers; the rest uses portrait pages. Linked contents,
+section destinations and outlines support navigation. All 302 factory names
+are checked in extracted PDF text. Font and source-link rendering, table
+continuations, code, section transitions and margins were also reviewed visually.
+
+The generated site was opened at desktop and narrow widths, with external
+requests blocked. All 15 documentation pages were checked for a title and body
+overflow, and the PDF download was compared with its published hash. The local
+HTML target/anchor checker also includes the generated 404 page. These checks
+verify the static build, not a deployment to an external hosting service.
+
+The seventh executable example is `examples/units/quickstart.graf`. The
+[build manifest](../downloads/build.json) records the source fingerprint, PDF
+page count, file hash and navigation counts for this exact publication.
+The host BigComplex observation is retained from step 8; it is not a newly run
+host-backend test in this documentation step. The current Graf suite, 506 unit
+cases and 11 auxiliary gunit cases were rerun without changing the engine.
+
 ## Graf prerequisites
 
 Use `T-and-Q/Graf` on `develop`. The completed testing foundation ensures:
@@ -149,7 +175,7 @@ Graf has 13 gunit execution/assertion regressions, 13 discovery regressions and
 9 command regressions. OpenGraf's auxiliary suites add 11 Graf-language checks.
 The CLI's pass/fail/load/no-match/cancellation codes were verified in step 4.
 
-## Remaining validation matrix
+## Contract scope and limits
 
 | Concern | Implemented now | Still required |
 | --- | --- | --- |
@@ -163,7 +189,7 @@ The CLI's pass/fail/load/no-match/cancellation codes were verified in step 4.
 | Special cases | Logarithmic domains, retained references, gauge pressure, pH activity, equivalent-basis hardness and explicit radiation weighting | Full speciation, uncertainty propagation and radiation-field aggregation are outside these APIs |
 | Extensibility | Local factories, overridden construction, custom ratio/activity/radiation models and explicit equivalent bases | More application-specific models |
 | Migration | All 31 historical factories mapped, 4 original cases migrated, coherent-coordinate changes and semantic decisions documented | Unrelated legacy components remain outside scope |
-| Documentation | Technical Markdown, complete units migration, 302-factory inventory, special/prefix references, reviewed sources and site build | Final reference/site review and PDF verification in step 11 |
+| Documentation | Technical Markdown, complete units migration, 302-factory inventory, special/prefix references, reviewed sources and site build | Rebuild and visually review after future source, font or renderer changes |
 
 Round trips alone cannot detect a shared wrong factor. The catalogue tests
 include independent anchors such as the exact international inch, liter

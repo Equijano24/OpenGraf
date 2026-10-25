@@ -2,19 +2,32 @@ site_name: Open Graf
 site_description: Technical reference for reusable Graf components
 repo_url: https://github.com/Equijano24/OpenGraf
 use_directory_urls: false
+theme:
+  name: mkdocs
+  highlightjs: false
+extra:
+  reference_date: '2026-10-25'
+extra_css:
+  - assets/reference.css
+markdown_extensions:
+  - tables
+  - fenced_code
+  - toc
+  - sane_lists
 nav:
   - Overview: index.md
-  - Plan y avance: plan-de-trabajo.md
-  - Testing: testing.md
-  - Naming conventions: naming.md
   - Units:
       - Core API: units/core.md
       - Conversion and arithmetic: units/operations.md
       - Angles and trigonometry: units/angles.md
       - Temperature, logarithmic and contextual units: units/special.md
-      - Migration from historical units: units/migration.md
       - Catalogue: units/catalogue.md
       - Decimal and binary prefixes: units/prefixes.md
+      - Migration from historical units: units/migration.md
       - Design and API contract: units/design.md
-      - Validation and status: units/validation.md
       - Sources: units/sources.md
+  - Testing: testing.md
+  - Naming conventions: naming.md
+  - Validation and status: units/validation.md
+  - Documentation builds: build.md
+  - Plan y avance: plan-de-trabajo.md

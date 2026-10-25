@@ -3,7 +3,7 @@
 Open Graf provides reusable components written in Graf. This documentation is
 organized as an API and engineering reference.
 
-The new unit core is implemented under `src/units`: dimensions, 87 families,
+The new unit core is implemented under `src/units`: dimensions, 87 original families,
 local definitions, immutable measurements, conversion, arithmetic, dimensions,
 powers, roots, comparisons, `radians`, `degrees` and circular/inverse
 trigonometry with explicit precision. The [catalogue](units/catalogue.md) contains 290 factories and the
@@ -12,6 +12,29 @@ trigonometry with explicit precision. The [catalogue](units/catalogue.md) contai
 plus locally constructed reference/model-dependent quantities. Other library
 sections still target an older Graf version.
 
+## Quickstart
+
+Use current `Graf/develop` with the `graf` CLI on your path. In an OpenGraf
+checkout, save or run `examples/units/quickstart.graf`:
+
+```graf
+import(units: graf {path: "../../src/units"});
+
+(units.meters(2).plus(units.centimeters(30)).value(),
+ units.radians(units.degrees(30)).value(),
+ units.radians(2.5).sin())
+// => 23/10, symbolic pi/6, approximately 0.598472144103956
+```
+
+Run `graf run examples/units/quickstart.graf` from the repository root.
+Imports are relative to the source file. A numeric call uses that factory's
+unit; passing a quantity converts it. Read [the core API](units/core.md) for
+definitions and extension, or [migration](units/migration.md) for historical code.
+
+## Reference navigation
+
+- [Download the PDF](downloads/open-graf-units.pdf)
+- [Website/PDF build and publication checks](build.md)
 - [Plan de trabajo y avance](plan-de-trabajo.md)
 - [Testing with gunit](testing.md)
 - [Naming conventions and API migration](naming.md)
@@ -32,15 +55,8 @@ From the repository root:
 
 ```sh
 python -m pip install -r docs/requirements.txt
-mkdocs build --strict
+python3 tools/docs_build.py
+python3 tools/docs_build.py --check
 ```
 
-`site/` contains the generated static website. For a PDF from the same Markdown
-sources, install Pandoc and a LaTeX PDF engine, then run:
-
-```sh
-pandoc docs/index.md docs/testing.md docs/units/core.md docs/units/operations.md docs/units/angles.md docs/units/special.md docs/units/migration.md docs/units/catalogue.md docs/units/prefixes.md docs/units/design.md docs/units/validation.md \
-  docs/units/sources.md --standalone --toc -o open-graf-units.pdf
-```
-
-The PDF command is a rendering option, not an additional source of documentation.
+The [build reference](build.md) lists native dependencies, outputs and visual checks.

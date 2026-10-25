@@ -1,0 +1,37 @@
+@page {
+  size: A4;
+  margin: 18mm 16mm 18mm;
+  @top-left { content: "OPEN GRAF / UNITS"; font: 7pt "DejaVu Sans"; color: #527185; }
+  @top-right { content: string(section-title); font: 7pt "DejaVu Sans"; color: #527185; }
+  @bottom-left { content: "Units API • catalogue • migration"; font: 7pt "DejaVu Sans"; color: #527185; }
+  @bottom-right { content: counter(page) " / " counter(pages); font: 7pt "DejaVu Sans"; color: #527185; }
+}
+@page catalogue { size: A4 landscape; }
+html { font: 9pt/1.45 "DejaVu Sans", sans-serif; color: #172c3a; }
+body { margin: 0; }
+h1 { font-size: 20pt; line-height: 1.2; color: #173e56; string-set: section-title content(text); margin: 0 0 6mm; }
+h2 { font-size: 12.5pt; color: #173e56; margin: 6mm 0 2.4mm; }
+h3 { font-size: 10.2pt; margin: 4mm 0 2mm; }
+h1, h2, h3, h4 { break-after: avoid; }
+p, li { orphans: 3; widows: 3; }
+p { margin: 0 0 2.6mm; }
+a { color: #00607e; text-decoration: none; overflow-wrap: anywhere; }
+strong { font-weight: 700; }
+ul, ol { padding-left: 5mm; margin-top: 2mm; }
+li { margin-bottom: 1.2mm; }
+code { font: 7.6pt/1.35 "DejaVu Sans Mono", monospace; overflow-wrap: anywhere; }
+pre { background: #eef3f6; border-left: 2pt solid #4e8ba2; padding: 3mm; white-space: pre-wrap; overflow-wrap: anywhere; margin: 3mm 0; break-inside: avoid; }
+pre code { font-size: 7.1pt; }
+table { width: 100%; border-collapse: collapse; table-layout: fixed; margin: 3mm 0 4mm; font-size: 8pt; }
+thead { display: table-header-group; }
+th { text-align: left; color: #173e56; background: #e2edf2; font-weight: 700; }
+th, td { padding: 2mm; vertical-align: top; border-bottom: 0.4pt solid #cdd9e0; overflow-wrap: anywhere; }
+td code, th code { font-size: 7pt; }
+tr { break-inside: avoid; }
+tbody tr:nth-child(even) { background: #f4f7f9; }
+.document { break-before: page; }
+.catalogue { page: catalogue; }
+.contents h1 { font-size: 20pt; }
+.contents ol { list-style: none; padding: 0; }
+.contents li { border-bottom: 0.4pt solid #d9e3e9; padding: 1.5mm 0; }
+.contents a::after { content: leader('.') target-counter(attr(href), page); }

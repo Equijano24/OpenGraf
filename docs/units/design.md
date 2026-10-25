@@ -1,13 +1,13 @@
 # Units: design contract
 
-Status: steps 5–9 implement the [unit core](core.md),
+The implementation includes the [unit core](core.md),
 [conversion/arithmetic](operations.md) and [angles/trigonometry](angles.md),
 including local extensions, explicit compound classification, `radians`, and
-`degrees`, the [290-factory catalogue](catalogue.md), 87 families and
+`degrees`, the [290-factory linear/angular catalogue](catalogue.md), 87 original families and
 [decimal/binary prefixes](prefixes.md). [Special-unit rules](special.md) add
 12 named definitions, retained reference metadata, and explicit physical models.
-This document specifies the implemented unit contract; migration and final
-PDF verification remain in steps 10–11.
+This document specifies the implemented unit contract. The historical migration,
+website and PDF share the same technical documentation sources.
 
 ## Object model
 
