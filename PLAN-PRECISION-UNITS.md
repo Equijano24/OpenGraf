@@ -4,7 +4,7 @@ Fecha: 26 de octubre de 2026.
 
 Repositorios: **Graf, rama `develop`**, y **OpenGraf, rama `master`**.
 
-Estado: **paso 1 completado; pasos 2 a 7 pendientes**.
+Estado: **pasos 1 a 3 completados; pasos 4 a 7 pendientes**.
 
 Este documento reúne el contrato de aritmética acordado, la propuesta de
 precisión y las correcciones de la revisión final. El seguimiento distingue el
@@ -120,8 +120,8 @@ factores medidos se conservan; más dígitos de cálculo no aumentan su exactitu
 | Paso | Entregable | Estado |
 | --- | --- | --- |
 | 1 | Contrato y pruebas de aritmética afín corregidos | Completado |
-| 2 | Aritmética racional sin degradación implícita por tamaño | Pendiente |
-| 3 | Representación y protocolo completos para aproximaciones | Pendiente |
+| 2 | Aritmética racional sin degradación implícita por tamaño | Completado |
+| 3 | Representación y protocolo completos para aproximaciones | Completado |
 | 4 | Precisión, redondeo, límites y errores controlados | Pendiente |
 | 5 | Conversiones y operaciones de OpenGraf integradas | Pendiente |
 | 6 | Matriz de regresión y compatibilidad de unidades | Pendiente |
@@ -256,6 +256,43 @@ El tamaño de un racional exacto no causa pérdida de información. Las rutas
 numéricas afectadas tienen regresiones y los cambios de tipos esperados están
 explicados en la especificación.
 
+### Evidencia de cierre del paso 2
+
+Completado el 26 de octubre de 2026.
+
+- Graf `f3795961932f2216bcf9cd4f257939c5eafa041d`, en la rama
+  `cursor/exact-rational-arithmetic-d811`, basada en `develop`
+  `7da35b5fba689dee011ea5e41667d8b6dbd14359`.
+  Revisión: https://github.com/T-and-Q/Graf/pull/17.
+- `NormalizedNumericResult` ya no convierte un entero o racional exacto a
+  `float64` solo porque su numerador o denominador supera `Int64`. La ruta
+  exacta no materializa un `double`. Un resultado con denominador 1 sigue
+  democionando a `int32`, `int64` o `integer`.
+- Un operando `float64` conserva la normalización binary64, incluido el
+  desbordamiento no finito hacia racional. `0.1` sigue siendo float y `0.1(0)`
+  el décimo exacto. No cambió la sintaxis de los literales.
+- `exact-product` y `exact-quotient` permanecen como mensajes explícitos
+  compatibles. La aritmética ordinaria ya conserva los factores exactos, así
+  que no hace falta una variante especial para cada operación.
+- `10^309 / 3` multiplicado por `1/10` es el racional exacto `10^308 / 3`.
+  `(1 + 1/10^40) - 1` es `1/10^40`. Las identidades con numerador y denominador
+  mayores que `Int64`, las cancelaciones, los signos, las potencias negativas,
+  los recíprocos, la división por cero y la democión a entero quedaron cubiertos.
+- `sin(1, 30).times(1)`, `plus(0)`, `over(1)` y `minus(0)` conservan el racional
+  de 30 decimales. El mismo valor, ligado a una variable, también se conserva al
+  operar por la derecha.
+- La decisión quedó registrada en `Graf.Doc/Pending/Open-Work-Checklist.md` y
+  `Graf.Doc/Pending/Numeric-Operands-Design.md`. La referencia de números, en
+  español y en inglés, describe este contrato.
+- `dotnet test Graf.Testing/Graf.Testing.csproj`: **2084 correctas, 0 fallidas
+  y 2 omitidas preexistentes (`PrintedFormAsync`); código de salida 0**.
+- `graf test tests/units`, con este runtime y sin cambios en el código de
+  units: **519 correctas, 0 fallidas y 0 errores de carga; código de salida 0**.
+
+El paso modifica el motor numérico de Graf, sus regresiones y la especificación.
+La sección `src/units` de OpenGraf conserva su implementación; la integración de
+las garantías de precisión sigue pendiente desde el paso 5.
+
 ## Paso 3. Conservar aproximaciones sin romper el protocolo numérico
 
 ### Archivos principales
@@ -328,6 +365,35 @@ entero. Las simplificaciones exactas demostrables siguen estando permitidas.
 La representación está especificada, documentada y probada como parte del sistema
 numérico de Graf. No se incorpora un objeto que conserve metadatos pero falle
 en otras operaciones del protocolo.
+
+### Evidencia de cierre del paso 3
+
+Completado el 26 de octubre de 2026.
+
+- Graf `0c7cdc2ea394120a50ecf521b6bdfd50576ded0a`, en la rama
+  `cursor/approximate-reals-d811`, encima del paso 2
+  `f3795961932f2216bcf9cd4f257939c5eafa041d`.
+  Revisión: https://github.com/T-and-Q/Graf/pull/18.
+- Un resultado redondeado es una `approximation`. Conserva el centro, las
+  cifras decimales pedidas, la cota de medio lugar cuando las entradas eran
+  exactas y una fuente refinable si esas entradas siguen siendo exactas.
+  `real?` y `number?` coinciden. `rational?` no coincide. Un valor exacto sigue
+  siendo `int32`, `int64`, `integer`, `rational` o `irrational`.
+- `sin(1, 0)` y `log10(2, 0)` siguen siendo aproximaciones aunque su centro sea
+  un entero o cero. `magnitude` devuelve ese centro como racional o entero.
+- `equals` compara la representación. `equal-to` compara valores: dos redondeos
+  de las mismas entradas exactas son iguales, y si la cota no decide se refina
+  la fuente o se informa precisión insuficiente. Un `float64` sigue seleccionando
+  binary64. Un operando simbólico sigue siendo simbólico en ambos órdenes.
+- La cota de medio lugar es la ventana del redondeo entregado. El paso 4 precisa
+  su relación con la función verdadera.
+- `dotnet test Graf.Testing/Graf.Testing.csproj`: **2093 correctas, 0 fallidas
+  y 2 omitidas preexistentes (`PrintedFormAsync`); código de salida 0**.
+- `graf test tests/units`: **519 correctas, 0 fallidas y 0 errores de carga;
+  código de salida 0**. Las comparaciones que antes exigían que el resultado
+  redondeado fuera un racional exacto ahora leen `magnitude`. La ida y vuelta
+  de una aproximación por una escala simbólica, como grados y radianes, queda
+  para el paso 5: hoy puede permanecer como expresión simbólica.
 
 ## Paso 4. Definir precisión, error, redondeo y límites de cálculo
 

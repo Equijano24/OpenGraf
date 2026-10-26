@@ -63,7 +63,7 @@ box {
 			power-ratio(ratio$ = real?, precision$ = integer?): ratio$.pow(2, precision$).exact-product(4)
 		};
 		q$ = units.contextual.power-level(units.amplitude-decibels(20), model$, units.power-decibels, 8);
-		common.testing.gunit.assert-equals(tuple {400}, tuple {q$.linear-ratio(5).round(0)});
+		common.testing.gunit.assert-equals(tuple {400}, tuple {q$.linear-ratio(5).round(0).magnitude()});
 		common.testing.gunit.assert-fails {units.contextual.power-level(units.ph(1), model$, units.power-decibels)};
 		common.testing.gunit.assert-fails {units.contextual.power-level(units.amplitude-decibels(20), model$, units.amplitude-decibels)}
 	),
@@ -161,7 +161,7 @@ box {
 		common.testing.gunit.assert-equals(tuple {30, 0, 0, 1, 1, mw$, dbm$, "referenced-power-level"}, tuple {
 			q$.value(), dbw$(q$).value(), dbw$(q$, 20).value(), dbm$(units.watts(1)).reference.value(),
 			units.watts(q$.linear-quantity()).value(), q$.reference.factory, q$.factory, q$.kind});
-		common.testing.gunit.assert-equals(tuple {yes, yes}, tuple {q$.equal-to(dbw$(0)), q$.gt(dbw$(-1))});
+		common.testing.gunit.assert-equals(tuple {yes, yes}, tuple {q$.equal-to(dbw$(0)), dbw$(q$).value().gt(dbw$(-1).value())});
 		common.testing.gunit.assert-fails {dbm$(units.power-decibels(30))};
 		common.testing.gunit.assert-fails {units.watts(q$)}
 	),

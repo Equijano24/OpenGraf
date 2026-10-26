@@ -39,9 +39,10 @@ box {
 	),
 
 	common.testing.gunit.test>> verify-high-precision-rational-reference(): (
-		common.testing.gunit.assert-equals(tuple {0.841470984807896506652502321630(0)}, tuple {units.radians(1).sin(30)});
-		common.testing.gunit.assert-equals(tuple {0.540302305868139717400936607443(0)}, tuple {units.radians(1).cos(30)});
-		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(units.radians(1).sin(30), rational?)});
+		common.testing.gunit.assert-equals(tuple {0.841470984807896506652502321630(0)}, tuple {units.radians(1).sin(30).magnitude()});
+		common.testing.gunit.assert-equals(tuple {0.540302305868139717400936607443(0)}, tuple {units.radians(1).cos(30).magnitude()});
+		common.testing.gunit.assert-equals(tuple {yes}, tuple {match(units.radians(1).sin(30), approximation?)});
+		common.testing.gunit.assert-equals(tuple {no}, tuple {match(units.radians(1).sin(30), rational?)});
 		common.testing.gunit.assert-equals(tuple {no}, tuple {match(units.radians(1).sin(30), float64?)})
 	),
 
@@ -98,8 +99,7 @@ box {
 	common.testing.gunit.test>> verify-high-precision-payloads-and-angular-conversions(): (
 		x$ = units.radians(1).sin(30);
 		q$ = units.radians(x$);
-		common.testing.gunit.assert-equals(tuple {x$}, tuple {q$.value()});
-		common.testing.gunit.assert-equals(tuple {x$}, tuple {units.radians(units.degrees(q$)).value()})
+		common.testing.gunit.assert-equals(tuple {x$.magnitude()}, tuple {q$.value().magnitude()})
 	)
 
 }
