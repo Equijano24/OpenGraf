@@ -4,11 +4,12 @@ Fecha: 26 de octubre de 2026.
 
 Repositorios: **Graf, rama `develop`**, y **OpenGraf, rama `master`**.
 
-Estado: **plan consolidado; implementación pendiente en sus siete pasos**.
+Estado: **paso 1 completado; pasos 2 a 7 pendientes**.
 
 Este documento reúne el contrato de aritmética acordado, la propuesta de
-precisión y las correcciones de la revisión final. Publicar este Markdown no
-implementa los cambios de código ni modifica las pruebas.
+precisión y las correcciones de la revisión final. El seguimiento distingue el
+trabajo completado de las etapas pendientes; la evidencia se registra en el
+paso correspondiente.
 
 El plan continúa el trabajo registrado en el
 [plan histórico de once pasos](docs/plan-de-trabajo.md). Aquellos pasos describen
@@ -118,7 +119,7 @@ factores medidos se conservan; más dígitos de cálculo no aumentan su exactitu
 
 | Paso | Entregable | Estado |
 | --- | --- | --- |
-| 1 | Contrato y pruebas de aritmética afín corregidos | Pendiente |
+| 1 | Contrato y pruebas de aritmética afín corregidos | Completado |
 | 2 | Aritmética racional sin degradación implícita por tamaño | Pendiente |
 | 3 | Representación y protocolo completos para aproximaciones | Pendiente |
 | 4 | Precisión, redondeo, límites y errores controlados | Pendiente |
@@ -142,11 +143,11 @@ no pospone todas las pruebas hasta el final.
 La suma implementada ya coincide con el contrato acordado. Este paso no requiere
 cambiar su semántica.
 
-En la copia de trabajo revisada existe un cambio local pendiente con el método
-`verify-temperature-sum-is-equivalent-after-fahrenheit-conversion`, que usa
-20 y 10 y espera incorrectamente 30 °C. No se debe asumir que ese método ya está
-publicado en la rama remota. Al implementar, localizarlo o incorporar su caso
-si todavía no está en el checkout.
+En la revisión inicial había un cambio local pendiente con el método
+`verify-temperature-sum-is-equivalent-after-fahrenheit-conversion`, que usaba
+20 y 10 y esperaba incorrectamente 30 °C. Ese caso se incorpora como
+`verify-temperature-sum-uses-fahrenheit-readings`, con la expectativa exacta
+corregida a 430/9 °C y comprobación del resultado intermedio de 118 °F.
 
 ### Trabajo
 
@@ -169,6 +170,34 @@ se convierte en una regresión con la expectativa correcta.
 Los ejemplos de la tabla cumplen el contrato, las reglas de puntos y diferencias
 siguen vigentes y la suite de temperatura no contiene el fallo deliberado de la
 expectativa anterior.
+
+### Evidencia de cierre del paso 1
+
+Completado el 26 de octubre de 2026.
+
+- El caso rojo inicial se reprodujo: 14 pruebas correctas, 1 fallida y 0 errores
+  de carga; código de salida 1.
+- Se corrigió el caso 20 y 10 y se agregó el caso 20 y 5. Ambos comprueban
+  magnitudes exactas y fábricas, incluyendo los resultados de 118 °F y 109 °F.
+- Las sumas nativas de 20 y 5 producen 25 en Celsius, Fahrenheit, kelvin y
+  Rankine, conservando sus fábricas.
+- La construcción directa `fahrenheit(68)` y la conversión
+  `fahrenheit(celsius(20))`, sumadas con el mismo operando de 41 °F, producen
+  ambas 109 °F.
+- `graf test tests/units/temperature-points.graf`: **18 correctas, 0 fallidas,
+  0 errores de carga; código de salida 0**. Las pruebas anteriores de puntos,
+  diferencias, límites, extensiones e inmutabilidad se conservan.
+- `graf test tests/units`: **519 correctas, 0 fallidas y 0 errores de carga;
+  código de salida 0**, usando el runtime local de Graf/develop del checkpoint
+  revisado, sin modificaciones del motor.
+- `python3 tools/units_catalogue.py --check`: **655 archivos generados
+  verificados**.
+- `python3 tools/units_audit.py`: **302 fábricas y 302 casos de catálogo,
+  519 casos de unidades y 8 ejemplos sincronizados**; código de salida 0.
+
+El paso modifica las pruebas y este seguimiento. La implementación de units y
+el motor de Graf conservan su comportamiento; las correcciones de precisión
+siguen pendientes en los pasos siguientes.
 
 ## Paso 2. Conservar la aritmética racional exacta en Graf
 

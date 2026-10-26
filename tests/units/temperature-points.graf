@@ -2,6 +2,41 @@ import(units: graf {path: "../../src/units"});
 import(other: graf {path: "../../src/units"});
 
 box {
+	common.testing.gunit.test>> verify-temperature-sum-uses-fahrenheit-readings(): (
+		expected$ = units.celsius(430.exact-quotient(9));
+		sum$ = units.fahrenheit(units.celsius(20))
+			.plus(units.fahrenheit(units.celsius(10)));
+		actual$ = units.celsius(sum$);
+		common.testing.gunit.assert-equals(tuple {118, units.fahrenheit, expected$.value(), expected$.factory},
+			tuple {sum$.value(), sum$.factory, actual$.value(), actual$.factory})
+	),
+	common.testing.gunit.test>> verify-five-degree-sum-uses-fahrenheit-readings(): (
+		expected$ = units.celsius(385.exact-quotient(9));
+		sum$ = units.fahrenheit(units.celsius(20))
+			.plus(units.fahrenheit(units.celsius(5)));
+		actual$ = units.celsius(sum$);
+		common.testing.gunit.assert-equals(tuple {109, units.fahrenheit, expected$.value(), expected$.factory},
+			tuple {sum$.value(), sum$.factory, actual$.value(), actual$.factory})
+	),
+	common.testing.gunit.test>> verify-native-temperature-readings-sum-to-twenty-five(): (
+		celsius$ = units.celsius(20).plus(units.celsius(5));
+		fahrenheit$ = units.fahrenheit(20).plus(units.fahrenheit(5));
+		kelvins$ = units.kelvins(20).plus(units.kelvins(5));
+		rankines$ = units.rankines(20).plus(units.rankines(5));
+		common.testing.gunit.assert-equals(tuple {25, units.celsius, 25, units.fahrenheit,
+			25, units.kelvins, 25, units.rankines}, tuple {
+			celsius$.value(), celsius$.factory, fahrenheit$.value(), fahrenheit$.factory,
+			kelvins$.value(), kelvins$.factory, rankines$.value(), rankines$.factory})
+	),
+	common.testing.gunit.test>> verify-temperature-sums-are-independent-of-construction-history(): (
+		converted$ = units.fahrenheit(units.celsius(20));
+		direct$ = units.fahrenheit(68);
+		other$ = units.fahrenheit(41);
+		converted-sum$ = converted$.plus(other$);
+		direct-sum$ = direct$.plus(other$);
+		common.testing.gunit.assert-equals(tuple {109, units.fahrenheit, 109, units.fahrenheit},
+			tuple {converted-sum$.value(), converted-sum$.factory, direct-sum$.value(), direct-sum$.factory})
+	),
 	common.testing.gunit.test>> verify-temperature-sums-retain-the-left-scale(): (
 		p$ = units.celsius(20);
 		q$ = units.celsius(10);
