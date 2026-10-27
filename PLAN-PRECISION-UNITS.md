@@ -681,24 +681,32 @@ Los siete pasos tienen evidencia de cumplimiento, ambos repositorios están
 publicados en sus ramas previstas y la documentación técnica describe el
 comportamiento realmente verificado.
 
-### Evidencia parcial del paso 7
+### Evidencia del paso 7
 
-La documentación de Graf y de OpenGraf ya describe el contrato medido. La
-publicación en remoto queda pendiente: los cambios siguen en el árbol local.
+Commits publicados, en este orden:
 
-- Graf, referencia de números en español e inglés, diseño numérico y checklist.
-- OpenGraf: `docs/units/operations.md`, `angles.md`, `special.md`, `design.md`,
-  `core.md`, `validation.md` y `migration.md`.
-- `graf test tests/units`: **521 correctas, 0 fallidas, 0 errores de carga**.
-- `dotnet test` de Graf, primera ejecución de esta rama: **2100 correctas, 1
-  fallida y 2 omitidas**. La fallida era `Lambda_KeepsDefinitionSiteMeaningAsync`:
-  `100` por el `float64` `0.13` es el flotante `13`, no el entero `13`. El
-  contrato de binary64 lo exige; la expectativa del test quedó en `13.0` y ese
-  test pasa solo.
-- Ejecuciones completas posteriores: **2099 correctas, 2 fallidas y 2
-  omitidas**. Las dos fallidas son `SkipLast_Negative_DoesNotReadAsync` y
-  `TakeLast_ZeroOrNegative_ReturnsNoneAsync`. Cada una pasa un token de 5
-  segundos alrededor de una fuente infinita que no debe leerse. Aisladas,
-  pasan en 4 segundos. No son regresiones del contrato de precisión.
-- Aún no se ejecutaron `tests/testing`, `tests/units-test.graf`, el chequeo del
-  catálogo, la auditoría ni `docs_build.py`.
+- Graf `cursor/approximate-reals-d811`: `0711b82` (“Certify requested decimal
+  places against the true function.”) y `61f426e` (“Include the numeric
+  certification sources the precision commit calls.”). El segundo añade los
+  fuentes nuevos que el primero ya invocaba; sin él, la rama no compila.
+- OpenGraf `master`: `5d26d4c` (“Carry certified precision through unit readings
+  and conversions.”).
+
+Validación de esas versiones, con el `graf` construido desde `61f426e`:
+
+| Verificación | Resultado |
+| --- | --- |
+| `dotnet build Graf.sln` | correcta, 0 errores |
+| `dotnet test Graf.Testing/Graf.Testing.csproj` | **2101 correctas, 0 fallidas, 2 omitidas** (`PrintedFormAsync`); código de salida 0 |
+| `graf test tests/units` | **521 correctas, 0 fallidas, 0 errores de carga** |
+| `graf test tests/testing` | **11 correctas, 0 fallidas, 0 errores de carga** |
+| `graf test tests/units-test.graf` | **4 correctas, 0 fallidas, 0 errores de carga** |
+| `graf run` de los ocho ejemplos en `examples/units` | código de salida 0 en los ocho |
+| `python tools/units_catalogue.py --check` | 655 archivos generados verificados |
+| `python tools/units_audit.py --legacy-source` | 302 fábricas, 521 casos de unidad, 31 fábricas históricas, 4 tests históricos, 8 ejemplos |
+
+`python tools/docs_build.py --check` informa que el PDF publicado está
+desactualizado respecto de las páginas ya cambiadas. En esta máquina
+`docs_build.py` no puede regenerarlo: WeasyPrint no carga `libgobject-2.0-0`.
+La revisión visual del PDF queda pendiente de un entorno con Pango. El sitio
+tampoco se reconstruyó en esta ejecución.
