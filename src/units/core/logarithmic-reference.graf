@@ -35,11 +35,11 @@ heir(open-graf-units-core.logarithmic-unit) {
 		}
 	),
 
-	override>> self$.coherent-value-of(amount$ = number?):
-		self$.ratio-value(amount$, 15).exact-product(self$.reference.coherent-value()),
+	override>> self$.coherent-value-of(amount$ = number?, precision$ = default(integer?, 15)?):
+		self$.ratio-value(amount$, precision$).exact-product(self$.reference.coherent-value()),
 
-	override>> self$.display-value-of(amount$ = number?):
-		self$.level-value(amount$.exact-quotient(self$.reference.coherent-value()), 15),
+	override>> self$.display-value-of(amount$ = number?, precision$ = default(integer?, 15)?):
+		self$.level-value(amount$.exact-quotient(self$.reference.coherent-value()), precision$),
 
 	self$.physical-value(precision$ = default(integer?, 15)?):
 		self$.linear-ratio(precision$).exact-product(self$.reference.coherent-value()),
@@ -58,9 +58,42 @@ heir(open-graf-units-core.logarithmic-unit) {
 
 	self$(source$ = open-graf-units-core.quantity?, precision$ = integer?): self$.level-from(source$, precision$),
 
+	override>> self$.value-in-self(other$ = open-graf-units-core.quantity?): (
+		yes? >> self$.compatible-with(other$);
+		if(equals(self$.factory, other$.factory)) {
+			other$.value(), self$.factory.level-from(other$, 15).value()
+		}
+	),
+
 	self$.level-from(source$ = open-graf-units-core.quantity?, precision$ = integer?): (
 		yes? >> self$.is-convertible-from(source$);
-		value$ = if(equals(source$.kind, self$.kind)) {source$.physical-value(precision$), source$.coherent-value()};
+		if(equals(self$, source$.factory)) {
+			self$.quantity(source$.value()), self$.reading-from(source$, precision$)
+		}
+	),
+
+	self$.reading-from(source$ = open-graf-units-core.quantity?, precision$ = integer?): (
+		if(equals(source$.kind, self$.kind)) {
+			self$.same-kind-reading(source$, precision$), self$.linear-reading(source$, precision$)
+		}
+	),
+
+	self$.same-kind-reading(source$ = open-graf-units-core.quantity?, precision$ = integer?): (
+		if(equals(self$.logarithm, source$.logarithm)) {
+			(
+				factor$ = self$.coefficient.exact-quotient(source$.coefficient);
+				scaled$ = source$.value().exact-product(factor$);
+				shift$ = self$.level-value(
+					source$.reference.coherent-value().exact-quotient(self$.reference.coherent-value()),
+					precision$);
+				self$.quantity(scaled$.plus(shift$))
+			),
+			self$.linear-reading(source$, precision$)
+		}
+	),
+
+	self$.linear-reading(source$ = open-graf-units-core.quantity?, precision$ = integer?): (
+		value$ = source$.coherent-value(precision$);
 		ratio$ = value$.exact-quotient(self$.reference.coherent-value());
 		self$.quantity(self$.level-value(ratio$, precision$))
 	)

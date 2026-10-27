@@ -90,12 +90,19 @@ Conversions within one kind use `factory(quantity)`, or
 kinds. Direct conversion between them is refused. A physical relationship needs
 an explicit model, even when particular level values happen to agree.
 
-All logarithmic APIs default to **15 decimal places**. They delegate to
-`common.math.log10`, `ln`, `exp` and Graf's precision-controlled `pow`.
+All logarithmic APIs default to **15 decimal places**. A caller that passes a
+precision uses that value; internal conversion does not replace it with 15.
 Exact powers can remain exact. For other values, precision applies to the
-underlying logarithm/exponential before the coefficient is applied; it is not
-a promise of that many final significant digits. Conversion can involve two
-rounded evaluations. Use explicit tolerance when checking a nonexact round trip.
+underlying logarithm or exponential before the coefficient is applied; it is not
+a promise of that many final significant digits.
+
+Bels and decibels of the same convention convert by their exact coefficient
+ratio, with no exponential and no logarithm. `power-decibels(power-bels(1/3))`
+is `10/3`. A different logarithm, such as nepers and decibels, still uses the
+linear ratio at the requested precision. A referenced conversion with the same
+logarithm keeps the source reading exact and applies the logarithm only to the
+ratio of the two references, so a small level is not lost against a large
+reference. Use explicit tolerance when checking a nonexact round trip.
 A rounded inverse power that becomes zero is refused, not silently accepted as
 a valid positive ratio. The [ordinary numeric promotion boundary](angles.md#precision-boundary)
 still applies to later generic arithmetic.

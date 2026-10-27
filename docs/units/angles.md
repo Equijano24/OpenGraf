@@ -101,10 +101,16 @@ principal ranges are those of Graf; asin/acos require [-1, 1], and asec/acsc
 require an absolute input of at least 1.
 
 The same optional precision defaults to 15 and measures the numeric calculation
-in radians **before** conversion to the target unit. A nonexact inverse in degrees
-can therefore have a symbolic payload containing a rational divided by pi.
-Use `.rounded(places)` to round the displayed unit explicitly; the inverse's
-precision argument is not a promise of that many displayed degree decimals.
+in radians **before** conversion to the target unit. The degree scale is the
+exact factor `180/pi`, so the absolute error of the radian result is multiplied
+by the absolute value of that factor. A nonexact inverse in degrees can therefore
+have a symbolic payload containing a rational divided by pi.
+`degrees.asin(1/3, 10).value().round(2)` is `19.47`; asking that payload for 20
+decimal places is an evaluation exception, because more digits of pi do not shrink
+the error. Use `.rounded(places)` to round the displayed unit explicitly; the
+inverse's precision argument is not a promise of that many displayed degree decimals.
+Converting a measurement to its own factory returns the stored reading and does
+not evaluate the scale again.
 An angular measurement is not a dimensionless ratio argument. An abstract family
 or an already constructed measurement is not an inverse factory.
 

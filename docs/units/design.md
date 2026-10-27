@@ -45,7 +45,12 @@ Angles implement `.sin()`, `.cos()`, `.tan()`, `.cot()`, `.sec()` and `.csc()`
 with optional precision (default 15), delegating to `common.math` in radians.
 Concrete factories implement `.asin`, `.acos`, `.atan`, `.acot`, `.asec`, `.acsc`
 and `.atan2(y, x)`; their results are angular quantities in that factory.
-Inverse precision controls the radian calculation before display conversion. Logarithms operate on explicit
+Inverse precision controls the radian calculation before display conversion. The
+exact scale then multiplies the absolute error by `abs(scale)`; it does not
+create that many correct decimals in the displayed unit. A conversion to the
+same factory keeps the stored reading. Logarithms of one convention convert by
+their exact coefficient. A change of logarithm, or of reference, uses the
+requested precision only for the logarithmic step. Logarithms operate on explicit
 dimensionless ratios, not dimensionful values.
 
 ## Special quantity rules

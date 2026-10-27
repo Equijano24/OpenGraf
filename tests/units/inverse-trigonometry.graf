@@ -64,6 +64,13 @@ box {
 		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, units.degrees.acsc(0)}
 	),
 
+	common.testing.gunit.test>> verify-degree-inverse-does-not-claim-radian-places(): (
+		q$ = units.degrees.asin(1.over(3), 10);
+		common.testing.gunit.assert-equals(tuple {19.47(0)}, tuple {q$.value().round(2)});
+		common.testing.gunit.assert-fails {common.evaluation.error-handling.evaluation-exception, q$.value().round(20)};
+		common.testing.gunit.assert-equals(tuple {q$.value()}, tuple {units.degrees(q$).value()})
+	),
+
 	common.testing.gunit.test>> verify-inverse-invalid-precision(): (
 		common.testing.gunit.assert-fails {common.evaluation.error-handling.exception-arithmetic, units.radians.asin(1, -1)};
 		common.testing.gunit.assert-fails {units.degrees.atan(1, 1.over(2))};

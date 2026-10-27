@@ -151,7 +151,11 @@ degree bug without original input data.
 
 `radians(20)` is twenty radians; `radians(degrees(20))` performs degree conversion.
 The historical degree delegates ignored their arguments and used a short decimal
-pi approximation. Those results are not reproduced by the replacement.
+pi approximation. Those results are not reproduced by the replacement. Inverse
+angular precision is still the number of decimal places in radians. The degree
+factor `180/pi` scales the absolute error; it does not add correct degree decimals.
+Bels and decibels of one convention now convert by their exact coefficient. A
+small referenced level is kept and only the change of reference is logarithmic.
 
 ## Arithmetic and error changes
 

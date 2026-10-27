@@ -61,6 +61,15 @@ box {
 		common.testing.gunit.assert-fails {units.power-decibels(2).plus(units.amplitude-decibels(3))};
 		common.testing.gunit.assert-fails {units.ph(2).plus(units.power-decibels(3))}
 	),
+	common.testing.gunit.test>> verify-same-logarithm-conversion-keeps-the-exact-reading(): (
+		milliwatt$ = units.si-prefixes.milli(units.watts);
+		dbm$ = units.logarithmic-reference(milliwatt$(1), units.power-decibels);
+		dbw$ = units.logarithmic-reference(units.watts(1), units.power-decibels);
+		common.testing.gunit.assert-equals(tuple {10.over(3), 1.over(30), 30.0000001(0)}, tuple {
+			units.power-decibels(units.power-bels(1.over(3))).value(),
+			units.power-bels(units.power-decibels(1.over(3))).value(),
+			dbm$(dbw$(0.0000001(0))).value()})
+	),
 	common.testing.gunit.test>> verify-explicit-logarithmic-precision(): (
 		common.testing.gunit.assert-equals(tuple {3.0103(0), 3.01029995664(0)}, tuple {
 			units.power-decibels.level(2, 5).value().round(5).magnitude(), units.power-decibels.level(2, 12).value().round(11).magnitude()});

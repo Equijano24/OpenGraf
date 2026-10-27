@@ -101,6 +101,9 @@ uncertainty model or automatic factor verification is implied by these fields.
 The [catalogue](catalogue.md) provides reviewed definitions and sources; daltons
 record the CODATA edition and absolute scale uncertainty. Coherent conversion
 uses Graf's explicit exact-factor messages, preserving exact rational factors.
+An exact factor multiplies a known absolute error by its absolute value. A
+precision argument is decimal places of the numeric step that needs one; the
+public default is 15, and a supplied precision is not replaced by that default.
 
 Nonpositive factors and empty identifiers fail through Graf predicate casts.
 Non-numeric payloads, invalid flags, nonintegral dimensions and incomplete

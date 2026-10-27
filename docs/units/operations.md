@@ -117,6 +117,13 @@ validate or specialize construction should override `quantity` while keeping tha
 contract. Operations returning a named quantity use its factory's `quantity`;
 compound operations use a fresh coherent compound definition.
 
+A conversion into the same factory returns the stored reading. It does not
+evaluate the scale. Exact scales and offsets, including temperature points and
+gauge pressures, stay exact rationals or symbolic factors. An exact factor `a`
+multiplies an existing absolute error by `abs(a)`. The public default precision
+is 15 decimal places. A precision argument that a caller supplies is the one
+the calculation uses.
+
 `coherent-value-of(number)` and `display-value-of(number)` implement the numeric mapping.
 `is-convertible-from(quantity)` reports conversion eligibility; it includes explicit
 compound classification. `compatible-with` remains the stricter same-kind and

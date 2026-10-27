@@ -4,6 +4,8 @@ family$ = open-graf-units-core.unit.family("angle",
 	open-graf-units-core.dimension(0, 0, 0, 0, 0, 0, 0, 0));
 
 // Coherent angular values are radians. Numeric work belongs to common.math.
+// Inverse precision is the number of decimal places in radians. display-value-of
+// then applies the exact scale, so that integer is not a promise of degree places.
 heir(family$) {
 	self$.sin(precision$ = default(integer?, 15)?): (
 		radians$ = self$.coherent-value();

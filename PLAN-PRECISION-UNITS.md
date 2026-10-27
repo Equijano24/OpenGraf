@@ -471,6 +471,27 @@ Cada API tiene un contrato de precisión verificable. Cuando el motor no puede
 cumplirlo, informa la limitación sin devolver un resultado como si estuviera
 garantizado.
 
+### Evidencia de cierre del paso 4
+
+- `precision` sigue siendo el número de cifras decimales del centro entregado.
+  Para entradas exactas, el motor solo entrega el redondeo si el intervalo
+  demostrado cae en una sola celda; la cota almacenada es medio lugar y cubre
+  la función verdadera. Un factor exacto `a` multiplica el error absoluto por
+  `abs(a)`.
+- Dominio demostrado como inválido: excepción aritmética. Intervalo que no
+  decide, presupuesto de 10000 cifras o dígitos de pi insuficientes:
+  `evaluation-exception`. No hay caída silenciosa a `float64`.
+- Un `float64` aporta el racional exacto de su encoding binary64
+  (`Float64.FromBinary64`). `0.1` y `0.1(0)` siguen siendo entradas distintas.
+  Los caminos exactos, como `sin(0, 10001)`, no materializan decimales.
+- Un token ya cancelado se rechaza antes de guardarse, para que no lo observe
+  una evaluación posterior.
+- Pruebas: `Interpreted/Math/PrecisionContractTest` (8) y el filtro
+  `Interpreted.Math` (149) en verde. La suite completa de Graf se registra al
+  cerrar el paso 7.
+- Documentación: referencia de números en español e inglés,
+  `Graf.Doc/Pending/Numeric-Operands-Design.md` y `Open-Work-Checklist.md`.
+
 ## Paso 5. Integrar las garantías en las unidades de OpenGraf
 
 ### Archivos y cambios
@@ -526,6 +547,21 @@ Todas las familias conservan el contrato de lectura, la fábrica y las referenci
 y sus operaciones utilizan las garantías numéricas del motor sin implementar
 aritmética alternativa dentro de OpenGraf.
 
+### Evidencia de cierre del paso 5
+
+- La conversión a la misma fábrica devuelve la lectura almacenada.
+- Las escalas y los desplazamientos exactos aceptan una precisión para
+  transmitirla, pero no redondean. La temperatura y la presión manométrica
+  siguen siendo afines exactas.
+- Bels y decibels de la misma convención se convierten por el cociente exacto
+  de sus coeficientes. Un cambio de referencia con el mismo logaritmo conserva
+  la lectura y solo toma el logaritmo del cociente de las referencias.
+- La precisión de las inversas angulares sigue siendo la de los radianes. El
+  factor `180/pi` amplifica el error absoluto; no promete esas cifras en grados.
+- `graf test tests/units/logarithmic.graf`: 14 correctas.
+  `tests/units/inverse-trigonometry.graf`: 12 correctas.
+  `tests/units/catalogue/factories-01.graf`: 25 correctas.
+
 ## Paso 6. Completar la matriz de regresión y compatibilidad
 
 ### Suites principales de OpenGraf
@@ -570,6 +606,18 @@ para ocultar pérdidas de precisión ni marcar nuevas regresiones como omitidas.
 
 La matriz está cubierta por pruebas ejecutadas y sus expectativas corresponden
 a los contratos exactos, aproximados y de lectura que realmente aplican.
+
+### Evidencia de cierre del paso 6
+
+- Casos nuevos: `power-decibels(power-bels(1/3))` es `10/3`;
+  `power-bels(power-decibels(1/3))` es `1/30`; un nivel de `0.0000001` bel
+  referido a 1 W se convierte a dBm como `30.0000001` sin perder el incremento.
+  `degrees.asin(1/3, 10).value().round(2)` es `19.47`. Pedir 20 cifras de ese
+  valor es una `evaluation-exception`. Volver a la misma fábrica no reevalúa
+  la escala.
+- `graf test tests/units`, con el runtime local de esta rama:
+  **521 correctas, 0 fallidas y 0 errores de carga**.
+  La suite anterior, antes de estos dos grupos, tenía 519 correctas.
 
 ## Paso 7. Documentar, validar y publicar la implementación
 
@@ -632,3 +680,25 @@ auxiliares; no exige que módulos antiguos ajenos a esta migración pasen.
 Los siete pasos tienen evidencia de cumplimiento, ambos repositorios están
 publicados en sus ramas previstas y la documentación técnica describe el
 comportamiento realmente verificado.
+
+### Evidencia parcial del paso 7
+
+La documentación de Graf y de OpenGraf ya describe el contrato medido. La
+publicación en remoto queda pendiente: los cambios siguen en el árbol local.
+
+- Graf, referencia de números en español e inglés, diseño numérico y checklist.
+- OpenGraf: `docs/units/operations.md`, `angles.md`, `special.md`, `design.md`,
+  `core.md`, `validation.md` y `migration.md`.
+- `graf test tests/units`: **521 correctas, 0 fallidas, 0 errores de carga**.
+- `dotnet test` de Graf, primera ejecución de esta rama: **2100 correctas, 1
+  fallida y 2 omitidas**. La fallida era `Lambda_KeepsDefinitionSiteMeaningAsync`:
+  `100` por el `float64` `0.13` es el flotante `13`, no el entero `13`. El
+  contrato de binary64 lo exige; la expectativa del test quedó en `13.0` y ese
+  test pasa solo.
+- Ejecuciones completas posteriores: **2099 correctas, 2 fallidas y 2
+  omitidas**. Las dos fallidas son `SkipLast_Negative_DoesNotReadAsync` y
+  `TakeLast_ZeroOrNegative_ReturnsNoneAsync`. Cada una pasa un token de 5
+  segundos alrededor de una fuente infinita que no debe leerse. Aisladas,
+  pasan en 4 segundos. No son regresiones del contrato de precisión.
+- Aún no se ejecutaron `tests/testing`, `tests/units-test.graf`, el chequeo del
+  catálogo, la auditoría ni `docs_build.py`.

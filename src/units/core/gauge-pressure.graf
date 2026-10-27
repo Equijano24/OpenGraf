@@ -31,11 +31,17 @@ heir(family$) {
 		self$.dimension.same-as(source$.dimension)
 			.and(equals(source$.kind, "pressure").or(equals(source$.kind, "gauge-pressure"))),
 
-	override>> self$.coherent-value-of(amount$ = number?):
-		amount$.exact-product(self$.scale).plus(self$.reference.coherent-value()),
+	override>> self$.coherent-value-of(amount$ = number?, precision$ = default(integer?, 15)?): (
+		integer? >> precision$;
+		common.math.gte(0)? >> precision$;
+		amount$.exact-product(self$.scale).plus(self$.reference.coherent-value())
+	),
 
-	override>> self$.display-value-of(amount$ = number?):
-		amount$.minus(self$.reference.coherent-value()).exact-quotient(self$.scale),
+	override>> self$.display-value-of(amount$ = number?, precision$ = default(integer?, 15)?): (
+		integer? >> precision$;
+		common.math.gte(0)? >> precision$;
+		amount$.minus(self$.reference.coherent-value()).exact-quotient(self$.scale)
+	),
 
 	self$.absolute-pressure(target$ = default(class?, open-graf-units-core.catalogue-definitions.pascals)?): (
 		"pressure"? >> target$.kind;

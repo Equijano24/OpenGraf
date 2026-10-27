@@ -54,11 +54,39 @@ heir(family$) {
 	self$.level(ratio$ = real?, precision$ = default(integer?, 15)?):
 		self$.quantity(self$.level-value(ratio$, precision$)),
 
+	self$(amount$ = number?): self$.quantity(amount$),
+
+	self$(source$ = open-graf-units-core.quantity?): self$(source$, 15),
+
 	self$(source$ = open-graf-units-core.quantity?, precision$ = integer?): (
 		yes? >> self$.compatible-with(source$);
-		self$.level(source$.linear-ratio(precision$), precision$)
+		if(equals(self$, source$.factory)) {
+			self$.quantity(source$.value()), self$.converted-reading(source$, precision$)
+		}
 	),
 
-	override>> self$.coherent-value-of(amount$ = number?): self$.ratio-value(amount$, 15),
-	override>> self$.display-value-of(amount$ = number?): self$.level-value(amount$, 15)
+	// Same logarithm: the readings differ by an exact coefficient. A different
+	// logarithm still goes through the linear ratio at the requested precision.
+	self$.converted-reading(source$ = open-graf-units-core.quantity?, precision$ = integer?): (
+		if(equals(self$.logarithm, source$.logarithm)) {
+			(
+				factor$ = self$.coefficient.exact-quotient(source$.coefficient);
+				self$.quantity(source$.value().exact-product(factor$))
+			),
+			self$.level(source$.linear-ratio(precision$), precision$)
+		}
+	),
+
+	override>> self$.value-in-self(other$ = open-graf-units-core.quantity?): (
+		yes? >> self$.compatible-with(other$);
+		if(equals(self$.factory, other$.factory)) {
+			other$.value(), self$.factory.converted-reading(other$, 15).value()
+		}
+	),
+
+	override>> self$.coherent-value-of(amount$ = number?, precision$ = default(integer?, 15)?):
+		self$.ratio-value(amount$, precision$),
+
+	override>> self$.display-value-of(amount$ = number?, precision$ = default(integer?, 15)?):
+		self$.level-value(amount$, precision$)
 }

@@ -57,6 +57,10 @@ constructing an expected value.
 The precision boundary in [angles](angles.md#precision-boundary) is explicit:
 `common.math` results retain their backend type, but subsequent generic numeric
 arithmetic still follows Graf's existing rational-to-float promotion rule.
+Inverse precision is the radian calculation. The degree factor `180/pi` scales
+the absolute error and does not add correct degree decimals. Bels and decibels
+of one convention convert by an exact coefficient. A referenced level keeps that
+reading and applies a logarithm only to the ratio of the references.
 
 Step 8 adds 327 checks: one integration test for each of the 290 catalogue
 factories, 17 independent physical-anchor groups, five defining-equation groups,
@@ -203,7 +207,7 @@ The CLI's pass/fail/load/no-match/cancellation codes were verified in step 4.
 | Dimensions and kinds | Eight integral fields; 87 family vectors; products, quotients, powers and integral roots | Application-specific extensions |
 | Conversion | Linear, affine, logarithmic and reference mappings; independent model anchors; kind/dimension checks | Further application models |
 | Arithmetic | Linear operations, special point/difference rules, reference-aware comparisons and rounding | Further application-specific rules |
-| Angles | Radians/degrees, symbolic conversion, circular/inverse methods, precision, domains and extension | Further catalogue angles; native large-rational promotion decision |
+| Angles | Radians/degrees, symbolic conversion, circular/inverse methods, radian precision with scaled degree error, domains and extension | Further catalogue angles |
 | Temperature | Four point scales, four difference scales, exact offsets, absolute-zero boundaries and point/difference operations | Population-inversion models are outside the ordinary point API |
 | Prefixes | All SI/binary factors, powers, double-prefix refusal and special-unit exclusions | Application-specific eligibility |
 | Special cases | Logarithmic domains, retained references, gauge pressure, pH activity, equivalent-basis hardness and explicit radiation weighting | Full speciation, uncertainty propagation and radiation-field aggregation are outside these APIs |

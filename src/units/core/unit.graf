@@ -27,9 +27,14 @@ class {
 
 	self$(source$ = open-graf-units-core.quantity?): (
 		yes? >> self$.is-convertible-from(source$);
-		coherent$ = source$.coherent-value();
-		amount$ = self$.display-value-of(coherent$);
-		self$.quantity(amount$)
+		if(equals(self$, source$.factory)) {
+			self$.quantity(source$.value()),
+			(
+				coherent$ = source$.coherent-value();
+				amount$ = self$.display-value-of(coherent$);
+				self$.quantity(amount$)
+			)
+		}
 	),
 
 	self$.value(): self$.amount,
@@ -41,17 +46,24 @@ class {
 			source$.is-compound().and(self$.dimension.same-as(source$.dimension))
 		),
 
-	self$.coherent-value-of(amount$ = number?): (
+	// The scale and offset are exact. Precision is accepted so a caller can thread it
+	// through; it does not round an exact affine map. One method keeps a single result.
+	self$.coherent-value-of(amount$ = number?, precision$ = default(integer?, 15)?): (
+		integer? >> precision$;
+		common.math.gte(0)? >> precision$;
 		scaled$ = if(equals(self$.scale, 1)) {amount$, amount$.exact-product(self$.scale)};
 		if(equals(self$.offset, 0)) {scaled$, scaled$.plus(self$.offset)}
 	),
 
-	self$.display-value-of(amount$ = number?): (
+	self$.display-value-of(amount$ = number?, precision$ = default(integer?, 15)?): (
+		integer? >> precision$;
+		common.math.gte(0)? >> precision$;
 		shifted$ = if(equals(self$.offset, 0)) {amount$, amount$.minus(self$.offset)};
 		if(equals(self$.scale, 1)) {shifted$, shifted$.exact-quotient(self$.scale)}
 	),
 
-	self$.coherent-value(): self$.factory.coherent-value-of(self$.value()),
+	self$.coherent-value(precision$ = default(integer?, 15)?):
+		self$.factory.coherent-value-of(self$.value(), precision$),
 
 	self$.require-linear(): (
 		yes? >> self$.linear-arithmetic;
