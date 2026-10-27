@@ -122,14 +122,19 @@ factores medidos se conservan; más dígitos de cálculo no aumentan su exactitu
 | 1 | Contrato y pruebas de aritmética afín corregidos | Completado |
 | 2 | Aritmética racional sin degradación implícita por tamaño | Completado |
 | 3 | Representación y protocolo completos para aproximaciones | Completado |
-| 4 | Precisión, redondeo, límites y errores controlados | Pendiente |
-| 5 | Conversiones y operaciones de OpenGraf integradas | Pendiente |
-| 6 | Matriz de regresión y compatibilidad de unidades | Pendiente |
-| 7 | Documentación, validación integral y publicación | Pendiente |
+| 4 | Precisión, redondeo, límites y errores controlados | Completado |
+| 5 | Conversiones y operaciones de OpenGraf integradas | Completado |
+| 6 | Matriz de regresión y compatibilidad de unidades | Completado |
+| 7 | Documentación, validación integral y publicación | Completado, salvo el PDF |
 
 El orden de dependencia es 1 → 2 → 3 → 4 → 5 → 6 → 7. Las regresiones se
 escriben al comenzar cada cambio; el paso 6 completa la cobertura transversal,
 no pospone todas las pruebas hasta el final.
+
+Pendiente: regenerar el PDF técnico y el sitio con `python tools/docs_build.py`
+en un entorno con Pango, revisarlo y publicarlo junto con
+`docs/downloads/build.json`. En la validación del paso 7, WeasyPrint no pudo
+cargar `libgobject-2.0-0`, así que el PDF publicado sigue desactualizado.
 
 ## Paso 1. Corregir la especificación y el caso rojo
 
