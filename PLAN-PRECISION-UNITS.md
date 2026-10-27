@@ -4,7 +4,7 @@ Fecha: 26 de octubre de 2026.
 
 Repositorios: **Graf, rama `develop`**, y **OpenGraf, rama `master`**.
 
-Estado: **pasos 1 a 3 completados; pasos 4 a 7 pendientes**.
+Estado: **pasos 1 a 7 completados**.
 
 Este documento reúne el contrato de aritmética acordado, la propuesta de
 precisión y las correcciones de la revisión final. El seguimiento distingue el
@@ -125,16 +125,18 @@ factores medidos se conservan; más dígitos de cálculo no aumentan su exactitu
 | 4 | Precisión, redondeo, límites y errores controlados | Completado |
 | 5 | Conversiones y operaciones de OpenGraf integradas | Completado |
 | 6 | Matriz de regresión y compatibilidad de unidades | Completado |
-| 7 | Documentación, validación integral y publicación | Completado, salvo el PDF |
+| 7 | Documentación, validación integral y publicación | Completado |
 
 El orden de dependencia es 1 → 2 → 3 → 4 → 5 → 6 → 7. Las regresiones se
 escriben al comenzar cada cambio; el paso 6 completa la cobertura transversal,
 no pospone todas las pruebas hasta el final.
 
-Pendiente: regenerar el PDF técnico y el sitio con `python tools/docs_build.py`
-en un entorno con Pango, revisarlo y publicarlo junto con
-`docs/downloads/build.json`. En la validación del paso 7, WeasyPrint no pudo
-cargar `libgobject-2.0-0`, así que el PDF publicado sigue desactualizado.
+El PDF técnico y el sitio se regeneraron con `python3 tools/docs_build.py` en un
+entorno con Pango. La revisión con Poppler cubre el índice, el código, las
+tablas del catálogo, los símbolos Unicode y los encabezados y pies. El artefacto
+publicado tiene 70 páginas y acompaña a `docs/downloads/build.json`.
+`python3 tools/docs_build.py --check` verifica la huella de las fuentes y el hash
+del PDF.
 
 ## Paso 1. Corregir la especificación y el caso rojo
 
@@ -710,8 +712,9 @@ Validación de esas versiones, con el `graf` construido desde `61f426e`:
 | `python tools/units_catalogue.py --check` | 655 archivos generados verificados |
 | `python tools/units_audit.py --legacy-source` | 302 fábricas, 521 casos de unidad, 31 fábricas históricas, 4 tests históricos, 8 ejemplos |
 
-`python tools/docs_build.py --check` informa que el PDF publicado está
-desactualizado respecto de las páginas ya cambiadas. En esta máquina
-`docs_build.py` no puede regenerarlo: WeasyPrint no carga `libgobject-2.0-0`.
-La revisión visual del PDF queda pendiente de un entorno con Pango. El sitio
-tampoco se reconstruyó en esta ejecución.
+`python tools/docs_build.py --check` informó, en esa ejecución, que el PDF
+publicado estaba desactualizado respecto de las páginas ya cambiadas. WeasyPrint
+no pudo cargar `libgobject-2.0-0`, así que el sitio tampoco se reconstruyó allí.
+Una reconstrucción posterior, con Pango, publicó el PDF de 70 páginas y
+`docs/downloads/build.json`. `python3 tools/docs_build.py --check` confirma esa
+publicación.
