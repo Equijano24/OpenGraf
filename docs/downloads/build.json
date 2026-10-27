@@ -1,11 +1,11 @@
 {
   "reference_date": "2026-10-25",
-  "source_sha256": "4279b769c3e085674df5e46eaf0e769fda749beb811a38146b43b68f5abdf8a8",
+  "source_sha256": "d91476a787bfb91f9c4714460165cbf45211c3813dfaf2dcd23a56681ca11abb",
   "source_documents": 15,
   "pdf": {
-    "pages": 69,
-    "bytes": 253329,
-    "sha256": "69388a19e4aa6374fd95b61c953ee42ef8aa6d176e05ddddde66eb9e8129446a",
+    "pages": 70,
+    "bytes": 255568,
+    "sha256": "8d01a8da68abab6303e80b955489a976e5c2ec48478c2102d464a33172e3294d",
     "destinations": 117,
     "catalogue_factories": 302
   }
